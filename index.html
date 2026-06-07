@@ -217,6 +217,52 @@ nav{background:var(--nav);display:flex;gap:1px;padding:0 12px;position:sticky;to
 .mini-fc.rev .mfa{display:block;}
 .mini-fc-ctrls{display:flex;gap:7px;justify-content:center;margin-bottom:10px;}
 .topic-rows{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;}
+
+/* ── TRANSLATE TAB ── */
+.tr-dir-bar{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:18px;}
+.tr-lang-lbl{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:8px 22px;font-size:14px;font-weight:700;color:var(--ink);min-width:100px;text-align:center;}
+.tr-swap{background:var(--primary-lt);border:1.5px solid var(--primary);border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;color:var(--primary);transition:transform .35s;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tr-swap:hover{transform:rotate(180deg);}
+.tr-input{width:100%;min-height:90px;padding:14px;font-family:inherit;font-size:15px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--ink);resize:vertical;outline:none;transition:border-color .15s;line-height:1.5;margin-bottom:10px;}
+.tr-input:focus{border-color:var(--primary);}
+.tr-actions{display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap;}
+.tr-speak-btn{background:none;border:1.5px solid var(--border);border-radius:99px;padding:5px 14px;font-size:12px;cursor:pointer;color:var(--muted);font-family:inherit;transition:all .15s;}
+.tr-speak-btn:hover:not(:disabled){border-color:var(--primary);color:var(--primary);}
+.tr-speak-btn:disabled{opacity:.35;cursor:default;}
+.tr-result-box{background:var(--primary-lt);border:1.5px solid var(--primary);border-radius:var(--r);padding:16px 18px;min-height:70px;margin-bottom:0;}
+.tr-result-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--primary);font-weight:700;margin-bottom:8px;}
+.tr-result-text{font-size:21px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:10px;}
+.tr-result-empty{font-size:14px;font-weight:400;color:var(--muted);font-style:italic;}
+.tr-save-btn{background:var(--green);color:#fff;border:none;border-radius:var(--r-sm);padding:6px 15px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:opacity .15s;}
+.tr-save-btn:disabled{opacity:.35;cursor:default;}
+/* VOCAB LIST */
+.vl-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.vocab-empty{text-align:center;color:var(--muted);font-size:13px;padding:24px;font-style:italic;}
+.vl-item{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;margin-bottom:7px;}
+.vl-src{font-weight:700;font-size:14px;color:var(--ink);}
+.vl-tgt{font-size:12px;color:var(--muted);margin-top:2px;}
+.vl-del{background:none;border:none;color:#ccc;cursor:pointer;font-size:15px;padding:3px 6px;transition:color .15s;line-height:1;}
+.vl-del:hover{color:var(--red);}
+/* VOCAB QUIZ MODAL */
+.vq-overlay{display:none;position:fixed;inset:0;background:rgba(13,11,30,.55);z-index:300;align-items:center;justify-content:center;}
+.vq-overlay.open{display:flex;}
+.vq-modal{background:var(--surface);border-radius:var(--r);padding:26px 24px;max-width:440px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.25);}
+.vq-title{font-size:17px;font-weight:800;margin-bottom:2px;}
+.vq-sub{font-size:12px;color:var(--muted);margin-bottom:18px;}
+.vq-question{font-size:24px;font-weight:700;text-align:center;margin-bottom:18px;color:var(--ink);line-height:1.25;}
+.vq-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.vq-opt{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:13px 10px;font-family:inherit;font-size:14px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);font-weight:500;}
+.vq-opt:hover:not(:disabled){border-color:var(--primary);color:var(--primary);background:var(--primary-lt);}
+.vq-opt.correct{background:#DCFCE7;border-color:var(--green);color:#166534;font-weight:700;}
+.vq-opt.wrong{background:#FEE2E2;border-color:var(--red);color:#991B1B;}
+.vq-opt:disabled{cursor:default;}
+.vq-fb{text-align:center;font-size:14px;min-height:22px;font-weight:500;margin-bottom:10px;}
+.vq-fb.ok{color:var(--green);}
+.vq-fb.no{color:var(--red);}
+.vq-score{text-align:center;font-size:12px;color:var(--muted);margin-bottom:16px;}
+.vq-foot{display:flex;justify-content:space-between;align-items:center;}
+.vq-close-btn{background:none;border:1.5px solid var(--border);border-radius:var(--r-sm);padding:7px 18px;font-family:inherit;cursor:pointer;color:var(--muted);font-size:13px;}
+.vq-close-btn:hover{border-color:var(--red);color:var(--red);}
 </style>
 </head>
 <body>
@@ -227,6 +273,7 @@ nav{background:var(--nav);display:flex;gap:1px;padding:0 12px;position:sticky;to
   <button class="nb" onclick="showTab('grammar',this)">📖 Grammar</button>
   <button class="nb" onclick="showTab('music',this)">🎵 Music</button>
   <button class="nb" onclick="showTab('new',this)">🆕 New Topics</button>
+  <button class="nb" onclick="showTab('translate',this)">🌐 Translate</button>
 </nav>
 
 <!-- ═══ FLASHCARDS ═══ -->
@@ -380,6 +427,64 @@ nav{background:var(--nav);display:flex;gap:1px;padding:0 12px;position:sticky;to
   <div class="sec-title">🆕 New Topics</div>
   <p class="sub">Tap any topic to expand it.</p>
   <div class="topic-grid" id="topic-grid"></div>
+</div>
+
+<!-- ═══ TRANSLATE ═══ -->
+<div id="tab-translate" class="tab">
+  <div class="sec-title">Translate</div>
+  <p class="sub">EN ↔ ES via MyMemory. Hear pronunciation, save words, quiz yourself.</p>
+
+  <div class="card">
+    <div class="tr-dir-bar">
+      <div class="tr-lang-lbl" id="tr-src-lbl">English</div>
+      <button class="tr-swap" onclick="swapLang()" title="Swap">⇄</button>
+      <div class="tr-lang-lbl" id="tr-tgt-lbl">Spanish</div>
+    </div>
+    <textarea class="tr-input" id="tr-input" placeholder="Type English here…" rows="3"></textarea>
+    <div class="tr-actions">
+      <button class="btn" onclick="doTranslate()">Translate</button>
+      <button class="tr-speak-btn" id="tr-speak-src" onclick="speakTr('src')" disabled>🔊 Speak original</button>
+      <span id="tr-loading" style="font-size:12px;color:var(--muted);display:none;margin-left:4px">Translating…</span>
+    </div>
+    <div class="tr-result-box">
+      <div class="tr-result-lbl" id="tr-tgt-lbl2">Spanish</div>
+      <div class="tr-result-text tr-result-empty" id="tr-result">Translation will appear here</div>
+      <div style="display:flex;gap:8px;align-items:center;margin-top:4px;flex-wrap:wrap;">
+        <button class="tr-speak-btn" id="tr-speak-tgt" onclick="speakTr('tgt')" disabled>🔊 Listen</button>
+        <button class="tr-save-btn" id="tr-save-btn" onclick="saveToVocab()" disabled>+ Save to vocab</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px;">
+    <div class="vl-hdr">
+      <div>
+        <div class="sec-title" style="margin-bottom:0">Saved Vocab</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px" id="vl-count-lbl">Nothing saved yet</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn sm" onclick="startVocabQuiz()">Quiz me ✏️</button>
+        <button class="btn ghost sm" onclick="clearVocab()">Clear</button>
+      </div>
+    </div>
+    <div id="vl-items"><div class="vocab-empty">Save words from your translations to build your list.</div></div>
+  </div>
+</div>
+
+<!-- VOCAB QUIZ MODAL -->
+<div class="vq-overlay" id="vq-overlay" onclick="if(event.target===this)closeVocabQuiz()">
+  <div class="vq-modal">
+    <div class="vq-title">Vocab Quiz</div>
+    <div class="vq-sub" id="vq-sub">From your saved words</div>
+    <div class="vq-question" id="vq-q">—</div>
+    <div class="vq-opts" id="vq-opts"></div>
+    <div class="vq-fb" id="vq-fb"></div>
+    <div class="vq-score" id="vq-score"></div>
+    <div class="vq-foot">
+      <button class="vq-close-btn" onclick="closeVocabQuiz()">✕ Close</button>
+      <button class="btn sm" onclick="nextVQQ()" id="vq-next" style="display:none">Next →</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -975,6 +1080,176 @@ function mfcNext(ti,e){e.stopPropagation();const t=topics[ti];tfcIdx[ti]=(tfcIdx
 function mfcPrev(ti,e){e.stopPropagation();const t=topics[ti];tfcIdx[ti]=(tfcIdx[ti]-1+t.data.length)%t.data.length;updMFC(ti);}
 function updMFC(ti){const t=topics[ti];const idx=tfcIdx[ti];document.getElementById('mfq-'+ti).textContent=t.data[idx][0];document.getElementById('mfa-'+ti).textContent=t.data[idx][1];document.getElementById('mfc-'+ti).classList.remove('rev');}
 
+/* ═══════════════════ TRANSLATE ═══════════════════ */
+let trSrc='en', trTgt='es';
+let trLastSrcText='', trLastTgtText='';
+const vocabList=[];
+
+function swapLang(){
+  [trSrc,trTgt]=[trTgt,trSrc];
+  const srcName=trSrc==='en'?'English':'Spanish';
+  const tgtName=trTgt==='en'?'English':'Spanish';
+  document.getElementById('tr-src-lbl').textContent=srcName;
+  document.getElementById('tr-tgt-lbl').textContent=tgtName;
+  document.getElementById('tr-tgt-lbl2').textContent=tgtName;
+  document.getElementById('tr-input').placeholder=`Type ${srcName} here…`;
+  // If we have a result, swap it into the input
+  if(trLastTgtText){
+    document.getElementById('tr-input').value=trLastTgtText;
+    trLastSrcText=trLastTgtText; trLastTgtText='';
+    const r=document.getElementById('tr-result');
+    r.textContent='Translation will appear here';
+    r.classList.add('tr-result-empty');
+    document.getElementById('tr-speak-tgt').disabled=true;
+    document.getElementById('tr-save-btn').disabled=true;
+  }
+}
+
+async function doTranslate(){
+  const text=document.getElementById('tr-input').value.trim();
+  if(!text) return;
+  const loading=document.getElementById('tr-loading');
+  const r=document.getElementById('tr-result');
+  loading.style.display='';
+  r.textContent='Translating…'; r.classList.add('tr-result-empty');
+  document.getElementById('tr-speak-src').disabled=true;
+  document.getElementById('tr-speak-tgt').disabled=true;
+  document.getElementById('tr-save-btn').disabled=true;
+  try {
+    const url=`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${trSrc}|${trTgt}`;
+    const data=await fetch(url).then(r=>r.json());
+    const translation=data.responseData.translatedText;
+    trLastSrcText=text; trLastTgtText=translation;
+    r.textContent=translation; r.classList.remove('tr-result-empty');
+    document.getElementById('tr-speak-src').disabled=false;
+    document.getElementById('tr-speak-tgt').disabled=false;
+    document.getElementById('tr-save-btn').disabled=false;
+  } catch(e){
+    r.textContent='Translation failed — check your connection.';
+  }
+  loading.style.display='none';
+}
+
+function speakTr(which){
+  if(!window.speechSynthesis){alert('Speech not supported in this browser.');return;}
+  const text=which==='src'?trLastSrcText:trLastTgtText;
+  const lang=which==='src'?trSrc:trTgt;
+  if(!text) return;
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang=lang==='es'?'es-ES':'en-US';
+  u.rate=0.88;
+  window.speechSynthesis.speak(u);
+}
+
+function saveToVocab(){
+  if(!trLastSrcText||!trLastTgtText) return;
+  if(vocabList.some(v=>v.src===trLastSrcText)) return;
+  vocabList.push({src:trLastSrcText,tgt:trLastTgtText,srcLang:trSrc,tgtLang:trTgt});
+  renderVocabList();
+  const btn=document.getElementById('tr-save-btn');
+  btn.textContent='✓ Saved!'; btn.disabled=true;
+  setTimeout(()=>{btn.textContent='+ Save to vocab';btn.disabled=false;},1600);
+}
+
+function renderVocabList(){
+  const el=document.getElementById('vl-items');
+  const cl=document.getElementById('vl-count-lbl');
+  if(!vocabList.length){
+    el.innerHTML='<div class="vocab-empty">Save words from your translations to build your list.</div>';
+    cl.textContent='Nothing saved yet';
+    return;
+  }
+  cl.textContent=`${vocabList.length} word${vocabList.length===1?'':'s'} saved`;
+  el.innerHTML=vocabList.map((v,i)=>`
+    <div class="vl-item">
+      <div><div class="vl-src">${v.src}</div><div class="vl-tgt">${v.tgt}</div></div>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <button class="tr-speak-btn" onclick="speakSaved(${i})">🔊</button>
+        <button class="vl-del" onclick="deleteVocab(${i})" title="Remove">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function speakSaved(i){
+  const v=vocabList[i];
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(v.tgt);
+  u.lang=v.tgtLang==='es'?'es-ES':'en-US';
+  u.rate=0.88;
+  window.speechSynthesis.speak(u);
+}
+
+function deleteVocab(i){vocabList.splice(i,1);renderVocabList();}
+
+function clearVocab(){
+  if(!vocabList.length) return;
+  if(!confirm(`Clear all ${vocabList.length} saved words?`)) return;
+  vocabList.length=0; renderVocabList();
+}
+
+/* ── VOCAB QUIZ ── */
+let vqQuestions=[],vqIdx=0,vqCorrect=0,vqAnswered=false;
+
+function startVocabQuiz(){
+  if(vocabList.length<2){alert('Save at least 2 words before quizzing.');return;}
+  vqQuestions=arrShuffle(vocabList.map(v=>({q:v.src,a:v.tgt,tgtLang:v.tgtLang})));
+  vqIdx=0; vqCorrect=0; vqAnswered=false;
+  document.getElementById('vq-overlay').classList.add('open');
+  renderVQQ();
+}
+
+function renderVQQ(){
+  if(vqIdx>=vqQuestions.length){
+    document.getElementById('vq-q').textContent='🎉 Quiz complete!';
+    document.getElementById('vq-opts').innerHTML='';
+    document.getElementById('vq-fb').textContent='';
+    document.getElementById('vq-score').textContent=`Final score: ${vqCorrect} / ${vqQuestions.length}`;
+    document.getElementById('vq-sub').textContent='All done!';
+    document.getElementById('vq-next').style.display='none';
+    return;
+  }
+  const q=vqQuestions[vqIdx];
+  document.getElementById('vq-sub').textContent=`Question ${vqIdx+1} of ${vqQuestions.length}`;
+  document.getElementById('vq-q').textContent=q.q;
+  document.getElementById('vq-fb').textContent=''; document.getElementById('vq-fb').className='vq-fb';
+  document.getElementById('vq-score').textContent=`Score: ${vqCorrect} / ${vqIdx}`;
+  document.getElementById('vq-next').style.display='none';
+  vqAnswered=false;
+  // Build options: correct + up to 3 distractors from other vocab items
+  const distractors=vocabList.filter(v=>v.tgt!==q.a).map(v=>v.tgt);
+  const pads=['no sé','quizás','a veces','nunca','también','siempre'];
+  while(distractors.length<3) distractors.push(pads[distractors.length]);
+  const opts=arrShuffle([q.a,...arrShuffle(distractors).slice(0,3)]);
+  // Store current opts so onclick can safely reference by index
+  window._vqOpts=opts; window._vqCorrect=q.a;
+  document.getElementById('vq-opts').innerHTML=opts.map((o,i)=>
+    `<button class="vq-opt" onclick="answerVQ(${i})">${o}</button>`).join('');
+}
+
+function answerVQ(i){
+  if(vqAnswered) return;
+  vqAnswered=true;
+  const chosen=window._vqOpts[i];
+  const correct=window._vqCorrect;
+  const ok=chosen===correct;
+  if(ok) vqCorrect++;
+  document.querySelectorAll('.vq-opt').forEach((b,j)=>{
+    b.disabled=true;
+    if(window._vqOpts[j]===correct) b.classList.add('correct');
+    else if(j===i&&!ok) b.classList.add('wrong');
+  });
+  const fb=document.getElementById('vq-fb');
+  fb.textContent=ok?'✓ Correct!':'✗ Not quite!';
+  fb.className='vq-fb '+(ok?'ok':'no');
+  document.getElementById('vq-score').textContent=`Score: ${vqCorrect} / ${vqIdx+1}`;
+  setTimeout(()=>{vqIdx++;renderVQQ();},1200);
+}
+
+function nextVQQ(){vqIdx++;renderVQQ();}
+function closeVocabQuiz(){document.getElementById('vq-overlay').classList.remove('open');}
+function arrShuffle(a){return [...a].sort(()=>Math.random()-.5);}
+
 /* ═══════════════════ TAB SWITCHING ═══════════════════ */
 function showTab(name,btn){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -990,6 +1265,10 @@ window.addEventListener('DOMContentLoaded',()=>{
   buildThemePills();populateVerbSel();
   buildMusic();
   buildTopics();
+  // Translate: Enter key to submit (Shift+Enter for newline)
+  document.getElementById('tr-input').addEventListener('keydown',e=>{
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doTranslate();}
+  });
 });
 </script>
 </body>
