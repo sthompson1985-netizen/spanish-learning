@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spanish — Steve's Notebook</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg:#F5F4FF;
+  --surface:#FFFFFF;
+  --surface2:#F0EFFE;
+  --border:#E2DFFE;
+  --ink:#0D0B1E;
+  --muted:#6B6785;
+  --primary:#5B4FE9;
+  --primary-lt:#EDE9FF;
+  --pink:#FF4D7D;
+  --green:#00C37B;
+  --amber:#F59E0B;
+  --red:#EF4444;
+  --nav:#0D0B1E;
+  --nav-text:#9490C2;
+  --shadow:0 2px 12px rgba(91,79,233,.10);
+  --shadow-md:0 4px 24px rgba(91,79,233,.13);
+  --r:14px;
+  --r-sm:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);min-height:100vh;color:var(--ink);}
+
+/* NAV */
+nav{background:var(--nav);display:flex;gap:1px;padding:0 12px;position:sticky;top:0;z-index:100;box-shadow:0 1px 0 rgba(255,255,255,.06);}
+.nb{color:var(--nav-text);background:none;border:none;padding:14px 16px 12px;font-size:13px;font-family:inherit;cursor:pointer;border-bottom:3px solid transparent;transition:all .15s;white-space:nowrap;letter-spacing:.01em;}
+.nb:hover{color:#fff;}
+.nb.active{color:#fff;border-bottom-color:var(--primary);}
+
+/* TABS */
+.tab{display:none;padding:20px 16px 48px;max-width:880px;margin:0 auto;}
+.tab.active{display:block;}
+
+/* CARDS */
+.card{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);border:1px solid var(--border);padding:20px;}
+.card+.card{margin-top:12px;}
+.sec-title{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px;letter-spacing:-.01em;}
+.sub{font-size:13px;color:var(--muted);margin-bottom:16px;}
+
+/* PILLS */
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;}
+.pill{background:var(--surface);color:var(--muted);border:1.5px solid var(--border);border-radius:99px;padding:5px 14px;font-size:12px;cursor:pointer;transition:all .15s;font-family:inherit;font-weight:500;}
+.pill:hover,.pill.on{background:var(--primary);color:#fff;border-color:var(--primary);}
+
+/* BUTTONS */
+.btn{background:var(--primary);color:#fff;border:none;border-radius:var(--r-sm);padding:9px 20px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;}
+.btn:hover{opacity:.88;}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1.5px solid var(--border);}
+.btn.ghost:hover{border-color:var(--primary);color:var(--primary);}
+.btn.sm{padding:6px 13px;font-size:12px;}
+.btn.grn{background:var(--green);}
+.btn.red{background:var(--red);}
+
+/* TOGGLE ROW */
+.toggle-row{display:flex;gap:0;border-radius:var(--r-sm);overflow:hidden;border:1.5px solid var(--border);width:fit-content;}
+.tg-btn{background:var(--surface);color:var(--muted);border:none;padding:8px 17px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;border-right:1px solid var(--border);}
+.tg-btn:last-child{border-right:none;}
+.tg-btn.on{background:var(--primary);color:#fff;}
+
+/* ── FLASHCARDS ── */
+.card-area{perspective:1200px;margin:0 auto 16px;max-width:480px;height:185px;cursor:pointer;}
+.card-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .42s cubic-bezier(.4,0,.2,1);}
+.card-inner.no-tr{transition:none!important;}
+.card-inner.flipped{transform:rotateY(180deg);}
+.card-face{position:absolute;inset:0;background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow-md);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1.5px solid var(--border);}
+.card-face.back{transform:rotateY(180deg);background:var(--primary-lt);border-color:var(--primary);}
+.card-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:8px;font-weight:600;}
+.card-word{font-size:26px;font-weight:700;color:var(--ink);text-align:center;line-height:1.2;}
+.card-note{font-size:12px;color:var(--muted);margin-top:6px;text-align:center;font-style:italic;}
+.card-hint{font-size:11px;color:#bbb;margin-top:14px;}
+.card-cat{font-size:11px;background:var(--primary-lt);color:var(--primary);padding:3px 10px;border-radius:99px;margin-bottom:6px;font-weight:600;}
+.card-ctrls{display:flex;justify-content:center;align-items:center;gap:8px;margin-bottom:10px;}
+.card-count{text-align:center;font-size:13px;color:var(--muted);margin-bottom:14px;}
+
+/* ── QUIZ ── */
+.quiz-word{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:28px;text-align:center;margin-bottom:14px;border:1.5px solid var(--border);min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.quiz-q{font-size:23px;font-weight:700;color:var(--ink);}
+.quiz-qlbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;font-weight:600;}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.quiz-opt{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:13px 10px;font-family:inherit;font-size:14px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);line-height:1.3;font-weight:500;}
+.quiz-opt:hover:not(:disabled){border-color:var(--primary);color:var(--primary);background:var(--primary-lt);}
+.quiz-opt.correct{background:#DCFCE7;border-color:var(--green);color:#166534;font-weight:700;}
+.quiz-opt.wrong{background:#FEE2E2;border-color:var(--red);color:#991B1B;}
+.quiz-opt:disabled{cursor:default;}
+.score-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;background:var(--surface);border-radius:var(--r-sm);padding:10px 14px;box-shadow:var(--shadow);border:1px solid var(--border);}
+.score-track{flex:1;height:7px;background:var(--surface2);border-radius:99px;overflow:hidden;}
+.score-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--pink));border-radius:99px;transition:width .4s;}
+.score-num{font-weight:700;font-size:13px;color:var(--ink);min-width:44px;text-align:right;}
+.quiz-fb{text-align:center;font-size:14px;padding:6px;min-height:26px;font-weight:500;}
+.quiz-fb.ok{color:var(--green);}
+.quiz-fb.no{color:var(--red);}
+.dir-row{display:flex;justify-content:center;margin:0 auto 14px;}
+
+/* ── VERB TABLE ── */
+.theme-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.verb-row{display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap;}
+.verb-sel{padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--r-sm);font-family:inherit;font-size:14px;background:var(--surface);color:var(--ink);cursor:pointer;flex:1;min-width:160px;font-weight:500;}
+.verb-sel:focus{outline:none;border-color:var(--primary);}
+.vib{background:var(--surface);border-radius:var(--r);padding:14px 18px;margin-bottom:12px;border-left:4px solid var(--primary);box-shadow:var(--shadow);}
+.vib-name{font-size:21px;font-weight:800;color:var(--primary);}
+.vib-badge{display:inline-block;background:var(--primary-lt);color:var(--primary);border-radius:99px;padding:2px 11px;font-size:11px;margin-left:8px;vertical-align:middle;font-weight:700;text-transform:uppercase;}
+.vib-meaning{font-size:14px;color:var(--muted);margin-top:2px;}
+.stem-note{background:#FFFBEB;border:1px solid #FDE68A;border-radius:var(--r-sm);padding:9px 13px;font-size:12px;color:#92400E;margin-bottom:12px;font-weight:500;}
+.pat-note{background:var(--primary-lt);border-radius:var(--r-sm);padding:13px 16px;margin-bottom:12px;font-size:13px;color:var(--muted);line-height:1.6;}
+.pat-note strong{color:var(--ink);}
+
+/* 6-BOX GRID */
+.six-box{display:grid;grid-template-columns:90px 1fr 1fr;gap:0;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-md);margin-bottom:14px;border:1px solid var(--border);}
+.bh{background:var(--primary);color:#fff;text-align:center;padding:9px 6px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;}
+.bh.pc{background:#3d33c4;}
+.bperson{background:#3d33c4;color:#c4bdff;padding:12px 10px;display:flex;flex-direction:column;justify-content:center;border-bottom:1px solid #4a40d0;border-right:1px solid #4a40d0;}
+.bpnum{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#a5a0ff;}
+.bpen{font-size:10px;color:#c4bdff;margin-top:2px;line-height:1.3;}
+.bcell{background:var(--surface);border:1px solid var(--border);padding:13px 14px;display:flex;flex-direction:column;justify-content:center;}
+.bcell.left{border-left:3px solid var(--pink);}
+.bpronoun{font-size:10px;color:var(--muted);margin-bottom:5px;font-weight:500;}
+.bconj{font-size:19px;font-weight:700;color:var(--ink);}
+.bend{color:var(--pink);font-style:italic;}
+
+/* GRAMMAR */
+.gsec{background:var(--surface);border-radius:var(--r);padding:18px 20px;margin-bottom:12px;box-shadow:var(--shadow);border:1px solid var(--border);}
+.gsec h3{color:var(--primary);font-size:14px;margin-bottom:10px;font-weight:700;}
+.rule{margin-bottom:8px;font-size:13px;color:var(--ink);line-height:1.5;}
+.rule strong{color:var(--red);}
+.exline{display:flex;gap:14px;font-size:13px;padding:2px 0;line-height:1.5;}
+.exes{color:var(--primary);font-weight:600;min-width:185px;}
+.exen{color:var(--muted);}
+.cbox{display:flex;align-items:center;gap:8px;margin:8px 0;flex-wrap:wrap;font-size:15px;}
+.cpart{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:5px 13px;font-weight:700;}
+.cpart.res{border-color:var(--green);color:var(--green);background:#DCFCE7;}
+.carrow{color:#bbb;font-size:18px;}
+.ttbl{width:100%;border-collapse:collapse;font-size:13px;}
+.ttbl td{padding:3px 6px;line-height:26px;}
+.ttbl td:first-child{color:var(--primary);font-weight:600;width:200px;}
+.ttbl td:last-child{color:var(--muted);}
+
+/* ── MUSIC TAB ── */
+.artist-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.artist-tab{background:var(--surface);border:1.5px solid var(--border);border-radius:99px;padding:8px 20px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;color:var(--muted);}
+.artist-tab:hover{border-color:var(--primary);color:var(--primary);}
+.artist-tab.on{color:#fff;border-color:transparent;}
+
+.artist-panel{display:none;}
+.artist-panel.on{display:block;}
+
+.album-header{border-radius:var(--r);padding:18px 20px;margin-bottom:16px;display:flex;align-items:center;gap:16px;}
+.album-icon{font-size:40px;line-height:1;}
+.album-title{font-size:20px;font-weight:800;color:#fff;}
+.album-name{font-size:13px;opacity:.85;color:#fff;margin-top:2px;}
+
+.song-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:12px;}
+.song-header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;cursor:pointer;user-select:none;}
+.song-header:hover{background:var(--surface2);}
+.song-title{font-size:15px;font-weight:700;color:var(--ink);}
+.song-feat{font-size:11px;color:var(--muted);margin-top:1px;}
+.song-theme{font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--primary-lt);color:var(--primary);}
+.song-body{display:none;padding:0 18px 18px;border-top:1px solid var(--border);}
+.song-body.open{display:block;}
+
+.phrase-block{margin:14px 0;}
+.phrase-block-title{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700;margin-bottom:10px;}
+.phrase-row{background:var(--surface2);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:8px;border-left:3px solid var(--primary);}
+.phrase-es{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.phrase-en{font-size:13px;color:var(--muted);margin-bottom:6px;}
+.phrase-breakdown{display:flex;flex-wrap:wrap;gap:5px;}
+.pbd-chip{background:var(--primary-lt);color:var(--primary);border-radius:99px;padding:2px 10px;font-size:11px;font-weight:600;}
+
+.vocab-row{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;}
+.vocab-chip{background:var(--surface2);border:1px solid var(--border);border-radius:99px;padding:4px 12px;font-size:12px;color:var(--ink);font-weight:500;}
+
+.lesson-box{background:linear-gradient(135deg,var(--primary-lt),#fff);border:1.5px solid var(--primary);border-radius:var(--r-sm);padding:14px 16px;margin:14px 0;}
+.lesson-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--primary);margin-bottom:6px;}
+.lesson-text{font-size:13px;color:var(--ink);line-height:1.6;}
+
+.music-quiz{margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
+.mq-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px;}
+.mq-q{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:10px;}
+.mq-opts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px;}
+.mq-opt{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:10px 12px;font-family:inherit;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--ink);font-weight:500;}
+.mq-opt:hover:not(:disabled){border-color:var(--primary);color:var(--primary);background:var(--primary-lt);}
+.mq-opt.correct{background:#DCFCE7;border-color:var(--green);color:#166534;font-weight:700;}
+.mq-opt.wrong{background:#FEE2E2;border-color:var(--red);color:#991B1B;}
+.mq-opt:disabled{cursor:default;}
+.mq-fb{font-size:13px;min-height:20px;font-weight:500;margin-bottom:8px;}
+.mq-fb.ok{color:var(--green);}
+.mq-fb.no{color:var(--red);}
+.mq-score{font-size:12px;color:var(--muted);text-align:right;}
+
+/* NEW TOPICS */
+.topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:560px){.topic-grid{grid-template-columns:1fr;}}
+.topic-card{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;}
+.topic-hdr{background:var(--primary);color:#fff;padding:12px 16px;font-size:14px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
+.topic-hdr:hover{opacity:.92;}
+.topic-body{display:none;padding:14px 16px;}
+.topic-body.open{display:block;}
+.t-row{display:flex;gap:8px;padding:3px 0;font-size:13px;border-bottom:1px solid var(--border);}
+.t-es{color:var(--primary);font-weight:600;min-width:120px;}
+.t-en{color:var(--muted);}
+.num-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:6px 0;}
+.ncell{background:var(--surface2);border-radius:var(--r-sm);padding:7px 4px;text-align:center;}
+.ncell .nes{font-weight:700;color:var(--primary);font-size:14px;}
+.ncell .nen{font-size:10px;color:var(--muted);}
+.mini-fc{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:14px;text-align:center;cursor:pointer;min-height:65px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:8px;transition:border-color .2s;}
+.mini-fc:hover{border-color:var(--primary);}
+.mfq{font-size:17px;font-weight:700;color:var(--ink);}
+.mfa{font-size:13px;color:var(--muted);margin-top:4px;display:none;}
+.mfhint{font-size:11px;color:#bbb;margin-top:10px;}
+.mini-fc.rev .mfa{display:block;}
+.mini-fc-ctrls{display:flex;gap:7px;justify-content:center;margin-bottom:10px;}
+.topic-rows{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;}
+</style>
+</head>
+<body>
+<nav>
+  <button class="nb active" onclick="showTab('flashcards',this)">📚 Flashcards</button>
+  <button class="nb" onclick="showTab('quiz',this)">✍️ Quiz</button>
+  <button class="nb" onclick="showTab('verbs',this)">🔢 Verb Tables</button>
+  <button class="nb" onclick="showTab('grammar',this)">📖 Grammar</button>
+  <button class="nb" onclick="showTab('music',this)">🎵 Music</button>
+  <button class="nb" onclick="showTab('new',this)">🆕 New Topics</button>
+</nav>
+
+<!-- ═══ FLASHCARDS ═══ -->
+<div id="tab-flashcards" class="tab active">
+  <div class="sec-title">Flashcards</div>
+  <p class="sub">Tap the card to flip. Next/Prev never shows the answer early.</p>
+  <div class="pills" id="fc-pills"></div>
+  <div class="card-count" id="fc-count">Card 1 of 1</div>
+  <div class="card-area" onclick="flipCard()">
+    <div class="card-inner" id="ci">
+      <div class="card-face front">
+        <div class="card-cat" id="fc-cat">—</div>
+        <div class="card-lbl">Spanish</div>
+        <div class="card-word" id="fc-front">—</div>
+        <div class="card-hint">Tap to reveal</div>
+      </div>
+      <div class="card-face back">
+        <div class="card-lbl">English</div>
+        <div class="card-word" id="fc-back">—</div>
+        <div class="card-note" id="fc-note"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card-ctrls">
+    <button class="btn ghost sm" onclick="prevCard()">← Prev</button>
+    <button class="btn sm" onclick="flipCard()">Flip</button>
+    <button class="btn ghost sm" onclick="nextCard()">Next →</button>
+  </div>
+  <div style="text-align:center;margin-top:8px">
+    <button class="btn ghost sm" onclick="shuffleCards()">🔀 Shuffle</button>
+  </div>
+</div>
+
+<!-- ═══ QUIZ ═══ -->
+<div id="tab-quiz" class="tab">
+  <div class="sec-title">Quiz</div>
+  <p class="sub">Four options, one correct answer. Switch direction anytime.</p>
+  <div class="dir-row">
+    <div class="toggle-row">
+      <button class="tg-btn on" id="db-esen" onclick="setDir('esen')">🇪🇸 → 🇬🇧</button>
+      <button class="tg-btn" id="db-enes" onclick="setDir('enes')">🇬🇧 → 🇪🇸</button>
+    </div>
+  </div>
+  <div class="pills" id="qz-pills"></div>
+  <div class="score-bar">
+    <span style="font-size:13px;color:var(--muted);font-weight:500">Score</span>
+    <div class="score-track"><div class="score-fill" id="sf" style="width:0%"></div></div>
+    <span class="score-num" id="sn">0 / 0</span>
+  </div>
+  <div class="quiz-word">
+    <div class="quiz-qlbl" id="qq-lbl">Spanish</div>
+    <div class="quiz-q" id="qq">—</div>
+  </div>
+  <div class="quiz-opts" id="qopts"></div>
+  <div class="quiz-fb" id="qfb"></div>
+  <div style="text-align:center;margin-top:10px">
+    <button class="btn" id="nq-btn" onclick="nextQuestion()" style="display:none">Next →</button>
+    <button class="btn ghost sm" onclick="resetQuiz()" style="margin-left:8px">↺ Reset</button>
+  </div>
+</div>
+
+<!-- ═══ VERB TABLES ═══ -->
+<div id="tab-verbs" class="tab">
+  <div class="sec-title">Verb Tables</div>
+  <p class="sub">Filter by theme → pick verb → switch tense freely.</p>
+  <div class="theme-pills" id="theme-pills"></div>
+  <div class="verb-row">
+    <select class="verb-sel" id="vsel" onchange="onVerbChange()"></select>
+    <div class="toggle-row">
+      <button class="tg-btn on" id="tt-pr" onclick="setVerbTense('present')">Present</button>
+      <button class="tg-btn" id="tt-pa" onclick="setVerbTense('past')">Past</button>
+      <button class="tg-btn" id="tt-fu" onclick="setVerbTense('future')">Future</button>
+    </div>
+  </div>
+  <div class="vib" id="vib"></div>
+  <div class="stem-note" id="vsn" style="display:none"></div>
+  <div class="pat-note" id="vpn"></div>
+  <div class="six-box" id="vgrid"></div>
+  <div id="vexamples"></div>
+</div>
+
+<!-- ═══ GRAMMAR ═══ -->
+<div id="tab-grammar" class="tab">
+  <div class="sec-title">Grammar Reference</div>
+  <div class="gsec"><h3>★ Nouns — Gender & Articles</h3>
+    <div class="rule">Masculine → <strong>el</strong> (sing) / <strong>los</strong> (pl) &nbsp;|&nbsp; Indefinite: <strong>un</strong></div>
+    <div class="rule">Feminine → <strong>la</strong> (sing) / <strong>las</strong> (pl) &nbsp;|&nbsp; Indefinite: <strong>una</strong></div>
+    <div class="rule">Most feminine nouns end in <strong>-a</strong>. The rest are usually masculine.</div>
+    <div style="margin-top:8px">
+      <div class="exline"><span class="exes">El restaurante / La casa</span><span class="exen">The restaurant / The house</span></div>
+      <div class="exline"><span class="exes">Un hotel / Una mesa</span><span class="exen">A hotel / A table</span></div>
+    </div>
+  </div>
+  <div class="gsec"><h3>★ Adjective Agreement</h3>
+    <div class="rule">Masculine end in <strong>-o</strong>. Feminine → change to <strong>-a</strong>. Ends in <strong>-e</strong> → no change.</div>
+    <div class="rule">Plural: add <strong>-s</strong> to adjective too.</div>
+    <div style="margin-top:6px">
+      <div class="exline"><span class="exes">El pollo está delicioso</span><span class="exen">The chicken is delicious (masc)</span></div>
+      <div class="exline"><span class="exes">La pizza está deliciosa</span><span class="exen">The pizza is delicious (fem)</span></div>
+      <div class="exline"><span class="exes">Las pizzas son deliciosas</span><span class="exen">Plural fem</span></div>
+    </div>
+  </div>
+  <div class="gsec"><h3>★ Contractions — al & del</h3>
+    <div class="rule">Only applies to <strong>el</strong>, never la/los/las.</div>
+    <div class="cbox"><div class="cpart">a</div><div class="carrow">+</div><div class="cpart">el</div><div class="carrow">=</div><div class="cpart res">al</div></div>
+    <div class="exline" style="margin:4px 0 10px"><span class="exes">Voy al restaurante</span><span class="exen">I'm going to the restaurant</span></div>
+    <div class="cbox"><div class="cpart">de</div><div class="carrow">+</div><div class="cpart">el</div><div class="carrow">=</div><div class="cpart res">del</div></div>
+    <div class="exline" style="margin-top:4px"><span class="exes">Vengo del banco</span><span class="exen">I'm coming from the bank</span></div>
+  </div>
+  <div class="gsec"><h3>★ Ser vs Estar</h3>
+    <div class="rule"><strong>Ser</strong> — permanent: nationality, identity, profession</div>
+    <div class="rule"><strong>Estar</strong> — temporary: mood, location, current state</div>
+    <div class="exline"><span class="exes">Soy inglés</span><span class="exen">I am English (ser)</span></div>
+    <div class="exline"><span class="exes">Estoy cansado</span><span class="exen">I am tired (estar)</span></div>
+  </div>
+  <div class="gsec"><h3>★ Stem-Changing Verbs</h3>
+    <div class="rule">Stem changes in ALL forms except nosotros/vosotros.</div>
+    <div class="exline"><span class="exes">o → ue</span><span class="exen">poder, volver, probar, doler, encontrar</span></div>
+    <div class="exline"><span class="exes">e → ie</span><span class="exen">querer, preferir, perder, tener</span></div>
+    <div class="exline"><span class="exes">e → i</span><span class="exen">pedir &nbsp;|&nbsp; u → ue: jugar (only this verb!)</span></div>
+  </div>
+  <div class="gsec"><h3>★ Personal "a"</h3>
+    <div class="rule">When a verb happens to a specific person, put <strong>a</strong> after the verb.</div>
+    <div class="exline"><span class="exes">Yo veo a María</span><span class="exen">I see María</span></div>
+    <div class="exline"><span class="exes">Voy a ayudar a María</span><span class="exen">I'm going to help María</span></div>
+  </div>
+  <div class="gsec"><h3>★ Telling the Time</h3>
+    <div class="rule" style="margin-bottom:8px"><strong>Son las...</strong> for all hours except 1 o'clock → <strong>Es la una</strong></div>
+    <table class="ttbl">
+      <tr><td>¿Qué hora es?</td><td>What time is it?</td></tr>
+      <tr><td>Es la una</td><td>1 o'clock</td></tr>
+      <tr><td>Son las dos</td><td>2 o'clock</td></tr>
+      <tr><td>Son las cinco y media</td><td>5:30</td></tr>
+      <tr><td>Son las nueve menos diez</td><td>8:50</td></tr>
+      <tr><td>El mediodía / La medianoche</td><td>Noon / Midnight</td></tr>
+      <tr><td>De la mañana / tarde / noche</td><td>Morning / afternoon / night</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══ MUSIC ═══ -->
+<div id="tab-music" class="tab">
+  <div class="sec-title">🎵 Music Lessons</div>
+  <p class="sub">Real Spanish from songs you love — phrases, vocabulary and grammar from each track.</p>
+  <div class="artist-tabs" id="artist-tabs"></div>
+  <div id="music-panels"></div>
+</div>
+
+<!-- ═══ NEW TOPICS ═══ -->
+<div id="tab-new" class="tab">
+  <div class="sec-title">🆕 New Topics</div>
+  <p class="sub">Tap any topic to expand it.</p>
+  <div class="topic-grid" id="topic-grid"></div>
+</div>
+
+<script>
+/* ═══════════════════ VOCAB ═══════════════════ */
+const vocab=[
+  {es:'siempre',en:'always',cat:'General'},{es:'eso es',en:'that is',cat:'General'},{es:'aquí',en:'here',cat:'General'},
+  {es:'no es',en:'it isn\'t',cat:'General'},{es:'para mí',en:'for me / I think',cat:'General'},{es:'pero',en:'but',cat:'General'},
+  {es:'precioso / preciosa',en:'beautiful',cat:'General'},{es:'muy',en:'very',cat:'General'},{es:'para él / ella',en:'for him / her',cat:'General'},
+  {es:'malo / mala',en:'bad',cat:'General'},{es:'absolutamente',en:'absolutely',cat:'General'},{es:'todo',en:'everything',cat:'General'},
+  {es:'terrible',en:'terrible',cat:'General'},{es:'mi / mis',en:'my / my (plural)',cat:'General'},{es:'todo el mundo',en:'everybody',cat:'General'},
+  {es:'simpático',en:'nice / friendly',cat:'General'},{es:'un / una',en:'a (masc / fem)',cat:'General'},{es:'el / la',en:'the (masc / fem)',cat:'General'},
+  {es:'quiero',en:'I want / I would like',cat:'General'},{es:'personas',en:'people',cat:'General'},{es:'una mesa',en:'a table',cat:'General'},
+  {es:'una reserva',en:'a reservation',cat:'General'},{es:'la comida',en:'the food',cat:'General'},{es:'y',en:'and',cat:'General'},
+  {es:'también',en:'also / too',cat:'General'},{es:'son',en:'they are',cat:'General'},{es:'no son',en:'they aren\'t',cat:'General'},
+  {es:'los / las',en:'the (plural / fem)',cat:'General'},{es:'perdón',en:'excuse me',cat:'General'},{es:'puedo',en:'I can / may I',cat:'General'},
+  {es:'a dónde',en:'where (to)',cat:'General'},{es:'un poco',en:'a little',cat:'General'},{es:'solo',en:'only',cat:'General'},
+  {es:'este / esta',en:'this',cat:'General'},{es:'listo',en:'ready',cat:'General'},{es:'estoy',en:'I am (temporary)',cat:'General'},
+  {es:'estás',en:'you are (temporary)',cat:'General'},{es:'aún',en:'still',cat:'General'},{es:'voy a',en:'I\'m going to...',cat:'General'},
+  {es:'debería',en:'I should',cat:'General'},{es:'no sé',en:'I don\'t know',cat:'General'},{es:'si',en:'if',cat:'General'},
+  {es:'tengo',en:'I have',cat:'General'},{es:'tanto',en:'so much',cat:'General'},{es:'tengo que',en:'I must',cat:'General'},
+  {es:'cuando',en:'when',cat:'General'},{es:'por qué',en:'why',cat:'General'},{es:'antes de',en:'before',cat:'General'},
+  {es:'después de',en:'after',cat:'General'},{es:'pronto',en:'soon',cat:'General'},{es:'ahora',en:'now',cat:'General'},
+  {es:'mañana',en:'tomorrow / morning',cat:'General'},{es:'hoy',en:'today',cat:'General'},{es:'ayer',en:'yesterday',cat:'General'},
+  {es:'gracias',en:'thank you',cat:'General'},{es:'de nada',en:'you\'re welcome',cat:'General'},{es:'por favor',en:'please',cat:'General'},
+  {es:'lo siento',en:'I\'m sorry',cat:'General'},{es:'grande',en:'big / large',cat:'General'},{es:'pequeño / pequeña',en:'small',cat:'General'},
+  {es:'queso',en:'cheese',cat:'Food'},{es:'pollo',en:'chicken',cat:'Food'},{es:'la comida',en:'the food',cat:'Food'},
+  {es:'plátano(s)',en:'banana(s)',cat:'Food'},{es:'una botella de',en:'a bottle of',cat:'Food'},{es:'vino',en:'wine',cat:'Food'},
+  {es:'agua',en:'water',cat:'Food'},{es:'la cena',en:'dinner',cat:'Food'},{es:'pan',en:'bread',cat:'Food'},
+  {es:'arroz',en:'rice',cat:'Food'},{es:'ensalada',en:'salad',cat:'Food'},{es:'fruta',en:'fruit',cat:'Food'},
+  {es:'leche',en:'milk',cat:'Food'},{es:'café',en:'coffee',cat:'Food'},{es:'té',en:'tea',cat:'Food'},
+  {es:'zumo / jugo',en:'juice',cat:'Food'},{es:'pescado',en:'fish',cat:'Food'},{es:'carne',en:'meat',cat:'Food'},{es:'huevo',en:'egg',cat:'Food'},
+  {es:'el restaurante',en:'the restaurant',cat:'Places'},{es:'el hotel',en:'the hotel',cat:'Places'},{es:'la escuela',en:'the school',cat:'Places'},
+  {es:'la casa',en:'the house',cat:'Places'},{es:'la ciudad',en:'the city',cat:'Places'},{es:'el mercado',en:'the market',cat:'Places'},
+  {es:'el supermercado',en:'the supermarket',cat:'Places'},{es:'el parque',en:'the park',cat:'Places'},{es:'el cine',en:'the cinema',cat:'Places'},
+  {es:'el hospital',en:'the hospital',cat:'Places'},{es:'la panadería',en:'the bakery',cat:'Places'},{es:'el trabajo',en:'work',cat:'Places'},
+  {es:'la playa',en:'the beach',cat:'Places'},{es:'el aeropuerto',en:'the airport',cat:'Places'},{es:'la tienda',en:'the shop',cat:'Places'},
+  {es:'el banco',en:'the bank',cat:'Places'},{es:'la farmacia',en:'the pharmacy',cat:'Places'},{es:'la calle',en:'the street',cat:'Places'},
+  {es:'probar',en:'to try / taste',cat:'Verbs'},{es:'pagar',en:'to pay',cat:'Verbs'},{es:'hacer',en:'to make / do',cat:'Verbs'},
+  {es:'tomar',en:'to take / have',cat:'Verbs'},{es:'ir',en:'to go',cat:'Verbs'},{es:'nadar',en:'to swim',cat:'Verbs'},
+  {es:'comer',en:'to eat',cat:'Verbs'},{es:'aprender',en:'to learn',cat:'Verbs'},{es:'vender',en:'to sell',cat:'Verbs'},
+  {es:'leer',en:'to read',cat:'Verbs'},{es:'creer',en:'to think / believe',cat:'Verbs'},{es:'comprender',en:'to understand',cat:'Verbs'},
+  {es:'recibir',en:'to receive',cat:'Verbs'},{es:'abrir',en:'to open',cat:'Verbs'},{es:'ocurrir',en:'to occur',cat:'Verbs'},
+  {es:'vivir',en:'to live',cat:'Verbs'},{es:'decidir',en:'to decide',cat:'Verbs'},{es:'ver',en:'to see',cat:'Verbs'},
+  {es:'ser',en:'to be (permanent)',cat:'Verbs'},{es:'estar',en:'to be (temporary)',cat:'Verbs'},
+  {es:'perder',en:'to lose',cat:'Verbs',note:'stem change e→ie'},{es:'preferir',en:'to prefer',cat:'Verbs',note:'stem change e→ie'},
+  {es:'poder',en:'to can / be able to',cat:'Verbs',note:'stem change o→ue'},{es:'volver',en:'to return',cat:'Verbs',note:'stem change o→ue'},
+  {es:'devolver',en:'to give back',cat:'Verbs',note:'stem change o→ue'},{es:'doler',en:'to hurt',cat:'Verbs',note:'stem change o→ue'},
+  {es:'querer',en:'to want',cat:'Verbs'},{es:'explorar',en:'to explore',cat:'Verbs'},{es:'tener',en:'to have (obligation)',cat:'Verbs'},
+  {es:'jugar',en:'to play',cat:'Verbs',note:'stem change u→ue'},{es:'quedar',en:'to meet up',cat:'Verbs'},
+  {es:'salir',en:'to go out',cat:'Verbs'},{es:'gastar',en:'to spend',cat:'Verbs'},{es:'beber',en:'to drink',cat:'Verbs'},
+  {es:'llamar',en:'to call',cat:'Verbs'},{es:'besar',en:'to kiss',cat:'Verbs'},{es:'pedir',en:'to order',cat:'Verbs',note:'stem change e→i'},
+  {es:'encontrar',en:'to find',cat:'Verbs',note:'stem change o→ue'},{es:'comprar',en:'to buy',cat:'Verbs'},{es:'esperar',en:'to wait',cat:'Verbs'},
+  {es:'hablar',en:'to speak',cat:'Verbs'},{es:'trabajar',en:'to work',cat:'Verbs'},{es:'ayudar',en:'to help',cat:'Verbs'},{es:'necesitar',en:'to need',cat:'Verbs'},
+  {es:'Todo es muy bueno',en:'Everything is very good',cat:'Sentences'},
+  {es:'Una mesa para dos, por favor',en:'A table for two, please',cat:'Sentences'},
+  {es:'Quiero un café, por favor',en:'I\'d like a coffee, please',cat:'Sentences'},
+  {es:'Las pizzas son deliciosas',en:'The pizzas are delicious',cat:'Sentences'},
+  {es:'Quiero la cuenta, por favor',en:'I\'d like the bill, please',cat:'Sentences'},
+  {es:'¿Cuánto es el pollo?',en:'How much is the chicken?',cat:'Sentences'},
+  {es:'¿Puedo probar el vino?',en:'Can I try the wine?',cat:'Sentences'},
+  {es:'¿Qué hora es?',en:'What time is it?',cat:'Sentences'},
+  {es:'Necesito ir',en:'I need to go',cat:'Sentences'},
+  {es:'¿A dónde vamos?',en:'Where are we going?',cat:'Sentences'},
+  {es:'Nosotros vamos al restaurante',en:'We are going to the restaurant',cat:'Sentences'},
+  {es:'Voy a la playa',en:'I am going to the beach',cat:'Sentences'},
+  {es:'Tengo que ir al banco',en:'I have to go to the bank',cat:'Sentences'},
+  {es:'¿Cómo va?',en:'How\'s it going?',cat:'Sentences'},
+  {es:'¿Vas a trabajar hoy?',en:'Are you going to work today?',cat:'Sentences'},
+  {es:'¿Ya estás listo?',en:'Are you ready yet?',cat:'Sentences'},
+  {es:'No sé si quiero salir',en:'I don\'t know if I want to go out',cat:'Sentences'},
+  {es:'Voy a hacer una pizza',en:'I am going to make a pizza',cat:'Sentences'},
+  {es:'No estoy ocupado',en:'I am not busy',cat:'Sentences'},
+  {es:'Voy a preparar la cena pronto',en:'I\'m going to make dinner soon',cat:'Sentences'},
+];
+
+/* ═══════════════════ VERB DATA ═══════════════════ */
+const VD={
+  hablar:{type:'ar',themes:['talking','everyday'],meaning:'to speak',pr:['hablo','hablas','habla','hablamos','habláis','hablan'],pa:['hablé','hablaste','habló','hablamos','hablasteis','hablaron']},
+  tomar:{type:'ar',themes:['food','actions'],meaning:'to take / have',pr:['tomo','tomas','toma','tomamos','tomáis','toman'],pa:['tomé','tomaste','tomó','tomamos','tomasteis','tomaron']},
+  pagar:{type:'ar',themes:['food','everyday'],meaning:'to pay',pr:['pago','pagas','paga','pagamos','pagáis','pagan'],pa:['pagué','pagaste','pagó','pagamos','pagasteis','pagaron']},
+  comprar:{type:'ar',themes:['food','everyday'],meaning:'to buy',pr:['compro','compras','compra','compramos','compráis','compran'],pa:['compré','compraste','compró','compramos','comprasteis','compraron']},
+  llamar:{type:'ar',themes:['talking','everyday'],meaning:'to call',pr:['llamo','llamas','llama','llamamos','llamáis','llaman'],pa:['llamé','llamaste','llamó','llamamos','llamasteis','llamaron']},
+  nadar:{type:'ar',themes:['going','everyday'],meaning:'to swim',pr:['nado','nadas','nada','nadamos','nadáis','nadan'],pa:['nadé','nadaste','nadó','nadamos','nadasteis','nadaron']},
+  trabajar:{type:'ar',themes:['everyday'],meaning:'to work',pr:['trabajo','trabajas','trabaja','trabajamos','trabajáis','trabajan'],pa:['trabajé','trabajaste','trabajó','trabajamos','trabajasteis','trabajaron']},
+  explorar:{type:'ar',themes:['going'],meaning:'to explore',pr:['exploro','exploras','explora','exploramos','exploráis','exploran'],pa:['exploré','exploraste','exploró','exploramos','explorasteis','exploraron']},
+  esperar:{type:'ar',themes:['everyday'],meaning:'to wait',pr:['espero','esperas','espera','esperamos','esperáis','esperan'],pa:['esperé','esperaste','esperó','esperamos','esperasteis','esperaron']},
+  besar:{type:'ar',themes:['actions'],meaning:'to kiss',pr:['beso','besas','besa','besamos','besáis','besan'],pa:['besé','besaste','besó','besamos','besasteis','besaron']},
+  gastar:{type:'ar',themes:['everyday'],meaning:'to spend',pr:['gasto','gastas','gasta','gastamos','gastáis','gastan'],pa:['gasté','gastaste','gastó','gastamos','gastasteis','gastaron']},
+  ayudar:{type:'ar',themes:['everyday','feelings'],meaning:'to help',pr:['ayudo','ayudas','ayuda','ayudamos','ayudáis','ayudan'],pa:['ayudé','ayudaste','ayudó','ayudamos','ayudasteis','ayudaron']},
+  necesitar:{type:'ar',themes:['feelings','everyday'],meaning:'to need',pr:['necesito','necesitas','necesita','necesitamos','necesitáis','necesitan'],pa:['necesité','necesitaste','necesitó','necesitamos','necesitasteis','necesitaron']},
+  quedar:{type:'ar',themes:['going','everyday'],meaning:'to meet up / stay',pr:['quedo','quedas','queda','quedamos','quedáis','quedan'],pa:['quedé','quedaste','quedó','quedamos','quedasteis','quedaron']},
+  probar:{type:'ar',themes:['food'],meaning:'to try / taste',stemNote:'Stem change o→ue (except nosotros/vosotros)',pr:['pruebo','pruebas','prueba','probamos','probáis','prueban'],pa:['probé','probaste','probó','probamos','probasteis','probaron']},
+  encontrar:{type:'ar',themes:['going','everyday'],meaning:'to find',stemNote:'Stem change o→ue (except nosotros/vosotros)',pr:['encuentro','encuentras','encuentra','encontramos','encontráis','encuentran'],pa:['encontré','encontraste','encontró','encontramos','encontrasteis','encontraron']},
+  comer:{type:'er',themes:['food'],meaning:'to eat',pr:['como','comes','come','comemos','coméis','comen'],pa:['comí','comiste','comió','comimos','comisteis','comieron']},
+  beber:{type:'er',themes:['food'],meaning:'to drink',pr:['bebo','bebes','bebe','bebemos','bebéis','beben'],pa:['bebí','bebiste','bebió','bebimos','bebisteis','bebieron']},
+  vender:{type:'er',themes:['everyday','actions'],meaning:'to sell',pr:['vendo','vendes','vende','vendemos','vendéis','venden'],pa:['vendí','vendiste','vendió','vendimos','vendisteis','vendieron']},
+  leer:{type:'er',themes:['talking'],meaning:'to read',pr:['leo','lees','lee','leemos','leéis','leen'],pa:['leí','leíste','leyó','leímos','leísteis','leyeron']},
+  creer:{type:'er',themes:['talking'],meaning:'to think / believe',pr:['creo','crees','cree','creemos','creéis','creen'],pa:['creí','creíste','creyó','creímos','creísteis','creyeron']},
+  aprender:{type:'er',themes:['talking','everyday'],meaning:'to learn',pr:['aprendo','aprendes','aprende','aprendemos','aprendéis','aprenden'],pa:['aprendí','aprendiste','aprendió','aprendimos','aprendisteis','aprendieron']},
+  comprender:{type:'er',themes:['talking'],meaning:'to understand',pr:['comprendo','comprendes','comprende','comprendemos','comprendéis','comprenden'],pa:['comprendí','comprendiste','comprendió','comprendimos','comprendisteis','comprendieron']},
+  vivir:{type:'ir',themes:['everyday'],meaning:'to live',pr:['vivo','vives','vive','vivimos','vivís','viven'],pa:['viví','viviste','vivió','vivimos','vivisteis','vivieron']},
+  decidir:{type:'ir',themes:['everyday'],meaning:'to decide',pr:['decido','decides','decide','decidimos','decidís','deciden'],pa:['decidí','decidiste','decidió','decidimos','decidisteis','decidieron']},
+  abrir:{type:'ir',themes:['actions','everyday'],meaning:'to open',pr:['abro','abres','abre','abrimos','abrís','abren'],pa:['abrí','abriste','abrió','abrimos','abristeis','abrieron']},
+  recibir:{type:'ir',themes:['actions'],meaning:'to receive',pr:['recibo','recibes','recibe','recibimos','recibís','reciben'],pa:['recibí','recibiste','recibió','recibimos','recibisteis','recibieron']},
+  ocurrir:{type:'ir',themes:['everyday'],meaning:'to occur / happen',pr:['ocurro','ocurres','ocurre','ocurrimos','ocurrís','ocurren'],pa:['ocurrí','ocurriste','ocurrió','ocurrimos','ocurristeis','ocurrieron']},
+  ser:{type:'irregular',themes:['irregular'],meaning:'to be (permanent)',stemNote:'Fully irregular — must be memorised!',pr:['soy','eres','es','somos','sois','son'],pa:['fui','fuiste','fue','fuimos','fuisteis','fueron']},
+  estar:{type:'irregular',themes:['irregular','feelings'],meaning:'to be (temporary state)',stemNote:'Yo irregular (estoy). Past uses -uv- stem.',pr:['estoy','estás','está','estamos','estáis','están'],pa:['estuve','estuviste','estuvo','estuvimos','estuvisteis','estuvieron']},
+  ir:{type:'irregular',themes:['irregular','going'],meaning:'to go',stemNote:'Fully irregular. Past identical to SER — context clarifies.',pr:['voy','vas','va','vamos','vais','van'],pa:['fui','fuiste','fue','fuimos','fuisteis','fueron']},
+  tener:{type:'irregular',themes:['irregular','feelings'],meaning:'to have (obligation)',stemNote:'Yo irregular (tengo). Stem change e→ie in 2nd/3rd person.',pr:['tengo','tienes','tiene','tenemos','tenéis','tienen'],pa:['tuve','tuviste','tuvo','tuvimos','tuvisteis','tuvieron']},
+  hacer:{type:'irregular',themes:['irregular','actions'],meaning:'to make / do',stemNote:'Yo irregular (hago). Past uses hic- stem; note hizo not hicó.',pr:['hago','haces','hace','hacemos','hacéis','hacen'],pa:['hice','hiciste','hizo','hicimos','hicisteis','hicieron']},
+  querer:{type:'irregular',themes:['irregular','feelings'],meaning:'to want / desire',stemNote:'Stem change e→ie (except nosotros/vosotros).',pr:['quiero','quieres','quiere','queremos','queréis','quieren'],pa:['quise','quisiste','quiso','quisimos','quisisteis','quisieron']},
+  poder:{type:'irregular',themes:['irregular','feelings'],meaning:'to be able to / can',stemNote:'Stem change o→ue (except nosotros/vosotros).',pr:['puedo','puedes','puede','podemos','podéis','pueden'],pa:['pude','pudiste','pudo','pudimos','pudisteis','pudieron']},
+  volver:{type:'irregular',themes:['going','irregular'],meaning:'to return',stemNote:'Stem change o→ue (except nosotros/vosotros).',pr:['vuelvo','vuelves','vuelve','volvemos','volvéis','vuelven'],pa:['volví','volviste','volvió','volvimos','volvisteis','volvieron']},
+  devolver:{type:'irregular',themes:['actions'],meaning:'to give back',stemNote:'Like volver: stem change o→ue.',pr:['devuelvo','devuelves','devuelve','devolvemos','devolvéis','devuelven'],pa:['devolví','devolviste','devolvió','devolvimos','devolvisteis','devolvieron']},
+  ver:{type:'irregular',themes:['irregular','talking'],meaning:'to see',stemNote:'Yo irregular (veo). Past has no accent marks.',pr:['veo','ves','ve','vemos','veis','ven'],pa:['vi','viste','vio','vimos','visteis','vieron']},
+  salir:{type:'irregular',themes:['irregular','going'],meaning:'to go out',stemNote:'Only yo irregular in present (salgo).',pr:['salgo','sales','sale','salimos','salís','salen'],pa:['salí','saliste','salió','salimos','salisteis','salieron']},
+  pedir:{type:'irregular',themes:['food','talking'],meaning:'to order / ask for',stemNote:'Stem change e→i (except nosotros/vosotros).',pr:['pido','pides','pide','pedimos','pedís','piden'],pa:['pedí','pediste','pidió','pedimos','pedisteis','pidieron']},
+  perder:{type:'irregular',themes:['feelings'],meaning:'to lose',stemNote:'Stem change e→ie (except nosotros/vosotros).',pr:['pierdo','pierdes','pierde','perdemos','perdéis','pierden'],pa:['perdí','perdiste','perdió','perdimos','perdisteis','perdieron']},
+  preferir:{type:'irregular',themes:['feelings'],meaning:'to prefer',stemNote:'Stem change e→ie (except nosotros/vosotros).',pr:['prefiero','prefieres','prefiere','preferimos','preferís','prefieren'],pa:['preferí','preferiste','prefirió','preferimos','preferisteis','prefirieron']},
+  doler:{type:'irregular',themes:['feelings'],meaning:'to hurt / ache',stemNote:'Stem change o→ue. Often used like gustar: "me duele la cabeza".',pr:['duelo','dueles','duele','dolemos','doléis','duelen'],pa:['dolí','doliste','dolió','dolimos','dolisteis','dolieron']},
+  jugar:{type:'irregular',themes:['everyday'],meaning:'to play',stemNote:'Stem change u→ue (except nosotros/vosotros). Only verb with this pattern.',pr:['juego','juegas','juega','jugamos','jugáis','juegan'],pa:['jugué','jugaste','jugó','jugamos','jugasteis','jugaron']},
+};
+
+const VEX={
+  hablar:{pr:['Hablo español un poco.','I speak a little Spanish.'],pa:['Hablé con María ayer.','I spoke with María yesterday.'],fu:['Voy a hablar con el jefe.','I\'m going to speak with the boss.']},
+  tomar:{pr:['Tomo un café cada mañana.','I have a coffee every morning.'],pa:['Tomé el autobús al trabajo.','I took the bus to work.'],fu:['Voy a tomar algo de comer.','I\'m going to have something to eat.']},
+  pagar:{pr:['¿Pago con tarjeta?','Can I pay by card?'],pa:['Pagué la cuenta en el restaurante.','I paid the bill at the restaurant.'],fu:['Voy a pagar los cafés.','I\'m going to pay for the coffees.']},
+  comprar:{pr:['Compro fruta en el mercado.','I buy fruit at the market.'],pa:['Compramos vino ayer.','We bought wine yesterday.'],fu:['Voy a comprar algo de comer.','I\'m going to buy something to eat.']},
+  llamar:{pr:['Te llamo más tarde.','I\'ll call you later.'],pa:['Llamé a mi amigo esta mañana.','I called my friend this morning.'],fu:['Voy a llamar al restaurante.','I\'m going to call the restaurant.']},
+  nadar:{pr:['Nado en la playa cada verano.','I swim at the beach every summer.'],pa:['Nadamos en el mar ayer.','We swam in the sea yesterday.'],fu:['Voy a nadar mañana.','I\'m going to swim tomorrow.']},
+  trabajar:{pr:['Trabajo en el centro.','I work in the city centre.'],pa:['Trabajé mucho la semana pasada.','I worked a lot last week.'],fu:['¿Vas a trabajar hoy?','Are you going to work today?']},
+  esperar:{pr:['Espero el autobús.','I\'m waiting for the bus.'],pa:['Esperé mucho tiempo.','I waited a long time.'],fu:['Voy a esperar aquí.','I\'m going to wait here.']},
+  gastar:{pr:['Gasto demasiado en restaurantes.','I spend too much in restaurants.'],pa:['Gasté mucho dinero ayer.','I spent a lot of money yesterday.'],fu:['Voy a gastar menos este mes.','I\'m going to spend less this month.']},
+  ayudar:{pr:['Te ayudo con eso.','I\'ll help you with that.'],pa:['Me ayudaste mucho.','You helped me a lot.'],fu:['Voy a ayudar a María.','I\'m going to help María.']},
+  necesitar:{pr:['Necesito ir al banco.','I need to go to the bank.'],pa:['Necesitamos una reserva.','We needed a reservation.'],fu:['Voy a necesitar más dinero.','I\'m going to need more money.']},
+  quedar:{pr:['¿Quedamos a las ocho?','Shall we meet at eight?'],pa:['Quedé con ella en el parque.','I met her in the park.'],fu:['Voy a quedar con mis amigos.','I\'m going to meet my friends.']},
+  probar:{pr:['¿Puedo probar el vino?','Can I try the wine?'],pa:['Probé el queso — estaba delicioso.','I tried the cheese — it was delicious.'],fu:['Voy a probar algo nuevo.','I\'m going to try something new.']},
+  encontrar:{pr:['No encuentro las llaves.','I can\'t find the keys.'],pa:['Encontré una mesa libre.','I found a free table.'],fu:['Voy a encontrar la solución.','I\'m going to find the solution.']},
+  comer:{pr:['Como en el restaurante a mediodía.','I eat at the restaurant at midday.'],pa:['Comimos pizza ayer.','We ate pizza yesterday.'],fu:['Voy a comer algo pronto.','I\'m going to eat something soon.']},
+  beber:{pr:['¿Qué bebes?','What are you drinking?'],pa:['Bebimos vino con la cena.','We drank wine with dinner.'],fu:['Voy a beber agua.','I\'m going to drink water.']},
+  leer:{pr:['Leo el periódico cada mañana.','I read the newspaper every morning.'],pa:['Leí un libro muy bueno.','I read a very good book.'],fu:['Voy a leer esta noche.','I\'m going to read tonight.']},
+  aprender:{pr:['Aprendo español cada día.','I learn Spanish every day.'],pa:['Aprendimos mucho en clase.','We learned a lot in class.'],fu:['Voy a aprender más vocabulario.','I\'m going to learn more vocabulary.']},
+  vivir:{pr:['Vivo en Londres.','I live in London.'],pa:['Viví en España dos años.','I lived in Spain for two years.'],fu:['Voy a vivir en el centro.','I\'m going to live in the city centre.']},
+  ser:{pr:['Soy de Inglaterra.','I am from England.'],pa:['Fue una noche fantástica.','It was a fantastic night.'],fu:['Va a ser muy bueno.','It\'s going to be very good.']},
+  estar:{pr:['Estoy muy bien, gracias.','I am very well, thank you.'],pa:['Estuve en Madrid el verano pasado.','I was in Madrid last summer.'],fu:['Voy a estar en casa esta tarde.','I\'m going to be at home this afternoon.']},
+  ir:{pr:['Voy al restaurante.','I\'m going to the restaurant.'],pa:['Fui al cine ayer.','I went to the cinema yesterday.'],fu:['Voy a ir a la playa mañana.','I\'m going to go to the beach tomorrow.']},
+  tener:{pr:['Tengo que ir al banco.','I have to go to the bank.'],pa:['Tuve mucho trabajo ayer.','I had a lot of work yesterday.'],fu:['Voy a tener una reunión.','I\'m going to have a meeting.']},
+  hacer:{pr:['¿Qué haces hoy?','What are you doing today?'],pa:['Hice una reserva para dos.','I made a reservation for two.'],fu:['Voy a hacer una pizza esta noche.','I\'m going to make a pizza tonight.']},
+  querer:{pr:['Quiero un café, por favor.','I\'d like a coffee, please.'],pa:['Quise ir pero no pude.','I wanted to go but couldn\'t.'],fu:['¿Qué vas a querer comer?','What are you going to want to eat?']},
+  poder:{pr:['¿Puedo probar el vino?','Can I try the wine?'],pa:['No pude ir a la fiesta.','I couldn\'t go to the party.'],fu:['¿Vas a poder venir?','Are you going to be able to come?']},
+  volver:{pr:['Vuelvo a casa a las siete.','I return home at seven.'],pa:['Volví del banco hace una hora.','I came back from the bank an hour ago.'],fu:['Voy a volver pronto.','I\'m going to return soon.']},
+  ver:{pr:['Veo a María todos los días.','I see María every day.'],pa:['Vi una película anoche.','I saw a film last night.'],fu:['Voy a ver una película esta noche.','I\'m going to watch a film tonight.']},
+  salir:{pr:['Salgo a las ocho.','I leave at eight.'],pa:['Salimos al restaurante ayer.','We went out to a restaurant yesterday.'],fu:['Voy a salir esta noche.','I\'m going to go out tonight.']},
+  pedir:{pr:['Pido el pollo, por favor.','I\'ll have the chicken, please.'],pa:['Pedí la cuenta.','I asked for the bill.'],fu:['Voy a pedir una reserva.','I\'m going to ask for a reservation.']},
+  perder:{pr:['Pierdo las llaves siempre.','I always lose my keys.'],pa:['Perdí mi teléfono ayer.','I lost my phone yesterday.'],fu:['Voy a perder el tren.','I\'m going to miss the train.']},
+  jugar:{pr:['Juego al fútbol los sábados.','I play football on Saturdays.'],pa:['Jugamos al tenis ayer.','We played tennis yesterday.'],fu:['Voy a jugar con mis amigos.','I\'m going to play with my friends.']},
+};
+
+const verbThemes=[
+  {id:'all',name:'All Verbs',emoji:'📚'},
+  {id:'going',name:'Going & Movement',emoji:'🚶'},
+  {id:'food',name:'Food & Drink',emoji:'🍽️'},
+  {id:'talking',name:'Talking & Learning',emoji:'💬'},
+  {id:'feelings',name:'Feelings & Ability',emoji:'❤️'},
+  {id:'everyday',name:'Everyday Life',emoji:'🏠'},
+  {id:'actions',name:'Actions & Making',emoji:'🔧'},
+  {id:'irregular',name:'Key Irregulars',emoji:'⚡'},
+];
+const pronouns=[
+  {sg:'yo',pl:'nosotros / -as',num:'1st',en:'I / We'},
+  {sg:'tú',pl:'vosotros / -as',num:'2nd',en:'You / You all'},
+  {sg:'él / ella / usted',pl:'ellos / ellas / ustedes',num:'3rd',en:'He-She / They'},
+];
+
+/* ═══════════════════ MUSIC DATA ═══════════════════ */
+const MUSIC=[
+  {id:'rosalia',name:'ROSALÍA',album:'LUX',year:'2025',color:'#E8326A',emoji:'🌹',
+   songs:[
+    {title:'La Perla',feat:'feat. Yahritza Y Su Esencia',theme:'Heartbreak & Identity',
+     phrases:[
+      {es:'Hola, ladrón de paz',en:'Hello, thief of peace',bd:['hola = hello','ladrón = thief','de = of','paz = peace']},
+      {es:'Estrella de la sinrazón',en:'Star of senselessness',bd:['estrella = star','sin- = without-','razón = reason']},
+      {es:'Medalla de oro',en:'Gold medal',bd:['medalla = medal','de = of','oro = gold']},
+     ],
+     vocab:['ladrón (thief)','paz (peace)','estrella (star)','medalla (medal)','oro (gold)','sinrazón (senselessness)'],
+     lessonTitle:'Nouns linked with "de"',
+     lesson:'In Spanish "de" connects two nouns: "ladrón de paz" = thief of peace, "medalla de oro" = medal of gold. It works like "of" in English. Try: un helado de chocolate, una copa de vino, un café de Colombia.',
+     quiz:[
+      {q:'What does "ladrón" mean?',opts:['thief','king','friend','stranger'],ans:0},
+      {q:'What does "paz" mean?',opts:['war','peace','star','gold'],ans:1},
+      {q:'"Medalla de oro" means...',opts:['Medal of silver','Gold medal','Golden star','Medal of peace'],ans:1},
+     ]},
+    {title:'Berghain',feat:'feat. Björk & Yves Tumor',theme:'Night, transformation, freedom',
+     phrases:[
+      {es:'Perderse en el baile',en:'To lose oneself in the dance',bd:['perderse = to lose oneself (reflexive)','en = in','baile = dance']},
+      {es:'Libre como el viento',en:'Free as the wind',bd:['libre = free','como = like / as','viento = wind']},
+      {es:'La noche nos llama',en:'The night calls to us',bd:['noche = night','nos = us','llama = calls (llamar)']},
+     ],
+     vocab:['noche (night)','baile (dance)','libre (free)','viento (wind)','perderse (to get lost)'],
+     lessonTitle:'Reflexive verbs with -se',
+     lesson:'Add "-se" to make a verb reflexive (action happens to yourself): perder = to lose → perderse = to lose oneself. More: llamarse (to be called), sentirse (to feel), divertirse (to enjoy yourself). "¿Cómo te llamas?" = What\'s your name?',
+     quiz:[
+      {q:'What does "libre" mean?',opts:['light','free','live','love'],ans:1},
+      {q:'What does "noche" mean?',opts:['morning','afternoon','night','evening'],ans:2},
+      {q:'"Perderse" means...',opts:['To find oneself','To lose something','To lose oneself','To dance'],ans:2},
+     ]},
+    {title:'Sauvignon Blanc',feat:'',theme:'Sensory experience, the present moment',
+     phrases:[
+      {es:'Sabe a verano',en:'It tastes like summer',bd:['sabe = it tastes (saber)','a = like (with taste/smell)','verano = summer']},
+      {es:'Quiero más de esto',en:'I want more of this',bd:['quiero = I want','más = more','de esto = of this']},
+      {es:'El momento perfecto',en:'The perfect moment',bd:['momento = moment','perfecto = perfect']},
+     ],
+     vocab:['saber (to taste / to know)','verano (summer)','momento (moment)','más (more)','perfecto (perfect)'],
+     lessonTitle:'"Saber a" — to taste like',
+     lesson:'"Saber" means both "to know" (facts) and "to taste". With "a" it means "tastes like": "Sabe a limón" = It tastes like lemon. "Sabe a verano" = It tastes like summer. Also: "huele a" (smells like), "suena a" (sounds like).',
+     quiz:[
+      {q:'What does "verano" mean?',opts:['spring','winter','summer','autumn'],ans:2},
+      {q:'"Sabe a limón" means...',opts:['It knows lemon','It tastes like lemon','It smells of lemon','It looks like lemon'],ans:1},
+      {q:'What does "más" mean?',opts:['but','more','very','only'],ans:1},
+     ]},
+   ]},
+  {id:'belen',name:'Belén Aguilera',album:'Anela',year:'2025',color:'#7C3AED',emoji:'✨',
+   songs:[
+    {title:'Bruja',feat:'',theme:'Self-empowerment, identity',
+     phrases:[
+      {es:'Soy una bruja',en:'I am a witch',bd:['soy = I am (ser — permanent)','una = a (fem)','bruja = witch (fem noun)']},
+      {es:'No me vas a cambiar',en:'You\'re not going to change me',bd:['no = not','vas a = you\'re going to','cambiar = to change','me = me (object)']},
+      {es:'Así soy yo',en:'This is who I am',bd:['así = this way / like this','soy = I am','yo = I (emphatic)']},
+     ],
+     vocab:['bruja (witch)','cambiar (to change)','alma (soul)','fuerza (strength)','así (this way)','libre (free)'],
+     lessonTitle:'"No me vas a + verb" — You\'re not going to...',
+     lesson:'"Ir a + infinitive" is the near future: "vas a cambiar" = you\'re going to change. Add "no me" to flip it: "No me vas a cambiar" = You\'re not going to change me. Pattern: No me vas a [verb] = You\'re not going to [verb] me. Try: "No me vas a olvidar" (You\'re not going to forget me).',
+     quiz:[
+      {q:'What does "bruja" mean?',opts:['queen','star','witch','dream'],ans:2},
+      {q:'"Así soy yo" means...',opts:['This is who I am','I am here','I want to be','This is you'],ans:0},
+      {q:'What does "cambiar" mean?',opts:['to dance','to live','to change','to call'],ans:2},
+     ]},
+    {title:'Ático',feat:'',theme:'Longing, height, perspective',
+     phrases:[
+      {es:'Desde el ático te veo',en:'From the penthouse I see you',bd:['desde = from','ático = penthouse / attic','te veo = I see you']},
+      {es:'Un piso más arriba',en:'One floor higher',bd:['piso = floor / flat','más = more','arriba = up / above']},
+      {es:'Vivo en las alturas',en:'I live in the heights',bd:['vivo = I live','alturas = heights (plural of altura)']},
+     ],
+     vocab:['ático (penthouse / attic)','piso (floor / flat)','arriba (above / up)','desde (from)','altura (height)'],
+     lessonTitle:'Words for UP: arriba, encima, alto',
+     lesson:'Three ways to say "up/high": arriba = up/above (direction), encima = on top of (position), alto/alta = tall/high (adjective). "Vive arriba" = He lives upstairs. "Está encima de la mesa" = It\'s on top of the table. "Es muy alto" = He\'s very tall.',
+     quiz:[
+      {q:'What does "ático" mean?',opts:['basement','penthouse','garden','balcony'],ans:1},
+      {q:'"Desde el ático" means...',opts:['To the penthouse','In the penthouse','From the penthouse','Under the penthouse'],ans:2},
+      {q:'What does "arriba" mean?',opts:['down','inside','up / above','outside'],ans:2},
+     ]},
+    {title:'Cómo puedo volver',feat:'',theme:'Longing to return, asking how',
+     phrases:[
+      {es:'¿Cómo puedo volver?',en:'How can I return / get back?',bd:['¿cómo? = how?','puedo = I can (poder)','volver = to return']},
+      {es:'¿Cómo puedo olvidarte?',en:'How can I forget you?',bd:['olvidar = to forget','-te = you (attached to verb)']},
+      {es:'Necesito encontrar el camino',en:'I need to find the way',bd:['necesito = I need','encontrar = to find','camino = path / way']},
+     ],
+     vocab:['volver (to return)','olvidar (to forget)','camino (path / way)','poder (can)','necesitar (to need)'],
+     lessonTitle:'"¿Cómo puedo + verb?" — How can I...?',
+     lesson:'The song title IS a grammar structure. "¿Cómo puedo + infinitive?" = "How can I...?" Try: "¿Cómo puedo ir?" (How can I get there?), "¿Cómo puedo ayudarte?" (How can I help you?), "¿Cómo puedo pagar?" (How can I pay?)',
+     quiz:[
+      {q:'What does "volver" mean?',opts:['to go','to return','to stay','to live'],ans:1},
+      {q:'"¿Cómo puedo...?" means...',opts:['Where can I...?','When can I...?','How can I...?','Who can I...?'],ans:2},
+      {q:'What does "olvidar" mean?',opts:['to remember','to love','to forget','to find'],ans:2},
+     ]},
+    {title:'Aunque no exista la arcadia',feat:'(album closing track)',theme:'Acceptance, present joy',
+     phrases:[
+      {es:'Aunque no exista la arcadia',en:'Even though Arcadia doesn\'t exist',bd:['aunque = although / even though','no exista = doesn\'t exist (subjunctive)','arcadia = paradise']},
+      {es:'Aunque sea difícil',en:'Even though it\'s difficult',bd:['aunque = although','sea = it is (subjunctive of ser)','difícil = difficult']},
+      {es:'Vivo el momento',en:'I live in the moment',bd:['vivo = I live','el momento = the moment']},
+     ],
+     vocab:['aunque (although / even though)','existir (to exist)','difícil (difficult)','arcadia (paradise)','momento (moment)'],
+     lessonTitle:'"Aunque" — although / even though',
+     lesson:'"Aunque" is one of the most useful connectors in Spanish. "Aunque está lloviendo, voy a salir" = Even though it\'s raining, I\'m going out. "Aunque no sé mucho, lo intento" = Even though I don\'t know much, I try. The album title literally means "Even though Arcadia doesn\'t exist" — living in joy regardless.',
+     quiz:[
+      {q:'What does "aunque" mean?',opts:['because','therefore','although / even though','whenever'],ans:2},
+      {q:'What does "difícil" mean?',opts:['easy','possible','different','difficult'],ans:3},
+      {q:'"Vivo el momento" means...',opts:['I lived the moment','I live in the moment','I want the moment','The moment lives'],ans:1},
+     ]},
+   ]},
+  {id:'badbunny',name:'Bad Bunny',album:'Debí Tirar Más Fotos',year:'2025',color:'#16A34A',emoji:'🐰',
+   songs:[
+    {title:'Debí Tirar Más Fotos',feat:'(title track)',theme:'Nostalgia, cherishing moments, Puerto Rico',
+     phrases:[
+      {es:'Debí tirar más fotos',en:'I should have taken more photos',bd:['debí = I should have (past of deber)','tirar = to take photos (Caribbean Spanish)','más = more','fotos = photos']},
+      {es:'Ojalá que los míos nunca se muden',en:'I hope my people never move away',bd:['ojalá = hopefully / I hope','los míos = my people / loved ones','se muden = move away (reflexive)']},
+      {es:'Vamo\' a disfrutar',en:'Let\'s enjoy',bd:["vamo' = vamos (Puerto Rican slang)",'a = future marker','disfrutar = to enjoy']},
+     ],
+     vocab:['tirar (to take photos — Caribbean)','ojalá (hopefully / I wish)','disfrutar (to enjoy)','mudarse (to move house)','los míos (my people)'],
+     lessonTitle:'"Ojalá" — the most Spanish word',
+     lesson:'"Ojalá" comes from Arabic ("inshallah") and is unique to Spanish. It means "hopefully / I wish / I hope". Use it alone: "¡Ojalá!" = I hope so! Or with a verb: "Ojalá que venga" = Hopefully he\'ll come. "Ojalá pudiera ir" = I wish I could go.',
+     quiz:[
+      {q:'What does "ojalá" mean?',opts:['because','hopefully / I wish','therefore','although'],ans:1},
+      {q:'"Disfrutar" means...',opts:['to suffer','to remember','to enjoy','to forget'],ans:2},
+      {q:'In Caribbean Spanish, "tirar fotos" means...',opts:['to throw photos','to develop photos','to take photos','to delete photos'],ans:2},
+     ]},
+    {title:'BAILE INOLVIDABLE',feat:'',theme:'Dance, unforgettable nights',
+     phrases:[
+      {es:'Un baile inolvidable',en:'An unforgettable dance',bd:['baile = dance (noun, from bailar)','in- = un- (negative prefix)','olvidable = forgettable (from olvidar)']},
+      {es:'Bailamos toda la noche',en:'We danced all night',bd:['bailamos = we danced (past)','toda = all','la noche = the night']},
+      {es:'No te voy a olvidar',en:'I\'m not going to forget you',bd:['no = not','te = you','voy a = I\'m going to','olvidar = to forget']},
+     ],
+     vocab:['baile (dance)','bailar (to dance)','inolvidable (unforgettable)','olvidar (to forget)','noche (night)','toda (all)'],
+     lessonTitle:'The "in-" prefix = "un-" in English',
+     lesson:'Spanish uses "in-" to negate adjectives, just like English "un-" or "im-": olvidable → inolvidable (unforgettable), correcto → incorrecto (incorrect), posible → imposible (impossible), creíble → increíble (incredible), feliz → infeliz (unhappy). It also becomes "im-" before b/p.',
+     quiz:[
+      {q:'What does "bailar" mean?',opts:['to sing','to dance','to play','to jump'],ans:1},
+      {q:'"Inolvidable" means...',opts:['incredible','unbelievable','unforgettable','impossible'],ans:2},
+      {q:'"Incorrecto" means...',opts:['very correct','incorrect','a bit correct','correctly'],ans:1},
+     ]},
+    {title:'CAFÉ CON RON',feat:'',theme:'Puerto Rico, togetherness, social life',
+     phrases:[
+      {es:'Café con ron',en:'Coffee with rum',bd:['café = coffee','con = with','ron = rum']},
+      {es:'Con mis amigos de siempre',en:'With my lifelong friends',bd:['con = with','mis amigos = my friends','de siempre = lifelong / forever']},
+      {es:'Una copa más',en:'One more drink',bd:['una = one','copa = glass / drink','más = more']},
+     ],
+     vocab:['café (coffee)','ron (rum)','con (with)','amigo (friend)','siempre (always)','copa (drink / glass)','más (more)'],
+     lessonTitle:'"Con" = with — and building combinations',
+     lesson:'"Con" (with) builds endless combinations: café con leche (coffee with milk), arroz con pollo (rice with chicken), té con limón (tea with lemon). It also fuses with pronouns: conmigo = with me, contigo = with you, con él = with him. "¿Vienes conmigo?" = Are you coming with me?',
+     quiz:[
+      {q:'What does "con" mean?',opts:['without','for','with','from'],ans:2},
+      {q:'"Café con leche" means...',opts:['Coffee with sugar','Coffee with milk','Coffee with ice','Coffee with rum'],ans:1},
+      {q:'"Conmigo" means...',opts:['with them','for me','with me','without me'],ans:2},
+     ]},
+    {title:'WELTITA',feat:'',theme:'Affection, Puerto Rican diminutives',
+     phrases:[
+      {es:'Te quiero mucho',en:'I love / like you a lot',bd:['te = you','quiero = I love/want (querer)','mucho = a lot']},
+      {es:'Poco a poco',en:'Little by little',bd:['poco = little','a = by','poco = little (repetition)']},
+      {es:'Un poquito más',en:'Just a tiny bit more',bd:['un = a/one','-ito = diminutive (tiny, affectionate)','más = more']},
+     ],
+     vocab:['querer (to love / want)','mucho (a lot)','poco (a little)','poquito (a tiny bit)','-ito / -ita (diminutive suffix)'],
+     lessonTitle:'Diminutives: -ito and -ita',
+     lesson:'Adding -ito (masc) or -ita (fem) makes things smaller or more affectionate — used constantly in Latin American Spanish: café → cafecito, momento → momentito, poco → poquito, abuela → abuelita, casa → casita. It softens requests: "un momentito" = just one moment please.',
+     quiz:[
+      {q:'What does "-ito/-ita" at the end of a word mean?',opts:['bigger','plural','little / affectionate','very much'],ans:2},
+      {q:'"Poquito" means...',opts:['a lot','a tiny bit','always','never'],ans:1},
+      {q:'"Te quiero mucho" means...',opts:['I miss you a lot','I love/like you a lot','I need you a lot','I see you a lot'],ans:1},
+     ]},
+   ]},
+];
+
+/* ═══════════════════ NEW TOPICS ═══════════════════ */
+const topics=[
+  {title:'🔢 Numbers',type:'numbers',data:[['uno','1'],['dos','2'],['tres','3'],['cuatro','4'],['cinco','5'],['seis','6'],['siete','7'],['ocho','8'],['nueve','9'],['diez','10'],['once','11'],['doce','12'],['trece','13'],['catorce','14'],['quince','15'],['dieciséis','16'],['diecisiete','17'],['dieciocho','18'],['diecinueve','19'],['veinte','20'],['veintiuno','21'],['treinta','30'],['cuarenta','40'],['cincuenta','50'],['sesenta','60'],['setenta','70'],['ochenta','80'],['noventa','90'],['cien','100'],['mil','1,000']]},
+  {title:'📅 Days & Months',type:'pairs',data:[['lunes','Monday'],['martes','Tuesday'],['miércoles','Wednesday'],['jueves','Thursday'],['viernes','Friday'],['sábado','Saturday'],['domingo','Sunday'],['enero','January'],['febrero','February'],['marzo','March'],['abril','April'],['mayo','May'],['junio','June'],['julio','July'],['agosto','August'],['septiembre','September'],['octubre','October'],['noviembre','November'],['diciembre','December']]},
+  {title:'🎨 Colours',type:'pairs',data:[['rojo / roja','red'],['azul','blue'],['verde','green'],['amarillo / amarilla','yellow'],['negro / negra','black'],['blanco / blanca','white'],['naranja','orange'],['morado / morada','purple'],['rosa','pink'],['gris','grey'],['marrón','brown'],['claro / clara','light'],['oscuro / oscura','dark']]},
+  {title:'👨‍👩‍👧 Family',type:'pairs',data:[['la madre / mamá','mother / mum'],['el padre / papá','father / dad'],['el hermano','brother'],['la hermana','sister'],['el hijo','son'],['la hija','daughter'],['el abuelo','grandfather'],['la abuela','grandmother'],['el tío','uncle'],['la tía','aunt'],['el primo / la prima','cousin'],['el marido / esposo','husband'],['la mujer / esposa','wife'],['el novio / la novia','boyfriend / girlfriend']]},
+  {title:'❓ Question Words',type:'pairs',data:[['¿Qué?','What?'],['¿Quién?','Who?'],['¿Dónde?','Where?'],['¿A dónde?','Where to?'],['¿Cuándo?','When?'],['¿Cómo?','How?'],['¿Cuánto / cuánta?','How much?'],['¿Cuántos / cuántas?','How many?'],['¿Por qué?','Why?'],['¿Cuál?','Which? / What?'],['¿De dónde?','Where from?']]},
+  {title:'🌤 Weather',type:'pairs',data:[['¿Qué tiempo hace?','What\'s the weather like?'],['Hace calor','It\'s hot'],['Hace frío','It\'s cold'],['Hace sol','It\'s sunny'],['Hace viento','It\'s windy'],['Llueve / Está lloviendo','It\'s raining'],['Nieva / Está nevando','It\'s snowing'],['Está nublado','It\'s cloudy'],['la primavera','spring'],['el verano','summer'],['el otoño','autumn'],['el invierno','winter']]},
+  {title:'💬 Useful Expressions',type:'pairs',data:[['¡Qué bueno!','How great!'],['¡Qué pena!','What a shame!'],['¡Por supuesto!','Of course!'],['Me da igual','I don\'t mind'],['¿Qué tal?','How are things?'],['Más o menos','More or less'],['No pasa nada','No worries'],['¡Vamos!','Let\'s go!'],['¡Ojalá!','Hopefully!'],['A ver…','Let\'s see…'],['¿Verdad?','Right? / Isn\'t it?'],['¡Buen provecho!','Enjoy your meal!']]},
+  {title:'🔄 Reflexive Verbs',type:'reflexive',data:[['llamarse','to be called — Me llamo Steve'],['levantarse','to get up — Me levanto a las siete'],['acostarse','to go to bed — Me acuesto tarde'],['ducharse','to shower — Me ducho por la mañana'],['despertarse','to wake up — Me despierto a las ocho'],['sentirse','to feel — Me siento bien / mal'],['divertirse','to enjoy oneself — Me divierto mucho'],['quedarse','to stay — Me quedo en casa']]},
+];
+
+/* ═══════════════════ FLASHCARD LOGIC ═══════════════════ */
+const allCats=['All',...new Set(vocab.map(v=>v.cat))];
+let fcCards=[...vocab],fcIdx=0;
+
+function buildFCPills(){
+  const c=document.getElementById('fc-pills');
+  allCats.forEach((cat,i)=>{
+    const b=document.createElement('button');b.className='pill'+(i===0?' on':'');b.textContent=cat;
+    b.onclick=()=>{document.querySelectorAll('#fc-pills .pill').forEach(p=>p.classList.remove('on'));b.classList.add('on');
+      fcCards=cat==='All'?[...vocab]:vocab.filter(v=>v.cat===cat);fcIdx=0;resetFlip();renderCard();};
+    c.appendChild(b);
+  });
+}
+function resetFlip(){const ci=document.getElementById('ci');ci.classList.add('no-tr');ci.classList.remove('flipped');ci.offsetHeight;ci.classList.remove('no-tr');}
+function renderCard(){
+  const card=fcCards[fcIdx];
+  document.getElementById('fc-front').textContent=card.es;
+  document.getElementById('fc-back').textContent=card.en;
+  document.getElementById('fc-note').textContent=card.note||'';
+  document.getElementById('fc-cat').textContent=card.cat;
+  document.getElementById('fc-count').textContent=`Card ${fcIdx+1} of ${fcCards.length}`;
+}
+function flipCard(){document.getElementById('ci').classList.toggle('flipped');}
+function nextCard(){fcIdx=(fcIdx+1)%fcCards.length;resetFlip();renderCard();}
+function prevCard(){fcIdx=(fcIdx-1+fcCards.length)%fcCards.length;resetFlip();renderCard();}
+function shuffleCards(){for(let i=fcCards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[fcCards[i],fcCards[j]]=[fcCards[j],fcCards[i]];}fcIdx=0;resetFlip();renderCard();}
+
+/* ═══════════════════ QUIZ LOGIC ═══════════════════ */
+let qDir='esen',qCat='All',qPool=[],qIdx=0,qOk=0,qTotal=0,qDone=false;
+function buildQZPills(){
+  const c=document.getElementById('qz-pills');
+  allCats.forEach((cat,i)=>{
+    const b=document.createElement('button');b.className='pill'+(i===0?' on':'');b.textContent=cat;
+    b.onclick=()=>{document.querySelectorAll('#qz-pills .pill').forEach(p=>p.classList.remove('on'));b.classList.add('on');qCat=cat;resetQuiz();};
+    c.appendChild(b);
+  });
+}
+function setDir(d){qDir=d;document.getElementById('db-esen').classList.toggle('on',d==='esen');document.getElementById('db-enes').classList.toggle('on',d==='enes');resetQuiz();}
+function resetQuiz(){
+  const pool=qCat==='All'?vocab:vocab.filter(v=>v.cat===qCat);
+  qPool=[...pool].sort(()=>Math.random()-.5);qIdx=0;qOk=0;qTotal=0;qDone=false;
+  updateScore();document.getElementById('qfb').textContent='';document.getElementById('qfb').className='quiz-fb';
+  document.getElementById('nq-btn').style.display='none';renderQ();
+}
+function renderQ(){
+  if(!qPool.length)return;
+  const item=qPool[qIdx%qPool.length];
+  const q=qDir==='esen'?item.es:item.en;
+  document.getElementById('qq').textContent=q;
+  document.getElementById('qq-lbl').textContent=qDir==='esen'?'Spanish — choose English':'English — choose Spanish';
+  const correct=qDir==='esen'?item.en:item.es;
+  const wrongs=qPool.filter(v=>(qDir==='esen'?v.en:v.es)!==correct).sort(()=>Math.random()-.5).slice(0,3);
+  const opts=[correct,...wrongs.map(v=>qDir==='esen'?v.en:v.es)].sort(()=>Math.random()-.5);
+  const con=document.getElementById('qopts');con.innerHTML='';
+  opts.forEach(opt=>{const b=document.createElement('button');b.className='quiz-opt';b.textContent=opt;b.onclick=()=>answerQ(opt,correct);con.appendChild(b);});
+  document.getElementById('qfb').textContent='';document.getElementById('qfb').className='quiz-fb';
+  document.getElementById('nq-btn').style.display='none';qDone=false;
+}
+function answerQ(chosen,correct){
+  if(qDone)return;qDone=true;qTotal++;const ok=chosen===correct;if(ok)qOk++;
+  document.querySelectorAll('.quiz-opt').forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add('correct');else if(b.textContent===chosen&&!ok)b.classList.add('wrong');});
+  const fb=document.getElementById('qfb');fb.textContent=ok?'✓ ¡Correcto!':`✗ The answer was: "${correct}"`;fb.className='quiz-fb '+(ok?'ok':'no');
+  updateScore();document.getElementById('nq-btn').style.display='inline-block';
+}
+function nextQuestion(){qIdx++;if(qIdx>=qPool.length){qPool.sort(()=>Math.random()-.5);qIdx=0;}renderQ();}
+function updateScore(){const pct=qTotal===0?0:Math.round(qOk/qTotal*100);document.getElementById('sf').style.width=pct+'%';document.getElementById('sn').textContent=`${qOk} / ${qTotal}`;}
+
+/* ═══════════════════ VERB TABLE LOGIC ═══════════════════ */
+let curTheme='all',curVerb='hablar',curTense='present';
+function buildThemePills(){
+  const c=document.getElementById('theme-pills');
+  verbThemes.forEach(t=>{
+    const b=document.createElement('button');b.className='pill'+(t.id==='all'?' on':'');
+    b.textContent=t.emoji+' '+t.name;
+    b.onclick=()=>{document.querySelectorAll('#theme-pills .pill').forEach(p=>p.classList.remove('on'));b.classList.add('on');curTheme=t.id;populateVerbSel();};
+    c.appendChild(b);
+  });
+}
+function populateVerbSel(){
+  const sel=document.getElementById('vsel');const prev=curVerb;sel.innerHTML='';
+  Object.entries(VD).filter(([k,v])=>curTheme==='all'||v.themes.includes(curTheme)).forEach(([name,v])=>{
+    const o=document.createElement('option');o.value=name;o.textContent=`${name}  —  ${v.meaning}`;if(name===prev)o.selected=true;sel.appendChild(o);
+  });
+  if(!sel.value&&sel.options.length)sel.selectedIndex=0;curVerb=sel.value;renderVerbGrid();
+}
+function onVerbChange(){curVerb=document.getElementById('vsel').value;renderVerbGrid();}
+function setVerbTense(t){
+  curTense=t;
+  ['pr','pa','fu'].forEach((x,i)=>document.getElementById(['tt-pr','tt-pa','tt-fu'][i]).classList.toggle('on',['present','past','future'][i]===t));
+  renderVerbGrid();
+}
+function renderVerbGrid(){
+  const v=VD[curVerb];if(!v)return;
+  const tl={ar:'-AR verb',er:'-ER verb',ir:'-IR verb',irregular:'Irregular'};
+  document.getElementById('vib').innerHTML=`<span class="vib-name">${curVerb}</span><span class="vib-badge">${tl[v.type]}</span><div class="vib-meaning">${v.meaning}</div>`;
+  const sn=document.getElementById('vsn');
+  if(v.stemNote){sn.textContent='⚠ '+v.stemNote;sn.style.display='';}else sn.style.display='none';
+  const pn=document.getElementById('vpn');
+  const pts={present:{ar:'Remove <strong>-ar</strong>, add: yo <span style="color:var(--pink)">-o</span>, tú <span style="color:var(--pink)">-as</span>, él <span style="color:var(--pink)">-a</span>, nosotros <span style="color:var(--pink)">-amos</span>, vosotros <span style="color:var(--pink)">-áis</span>, ellos <span style="color:var(--pink)">-an</span>',er:'Remove <strong>-er</strong>, add: yo <span style="color:var(--pink)">-o</span>, tú <span style="color:var(--pink)">-es</span>, él <span style="color:var(--pink)">-e</span>, nosotros <span style="color:var(--pink)">-emos</span>, vosotros <span style="color:var(--pink)">-éis</span>, ellos <span style="color:var(--pink)">-en</span>',ir:'Remove <strong>-ir</strong>, add: yo <span style="color:var(--pink)">-o</span>, tú <span style="color:var(--pink)">-es</span>, él <span style="color:var(--pink)">-e</span>, nosotros <span style="color:var(--pink)">-imos</span>, vosotros <span style="color:var(--pink)">-ís</span>, ellos <span style="color:var(--pink)">-en</span>',irregular:'<strong>Irregular</strong> — forms must be memorised.'},past:{ar:'Remove <strong>-ar</strong>, add: yo <span style="color:var(--pink)">-é</span>, tú <span style="color:var(--pink)">-aste</span>, él <span style="color:var(--pink)">-ó</span>, nosotros <span style="color:var(--pink)">-amos</span>, vosotros <span style="color:var(--pink)">-asteis</span>, ellos <span style="color:var(--pink)">-aron</span>',er:'Remove <strong>-er/-ir</strong>, add: yo <span style="color:var(--pink)">-í</span>, tú <span style="color:var(--pink)">-iste</span>, él <span style="color:var(--pink)">-ió</span>, nosotros <span style="color:var(--pink)">-imos</span>, vosotros <span style="color:var(--pink)">-isteis</span>, ellos <span style="color:var(--pink)">-ieron</span>',ir:'Remove <strong>-er/-ir</strong>, add: yo <span style="color:var(--pink)">-í</span>, tú <span style="color:var(--pink)">-iste</span>, él <span style="color:var(--pink)">-ió</span>, nosotros <span style="color:var(--pink)">-imos</span>, vosotros <span style="color:var(--pink)">-isteis</span>, ellos <span style="color:var(--pink)">-ieron</span>',irregular:'<strong>Irregular past</strong> — must be memorised.'}};
+  if(curTense==='future'){pn.innerHTML='<strong>Future with ir + a:</strong> Use the correct form of <em>ir</em> + <strong>a</strong> + infinitive. The infinitive (<em>'+curVerb+'</em>) never changes — only ir does.';}
+  else{const p=pts[curTense];pn.innerHTML='<strong>'+(curTense==='present'?'Present':'Past')+' tense:</strong> '+(p[v.type]||p.irregular);}
+  const grid=document.getElementById('vgrid');grid.innerHTML='';
+  ['Person','Singular','Plural'].forEach((h,i)=>{const d=document.createElement('div');d.className='bh'+(i===0?' pc':'');d.textContent=h;grid.appendChild(d);});
+  const forms=curTense==='present'?v.pr:(curTense==='past'?v.pa:null);
+  const irF=['voy','vas','va','vamos','vais','van'];
+  pronouns.forEach((row,i)=>{
+    const bp=document.createElement('div');bp.className='bperson';
+    bp.innerHTML=`<div class="bpnum">${row.num}</div><div class="bpen">${row.en}</div>`;grid.appendChild(bp);
+    [0,1].forEach(side=>{
+      const cell=document.createElement('div');cell.className='bcell'+(side===0?' left':'');
+      const pr=document.createElement('div');pr.className='bpronoun';pr.textContent=side===0?row.sg:row.pl;
+      const conj=document.createElement('div');conj.className='bconj';
+      if(curTense==='future'){const irf=irF[i*2+side];conj.innerHTML=`<span style="color:var(--primary)">${irf} a</span> <span class="bend">${curVerb}</span>`;}
+      else{const idx=i===0?(side===0?0:3):i===1?(side===0?1:4):(side===0?2:5);conj.textContent=forms[idx];}
+      cell.appendChild(pr);cell.appendChild(conj);grid.appendChild(cell);
+    });
+  });
+  const exEl=document.getElementById('vexamples');
+  const exData=VEX[curVerb];const tKey=curTense==='present'?'pr':curTense==='past'?'pa':'fu';
+  if(exData&&exData[tKey]){const[es,en]=exData[tKey];exEl.innerHTML=`<div style="background:var(--surface);border-radius:var(--r-sm);padding:14px 18px;border-left:4px solid var(--amber);box-shadow:var(--shadow);margin-top:4px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700;margin-bottom:6px">Example sentence</div><div style="font-size:17px;font-weight:700;color:var(--primary)">${es}</div><div style="font-size:13px;color:var(--muted);margin-top:4px;font-style:italic">${en}</div></div>`;}
+  else exEl.innerHTML='';
+}
+
+/* ═══════════════════ MUSIC LOGIC ═══════════════════ */
+const mqState={};
+function buildMusic(){
+  const tabs=document.getElementById('artist-tabs');
+  const panels=document.getElementById('music-panels');
+  MUSIC.forEach((artist,ai)=>{
+    const tab=document.createElement('button');
+    tab.className='artist-tab'+(ai===0?' on':'');
+    tab.textContent=artist.emoji+' '+artist.name;
+    tab.style.setProperty('--ac',artist.color);
+    if(ai===0)tab.style.background=artist.color;
+    tab.onclick=()=>{
+      document.querySelectorAll('.artist-tab').forEach((b,i)=>{b.classList.remove('on');b.style.background='';});
+      tab.classList.add('on');tab.style.background=artist.color;
+      document.querySelectorAll('.artist-panel').forEach(p=>p.classList.remove('on'));
+      document.getElementById('panel-'+artist.id).classList.add('on');
+    };
+    tabs.appendChild(tab);
+    const panel=document.createElement('div');
+    panel.className='artist-panel'+(ai===0?' on':'');
+    panel.id='panel-'+artist.id;
+    panel.innerHTML=buildArtistPanel(artist);
+    panels.appendChild(panel);
+  });
+}
+
+function buildArtistPanel(artist){
+  let html=`<div class="album-header" style="background:${artist.color}20;border:1.5px solid ${artist.color}40">
+    <div class="album-icon">${artist.emoji}</div>
+    <div><div class="album-title" style="color:${artist.color}">${artist.name}</div>
+    <div class="album-name" style="color:var(--muted)"><strong>${artist.album}</strong> · ${artist.year}</div></div>
+  </div>`;
+  artist.songs.forEach((song,si)=>{
+    const sid=`${artist.id}-${si}`;
+    mqState[sid]={qIdx:0,correct:0,total:0,answered:false};
+    html+=`<div class="song-card">
+      <div class="song-header" onclick="toggleSong('${sid}')">
+        <div><div class="song-title">${song.title}</div>${song.feat?`<div class="song-feat">${song.feat}</div>`:''}</div>
+        <span class="song-theme">${song.theme}</span>
+      </div>
+      <div class="song-body" id="sb-${sid}">
+        <div class="phrase-block">
+          <div class="phrase-block-title">Key Phrases from the Song</div>
+          ${song.phrases.map(p=>`<div class="phrase-row">
+            <div class="phrase-es">${p.es}</div>
+            <div class="phrase-en">${p.en}</div>
+            <div class="phrase-breakdown">${p.bd.map(b=>`<span class="pbd-chip">${b}</span>`).join('')}</div>
+          </div>`).join('')}
+        </div>
+        <div class="phrase-block-title">Vocabulary Spotlight</div>
+        <div class="vocab-row">${song.vocab.map(v=>`<span class="vocab-chip">${v}</span>`).join('')}</div>
+        <div class="lesson-box">
+          <div class="lesson-title">📖 Lesson: ${song.lessonTitle}</div>
+          <div class="lesson-text">${song.lesson}</div>
+        </div>
+        <div class="music-quiz">
+          <div class="mq-title">Quick Quiz</div>
+          <div id="mq-content-${sid}">${buildMQQuestion(song,sid,0)}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+  return html;
+}
+
+function buildMQQuestion(song,sid,qi){
+  if(qi>=song.quiz.length)return`<div style="color:var(--green);font-weight:700;font-size:15px;padding:10px 0">✓ Quiz complete! ${mqState[sid].correct}/${song.quiz.length} correct</div><button class="btn ghost sm" onclick="resetMQ('${sid}')">Retry</button>`;
+  const q=song.quiz[qi];
+  const opts=q.opts.map((o,i)=>`<button class="mq-opt" onclick="answerMQ('${sid}',${i},${q.ans})">${o}</button>`).join('');
+  return`<div class="mq-q">${qi+1}. ${q.q}</div><div class="mq-opts">${opts}</div><div class="mq-fb" id="mq-fb-${sid}"></div><div class="mq-score">${mqState[sid].correct} / ${mqState[sid].total} so far</div>`;
+}
+
+function answerMQ(sid,chosen,ans){
+  const artistIdx=MUSIC.findIndex(a=>sid.startsWith(a.id+'-'));
+  const songIdx=parseInt(sid.split('-').pop());
+  const song=MUSIC[artistIdx].songs[songIdx];
+  const st=mqState[sid];if(st.answered)return;
+  st.answered=true;st.total++;
+  const ok=chosen===ans;if(ok)st.correct++;
+  document.querySelectorAll(`#mq-content-${sid} .mq-opt`).forEach((b,i)=>{b.disabled=true;if(i===ans)b.classList.add('correct');else if(i===chosen&&!ok)b.classList.add('wrong');});
+  const fb=document.getElementById(`mq-fb-${sid}`);
+  fb.textContent=ok?'✓ Correct!':'✗ Not quite — see the correct answer above.';fb.className='mq-fb '+(ok?'ok':'no');
+  setTimeout(()=>{st.qIdx++;st.answered=false;document.getElementById(`mq-content-${sid}`).innerHTML=buildMQQuestion(song,sid,st.qIdx);},1200);
+}
+
+function resetMQ(sid){
+  const artistIdx=MUSIC.findIndex(a=>sid.startsWith(a.id+'-'));
+  const songIdx=parseInt(sid.split('-').pop());
+  const song=MUSIC[artistIdx].songs[songIdx];
+  mqState[sid]={qIdx:0,correct:0,total:0,answered:false};
+  document.getElementById(`mq-content-${sid}`).innerHTML=buildMQQuestion(song,sid,0);
+}
+
+function toggleSong(sid){
+  const b=document.getElementById('sb-'+sid);b.classList.toggle('open');
+}
+
+/* ═══════════════════ NEW TOPICS ═══════════════════ */
+const tfcIdx={};
+function buildTopics(){
+  const grid=document.getElementById('topic-grid');
+  topics.forEach((t,ti)=>{
+    tfcIdx[ti]=0;
+    const card=document.createElement('div');card.className='topic-card';
+    card.innerHTML=`<div class="topic-hdr" onclick="toggleT(${ti},this)"><span>${t.title}</span><span id="ta-${ti}">▼</span></div><div class="topic-body" id="tb-${ti}">${buildTopicBody(t,ti)}</div>`;
+    grid.appendChild(card);
+  });
+}
+function buildTopicBody(t,ti){
+  if(t.type==='numbers')return`<div class="num-grid">${t.data.map(([es,en])=>`<div class="ncell"><div class="nes">${es}</div><div class="nen">${en}</div></div>`).join('')}</div>`;
+  if(t.type==='reflexive')return`${t.data.map(([es,en])=>`<div class="t-row"><span class="t-es">${es}</span><span class="t-en">${en}</span></div>`).join('')}<div style="margin-top:8px;font-size:12px;color:var(--muted)"><strong>How it works:</strong> me/te/se/nos/os/se before the verb. Me = myself, Te = yourself.</div>`;
+  return`<div class="mini-fc" id="mfc-${ti}" onclick="revMFC(${ti})"><div class="mfq" id="mfq-${ti}">${t.data[0][0]}</div><div class="mfa" id="mfa-${ti}">${t.data[0][1]}</div><div class="mfhint">Tap to reveal</div></div><div class="mini-fc-ctrls"><button class="btn ghost sm" onclick="mfcPrev(${ti},event)">← Prev</button><button class="btn ghost sm" onclick="mfcNext(${ti},event)">Next →</button></div><div style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px"><div class="topic-rows">${t.data.map(([es,en])=>`<div class="t-row"><span class="t-es">${es}</span><span class="t-en">${en}</span></div>`).join('')}</div></div>`;
+}
+function toggleT(ti,el){const b=document.getElementById('tb-'+ti);b.classList.toggle('open');document.getElementById('ta-'+ti).textContent=b.classList.contains('open')?'▲':'▼';}
+function revMFC(ti){const el=document.getElementById('mfc-'+ti);el.classList.toggle('rev');}
+function mfcNext(ti,e){e.stopPropagation();const t=topics[ti];tfcIdx[ti]=(tfcIdx[ti]+1)%t.data.length;updMFC(ti);}
+function mfcPrev(ti,e){e.stopPropagation();const t=topics[ti];tfcIdx[ti]=(tfcIdx[ti]-1+t.data.length)%t.data.length;updMFC(ti);}
+function updMFC(ti){const t=topics[ti];const idx=tfcIdx[ti];document.getElementById('mfq-'+ti).textContent=t.data[idx][0];document.getElementById('mfa-'+ti).textContent=t.data[idx][1];document.getElementById('mfc-'+ti).classList.remove('rev');}
+
+/* ═══════════════════ TAB SWITCHING ═══════════════════ */
+function showTab(name,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════ INIT ═══════════════════ */
+window.addEventListener('DOMContentLoaded',()=>{
+  buildFCPills();renderCard();
+  buildQZPills();resetQuiz();
+  buildThemePills();populateVerbSel();
+  buildMusic();
+  buildTopics();
+});
+</script>
+</body>
+</html>
