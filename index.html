@@ -219,6 +219,31 @@ nav::-webkit-scrollbar{display:none;}
 .mini-fc-ctrls{display:flex;gap:7px;justify-content:center;margin-bottom:10px;}
 .topic-rows{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;}
 
+/* ── RETENTION SYSTEM ── */
+.streak-badge{background:linear-gradient(135deg,#FF6B35,var(--pink));color:#fff;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;white-space:nowrap;}
+.due-badge{background:var(--red);color:#fff;border-radius:99px;padding:1px 7px;font-size:10px;font-weight:800;margin-left:5px;vertical-align:middle;display:none;}
+.srs-banner{background:#FFFBEB;border:1.5px solid #FDE68A;border-radius:var(--r-sm);padding:10px 14px;font-size:13px;color:#92400E;margin-bottom:12px;font-weight:500;}
+.cefr-badge{font-size:10px;font-weight:800;letter-spacing:.08em;padding:2px 9px;border-radius:99px;text-transform:uppercase;display:inline-block;}
+.cefr-A1{background:#DCFCE7;color:#166534;}
+.cefr-A2{background:#DBEAFE;color:#1E40AF;}
+.cefr-B1{background:#EDE9FE;color:#5B21B6;}
+.cefr-B2{background:#FEE2E2;color:#991B1B;}
+.card-example{font-size:11px;color:var(--muted);margin-top:8px;font-style:italic;border-top:1px solid rgba(0,0,0,.07);padding-top:8px;line-height:1.5;text-align:center;}
+.recall-input{width:100%;padding:12px 14px;font-family:inherit;font-size:15px;border:2px solid var(--primary);border-radius:var(--r-sm);outline:none;background:var(--surface);color:var(--ink);margin-bottom:0;}
+.recall-fb{text-align:center;font-size:13px;font-weight:600;min-height:22px;margin-top:8px;padding:4px;}
+.recall-fb.ok{color:var(--green);}
+.recall-fb.no{color:var(--red);}
+.srs-btns{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;margin-bottom:8px;}
+@media(max-width:480px){.srs-btns{grid-template-columns:1fr 1fr;}}
+.srs-btn{border:none;border-radius:var(--r-sm);padding:10px 6px 8px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:opacity .15s;line-height:1;}
+.srs-btn:hover{opacity:.82;}
+.srs-btn span{font-size:9px;font-weight:400;opacity:.75;white-space:nowrap;}
+.srs-btn.again{background:#FEE2E2;color:#991B1B;}
+.srs-btn.hard{background:#FEF3C7;color:#92400E;}
+.srs-btn.good{background:#DBEAFE;color:#1E40AF;}
+.srs-btn.easy{background:#DCFCE7;color:#166534;}
+.srs-rate-lbl{font-size:10px;text-align:center;color:var(--muted);margin-bottom:7px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;}
+.iplus1-rec{background:var(--primary-lt);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;font-size:12px;color:var(--muted);margin-top:10px;text-align:center;}
 /* ── TRANSLATE TAB ── */
 .tr-dir-bar{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:18px;}
 .tr-lang-lbl{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:8px 22px;font-size:14px;font-weight:700;color:var(--ink);min-width:100px;text-align:center;}
@@ -279,32 +304,95 @@ nav::-webkit-scrollbar{display:none;}
 
 <!-- ═══ FLASHCARDS ═══ -->
 <div id="tab-flashcards" class="tab active">
-  <div class="sec-title">Flashcards</div>
-  <p class="sub">Tap the card to flip. Next/Prev never shows the answer early.</p>
-  <div class="pills" id="fc-pills"></div>
-  <div class="card-count" id="fc-count">Card 1 of 1</div>
-  <div class="card-area" onclick="flipCard()">
+  <!-- Header -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+    <div class="sec-title" style="margin:0">Flashcards</div>
+    <div id="streak-badge" class="streak-badge" style="display:none">🔥 <span id="streak-count">1</span> day streak</div>
+  </div>
+
+  <!-- Study mode selector -->
+  <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap;">
+    <div class="toggle-row">
+      <button class="tg-btn on" id="fc-mode-browse" onclick="setFCMode('browse')">Browse</button>
+      <button class="tg-btn" id="fc-mode-srs" onclick="setFCMode('srs')">SRS Queue<span class="due-badge" id="srs-due-badge"></span></button>
+      <button class="tg-btn" id="fc-mode-recall" onclick="setFCMode('recall')">Recall</button>
+    </div>
+  </div>
+
+  <!-- Category filter -->
+  <div class="pills" id="fc-pills" style="margin-bottom:8px;"></div>
+
+  <!-- CEFR level filter -->
+  <div style="display:flex;gap:6px;margin-bottom:12px;align-items:center;flex-wrap:wrap;">
+    <span style="font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.04em">LEVEL:</span>
+    <button class="pill on" id="cefr-all" onclick="setCEFRFilter('all')">All</button>
+    <button class="pill" id="cefr-A1" onclick="setCEFRFilter('A1')"><span class="cefr-badge cefr-A1">A1</span></button>
+    <button class="pill" id="cefr-A2" onclick="setCEFRFilter('A2')"><span class="cefr-badge cefr-A2">A2</span></button>
+    <button class="pill" id="cefr-B1" onclick="setCEFRFilter('B1')"><span class="cefr-badge cefr-B1">B1</span></button>
+  </div>
+
+  <!-- SRS due banner -->
+  <div id="srs-banner" class="srs-banner" style="display:none">📅 <span id="srs-banner-txt"></span></div>
+
+  <!-- Card count + CEFR -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+    <div class="card-count" id="fc-count" style="margin:0">Card 1 of 1</div>
+    <span class="cefr-badge" id="fc-cefr-badge"></span>
+  </div>
+
+  <!-- The card -->
+  <div class="card-area" id="fc-card-area" onclick="flipCard()">
     <div class="card-inner" id="ci">
       <div class="card-face front">
         <div class="card-cat" id="fc-cat">—</div>
-        <div class="card-lbl">Spanish</div>
+        <div class="card-lbl" id="fc-front-lbl">Spanish</div>
         <div class="card-word" id="fc-front">—</div>
-        <div class="card-hint">Tap to reveal</div>
+        <div class="card-hint" id="fc-hint">Tap to reveal</div>
       </div>
       <div class="card-face back">
         <div class="card-lbl">English</div>
         <div class="card-word" id="fc-back">—</div>
         <div class="card-note" id="fc-note"></div>
+        <div class="card-example" id="fc-example" style="display:none"></div>
       </div>
     </div>
   </div>
-  <div class="card-ctrls">
+
+  <!-- Recall mode input -->
+  <div id="fc-recall-area" style="display:none;margin-top:10px;">
+    <input type="text" class="recall-input" id="recall-input" placeholder="Type the English translation…" autocomplete="off" onkeydown="if(event.key==='Enter')checkRecall()">
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:8px;">
+      <button class="btn sm" onclick="checkRecall()">Check ✓</button>
+      <button class="btn ghost sm" onclick="revealRecall()">Reveal</button>
+    </div>
+    <div id="recall-fb" class="recall-fb"></div>
+  </div>
+
+  <!-- Browse / SRS nav -->
+  <div class="card-ctrls" id="fc-nav-ctrls">
     <button class="btn ghost sm" onclick="prevCard()">← Prev</button>
     <button class="btn sm" onclick="flipCard()">Flip</button>
     <button class="btn ghost sm" onclick="nextCard()">Next →</button>
   </div>
-  <div style="text-align:center;margin-top:8px">
+
+  <!-- SRS rating buttons (shown only after flip in SRS mode) -->
+  <div id="fc-srs-ctrls" style="display:none;margin-top:4px;">
+    <div class="srs-rate-lbl">How well did you know it?</div>
+    <div class="srs-btns">
+      <button class="srs-btn again" onclick="rateSRS(0)">Again<span>repeat now</span></button>
+      <button class="srs-btn hard" onclick="rateSRS(1)">Hard<span>+short delay</span></button>
+      <button class="srs-btn good" onclick="rateSRS(2)">Good<span>normal interval</span></button>
+      <button class="srs-btn easy" onclick="rateSRS(3)">Easy<span>longer interval</span></button>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:10px;">
     <button class="btn ghost sm" onclick="shuffleCards()">🔀 Shuffle</button>
+  </div>
+
+  <!-- i+1 recommendation -->
+  <div id="iplus1-rec" class="iplus1-rec" style="display:none">
+    💡 <strong>i+1 tip:</strong> You've cleared <span id="iplus1-cur"></span> — try <span id="iplus1-next"></span> next for the right challenge level.
   </div>
 </div>
 
@@ -839,32 +927,288 @@ const topics=[
   {title:'🔄 Reflexive Verbs',type:'reflexive',data:[['llamarse','to be called — Me llamo Steve'],['levantarse','to get up — Me levanto a las siete'],['acostarse','to go to bed — Me acuesto tarde'],['ducharse','to shower — Me ducho por la mañana'],['despertarse','to wake up — Me despierto a las ocho'],['sentirse','to feel — Me siento bien / mal'],['divertirse','to enjoy oneself — Me divierto mucho'],['quedarse','to stay — Me quedo en casa']]},
 ];
 
+/* ═══════════════════ RETENTION ENGINE ═══════════════════ */
+
+// Shared utility
+function arrShuffle(a){return[...a].sort(()=>Math.random()-.5);}
+
+// localStorage helpers — graceful fallback for Cowork (no localStorage)
+const LS={
+  get(k,def){try{return JSON.parse(localStorage.getItem('habla_'+k))??def;}catch{return def;}},
+  set(k,v){try{localStorage.setItem('habla_'+k,JSON.stringify(v));}catch{}}
+};
+
+// CEFR level map
+const CEFR_MAP={
+  'el agua':'A1','el café':'A1','la cerveza':'A1','el vino':'A1','el pollo':'A1',
+  'la comida':'A1','el pan':'A1','el restaurante':'A1','la casa':'A1',
+  'hablar':'A1','comer':'A1','beber':'A1','ir':'A1','ser':'A1','estar':'A1',
+  'tener':'A1','hacer':'A1','querer':'A1','poder':'A1','ver':'A1','vivir':'A1',
+  'el desayuno':'A1','la cena':'A1','el almuerzo':'A1','la leche':'A1',
+  'Todo es muy bueno':'A1','Quiero un café, por favor':'A1',
+  'Una mesa para dos, por favor':'A1','¿Qué hora es?':'A1',
+  'Necesito ir':'A1','Voy a la playa':'A1',
+  'la paella':'A2','el bocadillo':'A2','la tortilla':'A2','el churro':'A2',
+  'el marisco':'A2','la ensalada':'A2','el jamón':'A2','el postre':'A2',
+  'el supermercado':'A2','el parque':'A2','el cine':'A2','el hospital':'A2',
+  'la playa':'A2','el aeropuerto':'A2','la tienda':'A2','el trabajo':'A2',
+  'la ciudad':'A2','el mercado':'A2','el hotel':'A2','la escuela':'A2',
+  'la calle':'A2','el banco':'A2','la farmacia':'A2','la panadería':'A2',
+  'comprar':'A2','pagar':'A2','tomar':'A2','llamar':'A2','trabajar':'A2',
+  'esperar':'A2','volver':'A2','salir':'A2','pedir':'A2','probar':'A2',
+  'encontrar':'A2','ayudar':'A2','necesitar':'A2','quedar':'A2','aprender':'A2',
+  'leer':'A2','nadar':'A2','abrir':'A2','decidir':'A2','jugar':'A2',
+  'devolver':'B1','ocurrir':'B1','preferir':'B1','perder':'B1','doler':'B1',
+  'explorar':'B1','gastar':'B1','besar':'B1','vender':'B1','recibir':'B1',
+  'creer':'B1','comprender':'B1','olvidar':'B1',
+};
+function cefrOf(card){
+  if(CEFR_MAP[card.es])return CEFR_MAP[card.es];
+  if(card.cat==='Sentences')return card.es.split(' ').length>7?'B1':'A2';
+  return'A2';
+}
+
+// SM-2 SRS engine
+let srsData=LS.get('srs',{});
+const DAY=86400000;
+function srsRate(id,q){
+  const now=Date.now();
+  const s=srsData[id]||{interval:1,ease:2.5,reps:0};
+  if(q===0){s.interval=1;s.reps=0;}
+  else if(q===1){s.interval=Math.max(1,Math.ceil(s.interval*1.2));s.ease=Math.max(1.3,s.ease-.15);s.reps++;}
+  else if(q===2){s.interval=s.reps<1?1:s.reps<2?3:Math.ceil(s.interval*s.ease);s.reps++;}
+  else{s.interval=s.reps<1?4:Math.ceil(s.interval*s.ease*1.3);s.ease=Math.min(3.0,s.ease+.15);s.reps++;}
+  s.due=now+s.interval*DAY;s.lastReviewed=now;
+  srsData[id]=s;LS.set('srs',srsData);
+}
+function isDue(card){const s=srsData[card.es];return!s||Date.now()>=s.due;}
+function getDueCards(){return vocab.filter(isDue);}
+function dueCount(){return getDueCards().length;}
+
+// Daily streak
+function initStreak(){
+  const today=new Date().toDateString();
+  const d=LS.get('streak',{date:null,count:0});
+  const yesterday=new Date(Date.now()-DAY).toDateString();
+  if(d.date!==today){
+    d.count=d.date===yesterday?d.count+1:1;
+    d.date=today;LS.set('streak',d);
+  }
+  if(d.count>0){
+    document.getElementById('streak-count').textContent=d.count;
+    document.getElementById('streak-badge').style.display='';
+  }
+}
+
+// Session timer toast at 15 min
+const _sessionStart=Date.now();let _timerFired=false;
+setInterval(()=>{if(!_timerFired&&Date.now()-_sessionStart>=900000){_timerFired=true;showToast('🎉 15-min session done! Come back tomorrow to lock in what you learned.');}},30000);
+
+function showToast(msg){
+  let t=document.getElementById('habla-toast');
+  if(!t){t=document.createElement('div');t.id='habla-toast';
+    t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:99px;font-size:13px;font-weight:500;z-index:500;max-width:90vw;text-align:center;transition:opacity .4s;box-shadow:0 4px 20px rgba(0,0,0,.3)';
+    document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';
+  setTimeout(()=>{t.style.opacity='0';},4500);
+}
+
+// Example sentence for vocab cards (verbs → VEX; others → null)
+function exampleForCard(card){
+  if(card.cat==='Verbs'&&VEX[card.es]){
+    const ex=VEX[card.es].pr;return{es:ex[0],en:ex[1]};}
+  return null;
+}
+
 /* ═══════════════════ FLASHCARD LOGIC ═══════════════════ */
 const allCats=['All',...new Set(vocab.map(v=>v.cat))];
-let fcCards=[...vocab],fcIdx=0;
+let fcCards=[...vocab],fcIdx=0,fcMode='browse',fcCEFRFilter='all',fcCatFilter='All';
 
+// ── Mode switcher ──────────────────────────────────────────────────────────
+function setFCMode(mode){
+  fcMode=mode;
+  ['browse','srs','recall'].forEach(m=>{
+    const el=document.getElementById('fc-mode-'+m);
+    if(el)el.classList.toggle('on',m===mode);
+  });
+  const srsCtrl=document.getElementById('fc-srs-ctrls');
+  const navCtrl=document.getElementById('fc-nav-ctrls');
+  const recallArea=document.getElementById('fc-recall-area');
+  const cardArea=document.getElementById('fc-card-area');
+  if(mode==='srs'){
+    const due=getDueCards();
+    if(!due.length){showToast('🎉 No cards due! Come back tomorrow.');setFCMode('browse');return;}
+    fcCards=[...due];fcIdx=0;
+    if(srsCtrl)srsCtrl.style.display='none';
+    if(navCtrl)navCtrl.style.display='none';
+    if(recallArea)recallArea.style.display='none';
+    if(cardArea)cardArea.onclick=()=>flipCard();
+  }else if(mode==='recall'){
+    fcCards=applyFilters();fcIdx=0;
+    if(srsCtrl)srsCtrl.style.display='none';
+    if(navCtrl)navCtrl.style.display='none';
+    if(recallArea)recallArea.style.display='';
+    if(cardArea)cardArea.onclick=null;
+  }else{
+    fcCards=applyFilters();fcIdx=0;
+    if(srsCtrl)srsCtrl.style.display='none';
+    if(navCtrl)navCtrl.style.display='';
+    if(recallArea)recallArea.style.display='none';
+    if(cardArea)cardArea.onclick=()=>flipCard();
+  }
+  resetFlip();renderCard();updateSRSBanner();
+}
+
+// ── Filters ────────────────────────────────────────────────────────────────
+function applyFilters(){
+  let pool=fcCatFilter==='All'?[...vocab]:vocab.filter(v=>v.cat===fcCatFilter);
+  if(fcCEFRFilter!=='all')pool=pool.filter(v=>cefrOf(v)===fcCEFRFilter);
+  return pool.length?pool:[...vocab];
+}
+function setCEFRFilter(level){
+  fcCEFRFilter=level;
+  ['all','A1','A2','B1'].forEach(l=>{
+    const el=document.getElementById('cefr-'+l);
+    if(el)el.classList.toggle('on',l===level);
+  });
+  if(fcMode!=='srs'){fcCards=applyFilters();fcIdx=0;resetFlip();renderCard();}
+  const rec=document.getElementById('iplus1-rec');
+  if(rec){
+    if(level!=='all'){
+      const nxt={'A1':'A2','A2':'B1','B1':'B2'}[level];
+      if(nxt){
+        const cur=document.getElementById('iplus1-cur');
+        const nxtEl=document.getElementById('iplus1-next');
+        if(cur)cur.textContent=level;
+        if(nxtEl)nxtEl.textContent=nxt;
+        rec.style.display='';
+      }
+    }else{rec.style.display='none';}
+  }
+}
+function updateSRSBanner(){
+  const n=dueCount();
+  const banner=document.getElementById('srs-banner');
+  const badge=document.getElementById('srs-due-badge');
+  const txt=document.getElementById('srs-banner-txt');
+  if(n>0){
+    if(banner)banner.style.display='';
+    if(txt)txt.textContent=`${n} card${n===1?'':'s'} due for review today`;
+    if(badge){badge.textContent=n;badge.style.display='';}
+  }else{
+    if(banner)banner.style.display='none';
+    if(badge)badge.style.display='none';
+  }
+}
+
+// ── Pills ──────────────────────────────────────────────────────────────────
 function buildFCPills(){
   const c=document.getElementById('fc-pills');
+  if(!c)return;
   allCats.forEach((cat,i)=>{
-    const b=document.createElement('button');b.className='pill'+(i===0?' on':'');b.textContent=cat;
-    b.onclick=()=>{document.querySelectorAll('#fc-pills .pill').forEach(p=>p.classList.remove('on'));b.classList.add('on');
-      fcCards=cat==='All'?[...vocab]:vocab.filter(v=>v.cat===cat);fcIdx=0;resetFlip();renderCard();};
+    const b=document.createElement('button');
+    b.className='pill'+(i===0?' on':'');b.textContent=cat;
+    b.onclick=()=>{
+      document.querySelectorAll('#fc-pills .pill').forEach(p=>p.classList.remove('on'));
+      b.classList.add('on');fcCatFilter=cat;
+      if(fcMode!=='srs'){fcCards=applyFilters();fcIdx=0;resetFlip();renderCard();}
+    };
     c.appendChild(b);
   });
 }
-function resetFlip(){const ci=document.getElementById('ci');ci.classList.add('no-tr');ci.classList.remove('flipped');ci.offsetHeight;ci.classList.remove('no-tr');}
-function renderCard(){
-  const card=fcCards[fcIdx];
-  document.getElementById('fc-front').textContent=card.es;
-  document.getElementById('fc-back').textContent=card.en;
-  document.getElementById('fc-note').textContent=card.note||'';
-  document.getElementById('fc-cat').textContent=card.cat;
-  document.getElementById('fc-count').textContent=`Card ${fcIdx+1} of ${fcCards.length}`;
+
+// ── Core card rendering ────────────────────────────────────────────────────
+function resetFlip(){
+  const ci=document.getElementById('ci');
+  if(!ci)return;
+  ci.classList.add('no-tr');ci.classList.remove('flipped');
+  ci.offsetHeight;ci.classList.remove('no-tr');
 }
-function flipCard(){document.getElementById('ci').classList.toggle('flipped');}
-function nextCard(){fcIdx=(fcIdx+1)%fcCards.length;resetFlip();renderCard();}
-function prevCard(){fcIdx=(fcIdx-1+fcCards.length)%fcCards.length;resetFlip();renderCard();}
-function shuffleCards(){for(let i=fcCards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[fcCards[i],fcCards[j]]=[fcCards[j],fcCards[i]];}fcIdx=0;resetFlip();renderCard();}
+function renderCard(){
+  const card=fcCards[fcIdx];if(!card)return;
+  const cefr=cefrOf(card);
+  const cb=document.getElementById('fc-cefr-badge');
+  if(cb){cb.textContent=cefr;cb.className='cefr-badge cefr-'+cefr;}
+  const front=document.getElementById('fc-front');if(front)front.textContent=card.es;
+  const back=document.getElementById('fc-back');if(back)back.textContent=card.en;
+  const note=document.getElementById('fc-note');if(note)note.textContent=card.note||'';
+  const cat=document.getElementById('fc-cat');if(cat)cat.textContent=card.cat;
+  const cnt=document.getElementById('fc-count');
+  if(cnt)cnt.textContent=`Card ${fcIdx+1} of ${fcCards.length}`;
+  // Example sentence (contextual learning)
+  const ex=exampleForCard(card);
+  const exEl=document.getElementById('fc-example');
+  if(exEl){
+    if(ex){exEl.innerHTML=`<em>${ex.es}</em><br>${ex.en}`;exEl.style.display='';}
+    else{exEl.style.display='none';}
+  }
+  // SRS hint text
+  const hint=document.getElementById('fc-hint');
+  if(hint){
+    if(fcMode==='srs'){
+      const s=srsData[card.es];
+      hint.textContent=s?`Seen ${s.reps} time${s.reps===1?'':'s'} — tap to reveal`:'New card — tap to reveal';
+    }else{hint.textContent='Tap to reveal';}
+  }
+  // Recall mode reset
+  if(fcMode==='recall'){
+    const ri=document.getElementById('recall-input');const rfb=document.getElementById('recall-fb');
+    if(ri)ri.value='';if(rfb){rfb.textContent='';rfb.className='recall-fb';}
+  }
+}
+function flipCard(){
+  const ci=document.getElementById('ci');if(!ci)return;
+  ci.classList.toggle('flipped');
+  if(fcMode==='srs'){
+    const srsCtrl=document.getElementById('fc-srs-ctrls');
+    if(srsCtrl)srsCtrl.style.display=ci.classList.contains('flipped')?'':'none';
+  }
+}
+function nextCard(){
+  fcIdx=(fcIdx+1)%fcCards.length;resetFlip();
+  const s=document.getElementById('fc-srs-ctrls');if(s)s.style.display='none';
+  renderCard();
+}
+function prevCard(){
+  fcIdx=(fcIdx-1+fcCards.length)%fcCards.length;resetFlip();
+  const s=document.getElementById('fc-srs-ctrls');if(s)s.style.display='none';
+  renderCard();
+}
+function shuffleCards(){fcCards=arrShuffle(fcCards);fcIdx=0;resetFlip();renderCard();}
+
+// ── SRS rating ─────────────────────────────────────────────────────────────
+function rateSRS(q){
+  const card=fcCards[fcIdx];srsRate(card.es,q);
+  if(q>=2){fcCards.splice(fcIdx,1);}else{fcIdx=(fcIdx+1)%Math.max(1,fcCards.length);}
+  if(!fcCards.length){showToast('🎉 SRS queue done! All cards reviewed.');setFCMode('browse');return;}
+  if(fcIdx>=fcCards.length)fcIdx=0;
+  resetFlip();
+  const s=document.getElementById('fc-srs-ctrls');if(s)s.style.display='none';
+  renderCard();updateSRSBanner();
+}
+
+// ── Recall mode ─────────────────────────────────────────────────────────────
+function checkRecall(){
+  const card=fcCards[fcIdx];
+  const ri=document.getElementById('recall-input');if(!ri)return;
+  const input=ri.value.trim().toLowerCase();
+  const correct=card.en.toLowerCase();
+  const ok=correct.includes(input)||input.includes(correct.split(/[\/,]/)[0].trim());
+  const fb=document.getElementById('recall-fb');
+  if(fb){fb.textContent=ok?`✓ Correct! "${card.en}"`:`✗ Answer: "${card.en}"`;fb.className='recall-fb '+(ok?'ok':'no');}
+  const ci=document.getElementById('ci');if(ci)ci.classList.add('flipped');
+  setTimeout(()=>{
+    nextCard();
+    const rfb=document.getElementById('recall-fb');if(rfb){rfb.textContent='';rfb.className='recall-fb';}
+    resetFlip();
+  },1600);
+}
+function revealRecall(){
+  const card=fcCards[fcIdx];
+  const fb=document.getElementById('recall-fb');
+  if(fb){fb.textContent=`"${card.en}"`;fb.className='recall-fb no';}
+  const ci=document.getElementById('ci');if(ci)ci.classList.add('flipped');
+}
 
 /* ═══════════════════ QUIZ LOGIC ═══════════════════ */
 let qDir='esen',qCat='All',qPool=[],qIdx=0,qOk=0,qTotal=0,qDone=false;
@@ -1261,15 +1605,22 @@ function showTab(name,btn){
 
 /* ═══════════════════ INIT ═══════════════════ */
 window.addEventListener('DOMContentLoaded',()=>{
-  buildFCPills();renderCard();
+  // Retention features
+  initStreak();
+  updateSRSBanner();
+  // Flashcards — setFCMode handles pill build + initial render
+  buildFCPills();
+  setFCMode('browse');
+  // Quiz
   buildQZPills();resetQuiz();
+  // Verb tables
   buildThemePills();populateVerbSel();
+  // Music & Topics
   buildMusic();
   buildTopics();
   // Translate: Enter key to submit (Shift+Enter for newline)
-  document.getElementById('tr-input').addEventListener('keydown',e=>{
-    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doTranslate();}
-  });
+  const tri=document.getElementById('tr-input');
+  if(tri)tri.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doTranslate();}});
 });
 </script>
 </body>
