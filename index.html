@@ -1,11 +1,4 @@
 <!DOCTYPE html>
-<script type="application/json" id="cowork-artifact-meta">
-{
-  "name": "Spanish Learning",
-  "schemaVersion": 1,
-  "description": "Spanish learning app with 7 tabs: Flashcards (SRS/Browse/Recall modes), Quiz, Verb Tables, Grammar, Music, New Topics, Translate. Full retention engine with SM-2 algorithm, CEFR filtering, streak tracking."
-}
-</script>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1550,10 +1543,14 @@ function renderVerbGrid(){
       const conj=document.createElement('div');conj.className='bconj';
       if(curTense==='future'){const irf=irF[i*2+side];conj.innerHTML=`<span style="color:var(--primary)">${irf} a</span> <span class="bend">${curVerb}</span>`;}
       else{const idx=i===0?(side===0?0:3):i===1?(side===0?1:4):(side===0?2:5);conj.textContent=forms[idx];}
-      // Click handler — show this person's example sentence
-      const personKey=['yo','tu','el','nos','vos','ell'][i*2+side];
+      // Click handler — 2D lookup so row(i) × col(side) maps correctly
+      // Row 0 = 1st person: yo / nosotros
+      // Row 1 = 2nd person: tú / vosotros
+      // Row 2 = 3rd person: él / ellos
+      const _pkeys=[['yo','nos'],['tu','vos'],['el','ell']];
+      const personKey=_pkeys[i][side];
       cell.style.cursor='pointer';
-      cell.onclick=(()=>{const pk=personKey;return()=>showVerbEx(curVerb,curTense,pk,side===0?pronouns[i].sg:pronouns[i].pl);})();
+      cell.onclick=(()=>{const pk=personKey;const pl=side===0?pronouns[i].sg:pronouns[i].pl;return()=>showVerbEx(curVerb,curTense,pk,pl);})();
       cell.appendChild(pr);cell.appendChild(conj);grid.appendChild(cell);
     });
   });
