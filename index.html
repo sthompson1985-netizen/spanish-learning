@@ -227,6 +227,9 @@ nav::-webkit-scrollbar{display:none;}
 .cefr-A1{background:#DCFCE7;color:#166534;}
 .cefr-A2{background:#DBEAFE;color:#1E40AF;}
 .cefr-B1{background:#EDE9FE;color:#5B21B6;}
+.cefr-B2{background:#FEF3C7;color:#92400E;}
+.cefr-C1{background:#FFE4E6;color:#9F1239;}
+.cefr-C2{background:#F3F4F6;color:#111827;}
 .cefr-B2{background:#FEE2E2;color:#991B1B;}
 .card-example{font-size:11px;color:var(--muted);margin-top:8px;font-style:italic;border-top:1px solid rgba(0,0,0,.07);padding-top:8px;line-height:1.5;text-align:center;}
 .recall-input{width:100%;padding:12px 14px;font-family:inherit;font-size:15px;border:2px solid var(--primary);border-radius:var(--r-sm);outline:none;background:var(--surface);color:var(--ink);margin-bottom:0;}
@@ -329,6 +332,8 @@ nav::-webkit-scrollbar{display:none;}
     <button class="pill" id="cefr-A1" onclick="setCEFRFilter('A1')"><span class="cefr-badge cefr-A1">A1</span></button>
     <button class="pill" id="cefr-A2" onclick="setCEFRFilter('A2')"><span class="cefr-badge cefr-A2">A2</span></button>
     <button class="pill" id="cefr-B1" onclick="setCEFRFilter('B1')"><span class="cefr-badge cefr-B1">B1</span></button>
+    <button class="pill" id="cefr-B2" onclick="setCEFRFilter('B2')"><span class="cefr-badge cefr-B2">B2</span></button>
+    <button class="pill" id="cefr-C1" onclick="setCEFRFilter('C1')"><span class="cefr-badge cefr-C1">C1</span></button>
   </div>
 
   <!-- SRS due banner -->
@@ -647,6 +652,81 @@ const vocab=[
   {es:'Voy a hacer una pizza',en:'I am going to make a pizza',cat:'Sentences'},
   {es:'No estoy ocupado',en:'I am not busy',cat:'Sentences'},
   {es:'Voy a preparar la cena pronto',en:'I\'m going to make dinner soon',cat:'Sentences'},
+
+  // ── B1 Vocabulary ──────────────────────────────────────────────────────────
+  {es:'el ambiente',en:'the atmosphere / vibe',cat:'Places',note:'B1'},
+  {es:'el barrio',en:'the neighbourhood',cat:'Places',note:'B1'},
+  {es:'la frontera',en:'the border / boundary',cat:'Places',note:'B1'},
+  {es:'el extranjero',en:'abroad / foreigner',cat:'Places',note:'B1'},
+  {es:'la reunión',en:'the meeting',cat:'Sentences',note:'B1'},
+  {es:'el placer',en:'the pleasure',cat:'Sentences',note:'B1'},
+  {es:'el resultado',en:'the result / outcome',cat:'Sentences',note:'B1'},
+  {es:'el cambio',en:'the change',cat:'Sentences',note:'B1'},
+  {es:'el nivel',en:'the level',cat:'Sentences',note:'B1'},
+  {es:'la oportunidad',en:'the opportunity',cat:'Sentences',note:'B1'},
+  {es:'el objetivo',en:'the objective / goal',cat:'Sentences',note:'B1'},
+  {es:'la diferencia',en:'the difference',cat:'Sentences',note:'B1'},
+  {es:'mejorar',en:'to improve',cat:'Verbs',note:'B1 -ar'},
+  {es:'conseguir',en:'to achieve / get',cat:'Verbs',note:'B1 stem-change e→i'},
+  {es:'lograr',en:'to manage to / achieve',cat:'Verbs',note:'B1 -ar'},
+  {es:'parecer',en:'to seem / appear',cat:'Verbs',note:'B1 -er'},
+  {es:'depender',en:'to depend',cat:'Verbs',note:'B1 -er'},
+  {es:'preocupar',en:'to worry / concern',cat:'Verbs',note:'B1 -ar'},
+  {es:'recordar',en:'to remember',cat:'Verbs',note:'B1 stem-change o→ue'},
+  {es:'olvidar',en:'to forget',cat:'Verbs',note:'B1 -ar'},
+  {es:'discutir',en:'to argue / discuss',cat:'Verbs',note:'B1 -ir'},
+  {es:'dudar',en:'to doubt',cat:'Verbs',note:'B1 -ar'},
+  {es:'aunque',en:'although / even though',cat:'Sentences',note:'B1 conjunction'},
+  {es:'sin embargo',en:'however / nevertheless',cat:'Sentences',note:'B1 connector'},
+  {es:'a pesar de',en:'in spite of / despite',cat:'Sentences',note:'B1 phrase'},
+  {es:'de hecho',en:'in fact / actually',cat:'Sentences',note:'B1 connector'},
+  {es:'en cuanto a',en:'as for / regarding',cat:'Sentences',note:'B1 phrase'},
+  {es:'a partir de',en:'from / starting from',cat:'Sentences',note:'B1 phrase'},
+  {es:'Me alegra que estés aquí',en:'I\'m glad you\'re here',cat:'Sentences',note:'B1 — present subjunctive trigger'},
+  {es:'Espero que lleguen pronto',en:'I hope they arrive soon',cat:'Sentences',note:'B1 — present subjunctive'},
+  {es:'Es importante que practiques cada día',en:'It\'s important that you practise every day',cat:'Sentences',note:'B1 — impersonal + subjunctive'},
+
+  // ── B2 Vocabulary ──────────────────────────────────────────────────────────
+  {es:'el matiz',en:'the nuance',cat:'Sentences',note:'B2'},
+  {es:'el planteamiento',en:'the approach / framing',cat:'Sentences',note:'B2'},
+  {es:'la incertidumbre',en:'the uncertainty',cat:'Sentences',note:'B2'},
+  {es:'el bienestar',en:'wellbeing',cat:'Sentences',note:'B2'},
+  {es:'el trasfondo',en:'the background / backdrop',cat:'Sentences',note:'B2'},
+  {es:'la convocatoria',en:'the call / summons / announcement',cat:'Sentences',note:'B2'},
+  {es:'caber',en:'to fit / have room for',cat:'Verbs',note:'B2 irregular — quepo'},
+  {es:'suponer',en:'to suppose / entail',cat:'Verbs',note:'B2 -er'},
+  {es:'surgir',en:'to arise / emerge',cat:'Verbs',note:'B2 -ir'},
+  {es:'plantear',en:'to raise (an issue) / propose',cat:'Verbs',note:'B2 -ar'},
+  {es:'llevar a cabo',en:'to carry out / accomplish',cat:'Sentences',note:'B2 idiom'},
+  {es:'dar por sentado',en:'to take for granted',cat:'Sentences',note:'B2 idiom'},
+  {es:'tener en cuenta',en:'to bear in mind / take into account',cat:'Sentences',note:'B2 idiom'},
+  {es:'a grandes rasgos',en:'broadly speaking / in outline',cat:'Sentences',note:'B2 idiom'},
+  {es:'en términos de',en:'in terms of',cat:'Sentences',note:'B2 academic'},
+  {es:'Si tuviera más tiempo, estudiaría más',en:'If I had more time, I would study more',cat:'Sentences',note:'B2 — conditional / imperfect subj.'},
+  {es:'Ojalá pudiera quedarme más',en:'I wish I could stay longer',cat:'Sentences',note:'B2 — ojalá + imperfect subj.'},
+  {es:'Me sorprende que no lo sepas',en:'I\'m surprised you don\'t know that',cat:'Sentences',note:'B2 — emotion + subjunctive'},
+
+  // ── C1 Vocabulary ──────────────────────────────────────────────────────────
+  {es:'la paradoja',en:'the paradox',cat:'Sentences',note:'C1'},
+  {es:'el arraigo',en:'rootedness / deep attachment',cat:'Sentences',note:'C1'},
+  {es:'el desafío',en:'the challenge / defiance',cat:'Sentences',note:'C1'},
+  {es:'el vínculo',en:'the bond / tie / link',cat:'Sentences',note:'C1'},
+  {es:'la ambigüedad',en:'the ambiguity',cat:'Sentences',note:'C1'},
+  {es:'el entramado',en:'the framework / web (of relationships)',cat:'Sentences',note:'C1'},
+  {es:'la trayectoria',en:'the trajectory / career path',cat:'Sentences',note:'C1'},
+  {es:'el equilibrio',en:'the balance / equilibrium',cat:'Sentences',note:'C1'},
+  {es:'cuestionar',en:'to question / challenge',cat:'Verbs',note:'C1 -ar'},
+  {es:'matizar',en:'to nuance / qualify (a statement)',cat:'Verbs',note:'C1 -ar'},
+  {es:'conllevar',en:'to entail / carry with it',cat:'Verbs',note:'C1 -ar'},
+  {es:'desempeñar',en:'to perform / play (a role)',cat:'Verbs',note:'C1 -ar'},
+  {es:'abordar',en:'to tackle / address (a problem)',cat:'Verbs',note:'C1 -ar'},
+  {es:'no cabe duda de que',en:'there is no doubt that',cat:'Sentences',note:'C1 formal connector'},
+  {es:'en la medida en que',en:'insofar as / to the extent that',cat:'Sentences',note:'C1 formal'},
+  {es:'resulta que',en:'it turns out that',cat:'Sentences',note:'C1 connector'},
+  {es:'a raíz de',en:'as a result of / in the wake of',cat:'Sentences',note:'C1 formal'},
+  {es:'Aunque me lo explicaran cien veces, no lo entendería',en:'Even if they explained it to me a hundred times, I wouldn\'t understand it',cat:'Sentences',note:'C1 — concession + conditional'},
+  {es:'Por mucho que te esfuerces, sin práctica no avanzas',en:'No matter how hard you try, without practice you won\'t progress',cat:'Sentences',note:'C1 — concessive subjunctive'},
+  {es:'Lo que me parece fascinante es la fluidez del idioma',en:'What I find fascinating is the fluency of the language',cat:'Sentences',note:'C1 — nominalised clause'},
 ];
 
 /* ═══════════════════ VERB DATA ═══════════════════ */
@@ -697,39 +777,170 @@ const VD={
   jugar:{type:'irregular',themes:['everyday'],meaning:'to play',stemNote:'Stem change u→ue (except nosotros/vosotros). Only verb with this pattern.',pr:['juego','juegas','juega','jugamos','jugáis','juegan'],pa:['jugué','jugaste','jugó','jugamos','jugasteis','jugaron']},
 };
 
+// VEX: per-person example sentences. Format: {tense: {person: [[es,en], ...]}}
+// Persons: yo, tu, el (él/ella/usted), nos, vos, ell (ellos/ellas/ustedes)
+// Multiple variants per person → one picked at random on render.
 const VEX={
-  hablar:{pr:['Hablo español un poco.','I speak a little Spanish.'],pa:['Hablé con María ayer.','I spoke with María yesterday.'],fu:['Voy a hablar con el jefe.','I\'m going to speak with the boss.']},
-  tomar:{pr:['Tomo un café cada mañana.','I have a coffee every morning.'],pa:['Tomé el autobús al trabajo.','I took the bus to work.'],fu:['Voy a tomar algo de comer.','I\'m going to have something to eat.']},
-  pagar:{pr:['¿Pago con tarjeta?','Can I pay by card?'],pa:['Pagué la cuenta en el restaurante.','I paid the bill at the restaurant.'],fu:['Voy a pagar los cafés.','I\'m going to pay for the coffees.']},
-  comprar:{pr:['Compro fruta en el mercado.','I buy fruit at the market.'],pa:['Compramos vino ayer.','We bought wine yesterday.'],fu:['Voy a comprar algo de comer.','I\'m going to buy something to eat.']},
-  llamar:{pr:['Te llamo más tarde.','I\'ll call you later.'],pa:['Llamé a mi amigo esta mañana.','I called my friend this morning.'],fu:['Voy a llamar al restaurante.','I\'m going to call the restaurant.']},
-  nadar:{pr:['Nado en la playa cada verano.','I swim at the beach every summer.'],pa:['Nadamos en el mar ayer.','We swam in the sea yesterday.'],fu:['Voy a nadar mañana.','I\'m going to swim tomorrow.']},
-  trabajar:{pr:['Trabajo en el centro.','I work in the city centre.'],pa:['Trabajé mucho la semana pasada.','I worked a lot last week.'],fu:['¿Vas a trabajar hoy?','Are you going to work today?']},
-  esperar:{pr:['Espero el autobús.','I\'m waiting for the bus.'],pa:['Esperé mucho tiempo.','I waited a long time.'],fu:['Voy a esperar aquí.','I\'m going to wait here.']},
-  gastar:{pr:['Gasto demasiado en restaurantes.','I spend too much in restaurants.'],pa:['Gasté mucho dinero ayer.','I spent a lot of money yesterday.'],fu:['Voy a gastar menos este mes.','I\'m going to spend less this month.']},
-  ayudar:{pr:['Te ayudo con eso.','I\'ll help you with that.'],pa:['Me ayudaste mucho.','You helped me a lot.'],fu:['Voy a ayudar a María.','I\'m going to help María.']},
-  necesitar:{pr:['Necesito ir al banco.','I need to go to the bank.'],pa:['Necesitamos una reserva.','We needed a reservation.'],fu:['Voy a necesitar más dinero.','I\'m going to need more money.']},
-  quedar:{pr:['¿Quedamos a las ocho?','Shall we meet at eight?'],pa:['Quedé con ella en el parque.','I met her in the park.'],fu:['Voy a quedar con mis amigos.','I\'m going to meet my friends.']},
-  probar:{pr:['¿Puedo probar el vino?','Can I try the wine?'],pa:['Probé el queso — estaba delicioso.','I tried the cheese — it was delicious.'],fu:['Voy a probar algo nuevo.','I\'m going to try something new.']},
-  encontrar:{pr:['No encuentro las llaves.','I can\'t find the keys.'],pa:['Encontré una mesa libre.','I found a free table.'],fu:['Voy a encontrar la solución.','I\'m going to find the solution.']},
-  comer:{pr:['Como en el restaurante a mediodía.','I eat at the restaurant at midday.'],pa:['Comimos pizza ayer.','We ate pizza yesterday.'],fu:['Voy a comer algo pronto.','I\'m going to eat something soon.']},
-  beber:{pr:['¿Qué bebes?','What are you drinking?'],pa:['Bebimos vino con la cena.','We drank wine with dinner.'],fu:['Voy a beber agua.','I\'m going to drink water.']},
-  leer:{pr:['Leo el periódico cada mañana.','I read the newspaper every morning.'],pa:['Leí un libro muy bueno.','I read a very good book.'],fu:['Voy a leer esta noche.','I\'m going to read tonight.']},
-  aprender:{pr:['Aprendo español cada día.','I learn Spanish every day.'],pa:['Aprendimos mucho en clase.','We learned a lot in class.'],fu:['Voy a aprender más vocabulario.','I\'m going to learn more vocabulary.']},
-  vivir:{pr:['Vivo en Londres.','I live in London.'],pa:['Viví en España dos años.','I lived in Spain for two years.'],fu:['Voy a vivir en el centro.','I\'m going to live in the city centre.']},
-  ser:{pr:['Soy de Inglaterra.','I am from England.'],pa:['Fue una noche fantástica.','It was a fantastic night.'],fu:['Va a ser muy bueno.','It\'s going to be very good.']},
-  estar:{pr:['Estoy muy bien, gracias.','I am very well, thank you.'],pa:['Estuve en Madrid el verano pasado.','I was in Madrid last summer.'],fu:['Voy a estar en casa esta tarde.','I\'m going to be at home this afternoon.']},
-  ir:{pr:['Voy al restaurante.','I\'m going to the restaurant.'],pa:['Fui al cine ayer.','I went to the cinema yesterday.'],fu:['Voy a ir a la playa mañana.','I\'m going to go to the beach tomorrow.']},
-  tener:{pr:['Tengo que ir al banco.','I have to go to the bank.'],pa:['Tuve mucho trabajo ayer.','I had a lot of work yesterday.'],fu:['Voy a tener una reunión.','I\'m going to have a meeting.']},
-  hacer:{pr:['¿Qué haces hoy?','What are you doing today?'],pa:['Hice una reserva para dos.','I made a reservation for two.'],fu:['Voy a hacer una pizza esta noche.','I\'m going to make a pizza tonight.']},
-  querer:{pr:['Quiero un café, por favor.','I\'d like a coffee, please.'],pa:['Quise ir pero no pude.','I wanted to go but couldn\'t.'],fu:['¿Qué vas a querer comer?','What are you going to want to eat?']},
-  poder:{pr:['¿Puedo probar el vino?','Can I try the wine?'],pa:['No pude ir a la fiesta.','I couldn\'t go to the party.'],fu:['¿Vas a poder venir?','Are you going to be able to come?']},
-  volver:{pr:['Vuelvo a casa a las siete.','I return home at seven.'],pa:['Volví del banco hace una hora.','I came back from the bank an hour ago.'],fu:['Voy a volver pronto.','I\'m going to return soon.']},
-  ver:{pr:['Veo a María todos los días.','I see María every day.'],pa:['Vi una película anoche.','I saw a film last night.'],fu:['Voy a ver una película esta noche.','I\'m going to watch a film tonight.']},
-  salir:{pr:['Salgo a las ocho.','I leave at eight.'],pa:['Salimos al restaurante ayer.','We went out to a restaurant yesterday.'],fu:['Voy a salir esta noche.','I\'m going to go out tonight.']},
-  pedir:{pr:['Pido el pollo, por favor.','I\'ll have the chicken, please.'],pa:['Pedí la cuenta.','I asked for the bill.'],fu:['Voy a pedir una reserva.','I\'m going to ask for a reservation.']},
-  perder:{pr:['Pierdo las llaves siempre.','I always lose my keys.'],pa:['Perdí mi teléfono ayer.','I lost my phone yesterday.'],fu:['Voy a perder el tren.','I\'m going to miss the train.']},
-  jugar:{pr:['Juego al fútbol los sábados.','I play football on Saturdays.'],pa:['Jugamos al tenis ayer.','We played tennis yesterday.'],fu:['Voy a jugar con mis amigos.','I\'m going to play with my friends.']},
+  hablar:{
+    pr:{yo:[['Hablo español todos los días.','I speak Spanish every day.'],['Hablo con mis amigos en el bar.','I speak with my friends at the bar.']],tu:[['¿Hablas español?','Do you speak Spanish?'],['¿Con quién hablas?','Who are you talking to?']],el:[['Ella habla muy rápido.','She speaks very fast.'],['Él habla tres idiomas.','He speaks three languages.']],nos:[['Hablamos de trabajo a veces.','We talk about work sometimes.'],['Hablamos mucho en clase.','We speak a lot in class.']],vos:[['Vosotros habláis muy bien.','You all speak very well.']],ell:[['Hablan en voz baja.','They speak in a low voice.'],['Ellos hablan inglés y español.','They speak English and Spanish.']]},
+    pa:{yo:[['Hablé con María ayer.','I spoke with María yesterday.'],['Hablé demasiado en la reunión.','I talked too much in the meeting.']],tu:[['¿Hablaste con él?','Did you speak with him?']],el:[['Ella habló muy bien en la reunión.','She spoke very well at the meeting.']],nos:[['Hablamos de eso ayer.','We talked about that yesterday.']],vos:[['¿Hablasteis con el jefe?','Did you all speak with the boss?']],ell:[['Hablaron toda la noche.','They talked all night.']]},
+    fu:{yo:[['Voy a hablar con el jefe mañana.','I\'m going to speak with the boss tomorrow.']],tu:[['¿Vas a hablar con ella?','Are you going to talk to her?']],el:[['Va a hablar en la presentación.','He\'s going to speak at the presentation.']],nos:[['Vamos a hablar de eso después.','We\'re going to talk about that later.']],vos:[['¿Vais a hablar con ellos?','Are you all going to speak with them?']],ell:[['Van a hablar esta tarde.','They\'re going to talk this afternoon.']]}
+  },
+  tomar:{
+    pr:{yo:[['Tomo un café cada mañana.','I have a coffee every morning.'],['Tomo el metro al trabajo.','I take the metro to work.']],tu:[['¿Tomas algo?','Are you having anything?'],['¿Tomas café o té?','Do you have coffee or tea?']],el:[['Ella toma agua con limón.','She has water with lemon.']],nos:[['Tomamos una copa después del trabajo.','We have a drink after work.']],vos:[['¿Tomáis algo más?','Are you all having anything else?']],ell:[['Toman el tren a Madrid.','They take the train to Madrid.']]},
+    pa:{yo:[['Tomé el autobús al trabajo.','I took the bus to work.'],['Tomé un café rápido.','I had a quick coffee.']],tu:[['¿Tomaste algo de comer?','Did you have something to eat?']],el:[['Tomó el tren de las ocho.','He took the eight o\'clock train.']],nos:[['Tomamos vino en la cena.','We had wine at dinner.']],vos:[['¿Tomasteis el metro?','Did you all take the metro?']],ell:[['Tomaron café y se fueron.','They had coffee and left.']]},
+    fu:{yo:[['Voy a tomar algo de comer.','I\'m going to have something to eat.']],tu:[['¿Vas a tomar postre?','Are you going to have dessert?']],el:[['Va a tomar el tren de las seis.','He\'s going to take the six o\'clock train.']],nos:[['Vamos a tomar una cerveza.','We\'re going to have a beer.']],vos:[['¿Vais a tomar algo?','Are you all going to have anything?']],ell:[['Van a tomar un taxi al aeropuerto.','They\'re going to take a taxi to the airport.']]}
+  },
+  pagar:{
+    pr:{yo:[['¿Pago con tarjeta?','Can I pay by card?'],['Pago yo esta vez.','I\'ll pay this time.']],tu:[['¿Tú pagas o pago yo?','Are you paying or shall I?']],el:[['Él siempre paga la cuenta.','He always pays the bill.']],nos:[['Pagamos a medias.','We split the bill.']],vos:[['¿Pagáis con efectivo?','Do you pay with cash?']],ell:[['Pagan por separado.','They pay separately.']]},
+    pa:{yo:[['Pagué la cuenta en el restaurante.','I paid the bill at the restaurant.'],['Pagué con tarjeta.','I paid by card.']],tu:[['¿Pagaste tú la cuenta?','Did you pay the bill?']],el:[['Pagó veinte euros.','He paid twenty euros.']],nos:[['Pagamos a medias ayer.','We split the bill yesterday.']],vos:[['¿Pagasteis la entrada?','Did you all pay for the tickets?']],ell:[['Pagaron en efectivo.','They paid in cash.']]},
+    fu:{yo:[['Voy a pagar los cafés.','I\'m going to pay for the coffees.']],tu:[['¿Vas a pagar con tarjeta?','Are you going to pay by card?']],el:[['Va a pagar él esta vez.','He\'s going to pay this time.']],nos:[['Vamos a pagar la cuenta juntos.','We\'re going to pay the bill together.']],vos:[['¿Vais a pagar en efectivo?','Are you all going to pay in cash?']],ell:[['Van a pagar mañana.','They\'re going to pay tomorrow.']]}
+  },
+  comprar:{
+    pr:{yo:[['Compro fruta en el mercado.','I buy fruit at the market.'],['Compro el pan en la panadería.','I buy bread at the bakery.']],tu:[['¿Compras mucho en línea?','Do you buy a lot online?']],el:[['Ella compra ropa nueva cada mes.','She buys new clothes every month.']],nos:[['Compramos vino en la tienda.','We buy wine at the shop.']],vos:[['¿Compráis en el supermercado?','Do you all shop at the supermarket?']],ell:[['Compran todo en el mercado.','They buy everything at the market.']]},
+    pa:{yo:[['Compré un regalo para ella.','I bought a gift for her.'],['Compramos vino ayer.','We bought wine yesterday.']],tu:[['¿Compraste algo en el mercado?','Did you buy anything at the market?']],el:[['Compró una botella de vino tinto.','He bought a bottle of red wine.']],nos:[['Compramos demasiado en el mercado.','We bought too much at the market.']],vos:[['¿Comprasteis algo en la tienda?','Did you all buy anything at the shop?']],ell:[['Compraron flores en el mercado.','They bought flowers at the market.']]},
+    fu:{yo:[['Voy a comprar algo de comer.','I\'m going to buy something to eat.']],tu:[['¿Vas a comprar más vino?','Are you going to buy more wine?']],el:[['Va a comprar un recuerdo.','He\'s going to buy a souvenir.']],nos:[['Vamos a comprar comida para la cena.','We\'re going to buy food for dinner.']],vos:[['¿Vais a comprar entradas?','Are you going to buy tickets?']],ell:[['Van a comprar todo mañana.','They\'re going to buy everything tomorrow.']]}
+  },
+  llamar:{
+    pr:{yo:[['Te llamo más tarde.','I\'ll call you later.'],['Llamo al restaurante para reservar.','I\'m calling the restaurant to book.']],tu:[['¿Me llamas después?','Will you call me later?']],el:[['Ella llama a su madre cada noche.','She calls her mum every evening.']],nos:[['Nos llamamos todos los días.','We call each other every day.']],vos:[['¿Llamáis por WhatsApp?','Do you all call on WhatsApp?']],ell:[['Te llaman en cinco minutos.','They\'ll call you in five minutes.']]},
+    pa:{yo:[['Llamé a mi amigo esta mañana.','I called my friend this morning.'],['Llamé al médico.','I called the doctor.']],tu:[['¿Llamaste al restaurante?','Did you call the restaurant?']],el:[['Llamó pero no contesté.','He called but I didn\'t answer.']],nos:[['Llamamos para cancelar la reserva.','We called to cancel the reservation.']],vos:[['¿Llamasteis a la policía?','Did you all call the police?']],ell:[['Llamaron tres veces.','They called three times.']]},
+    fu:{yo:[['Voy a llamar al restaurante.','I\'m going to call the restaurant.']],tu:[['¿Vas a llamar a tus padres?','Are you going to call your parents?']],el:[['Va a llamar mañana por la mañana.','He\'s going to call tomorrow morning.']],nos:[['Vamos a llamar para confirmar.','We\'re going to call to confirm.']],vos:[['¿Vais a llamar antes de venir?','Are you going to call before coming?']],ell:[['Van a llamar esta tarde.','They\'re going to call this afternoon.']]}
+  },
+  nadar:{
+    pr:{yo:[['Nado en la playa cada verano.','I swim at the beach every summer.'],['Nado treinta minutos por la mañana.','I swim for thirty minutes in the morning.']],tu:[['¿Nadas bien?','Do you swim well?']],el:[['Él nada todos los días.','He swims every day.']],nos:[['Nadamos en el mar.','We swim in the sea.']],vos:[['¿Nadáis en la piscina?','Do you all swim in the pool?']],ell:[['Nadan muy bien los dos.','They both swim very well.']]},
+    pa:{yo:[['Nadé durante una hora.','I swam for an hour.'],['Nadamos en el mar ayer.','We swam in the sea yesterday.']],tu:[['¿Nadaste ayer?','Did you swim yesterday?']],el:[['Nadó hasta la boya.','He swam to the buoy.']],nos:[['Nadamos en la playa toda la tarde.','We swam at the beach all afternoon.']],vos:[['¿Nadasteis en el mar?','Did you all swim in the sea?']],ell:[['Nadaron muy lejos.','They swam very far.']]},
+    fu:{yo:[['Voy a nadar mañana.','I\'m going to swim tomorrow.']],tu:[['¿Vas a nadar esta tarde?','Are you going to swim this afternoon?']],el:[['Va a nadar en la piscina.','He\'s going to swim in the pool.']],nos:[['Vamos a nadar en la playa.','We\'re going to swim at the beach.']],vos:[['¿Vais a nadar esta tarde?','Are you going to swim this afternoon?']],ell:[['Van a nadar en el mar.','They\'re going to swim in the sea.']]}
+  },
+  trabajar:{
+    pr:{yo:[['Trabajo en el centro.','I work in the city centre.'],['Trabajo desde casa los viernes.','I work from home on Fridays.']],tu:[['¿Dónde trabajas?','Where do you work?'],['¿Trabajas hoy?','Are you working today?']],el:[['Ella trabaja en un banco.','She works at a bank.']],nos:[['Trabajamos juntos en el mismo equipo.','We work together on the same team.']],vos:[['¿Trabajáis todos en la misma empresa?','Do you all work at the same company?']],ell:[['Trabajan muchas horas.','They work long hours.']]},
+    pa:{yo:[['Trabajé mucho la semana pasada.','I worked a lot last week.'],['Trabajé hasta las nueve.','I worked until nine.']],tu:[['¿Trabajaste el fin de semana?','Did you work at the weekend?']],el:[['Trabajó doce horas ayer.','He worked twelve hours yesterday.']],nos:[['Trabajamos sin parar.','We worked non-stop.']],vos:[['¿Trabajasteis el sábado?','Did you all work on Saturday?']],ell:[['Trabajaron en equipo.','They worked as a team.']]},
+    fu:{yo:[['Voy a trabajar desde casa mañana.','I\'m going to work from home tomorrow.']],tu:[['¿Vas a trabajar este fin de semana?','Are you going to work this weekend?']],el:[['Va a trabajar desde casa.','He\'s going to work from home.']],nos:[['Vamos a trabajar en eso juntos.','We\'re going to work on that together.']],vos:[['¿Vais a trabajar mañana?','Are you all going to work tomorrow?']],ell:[['Van a trabajar hasta tarde.','They\'re going to work late.']]}
+  },
+  esperar:{
+    pr:{yo:[['Espero el autobús.','I\'m waiting for the bus.'],['Espero noticias del médico.','I\'m waiting for news from the doctor.']],tu:[['¿A quién esperas?','Who are you waiting for?']],el:[['Ella espera en la puerta.','She\'s waiting at the door.']],nos:[['Esperamos aquí.','We\'re waiting here.']],vos:[['¿Esperáis a alguien?','Are you all waiting for someone?']],ell:[['Esperan en la cola.','They\'re waiting in the queue.']]},
+    pa:{yo:[['Esperé mucho tiempo.','I waited a long time.'],['Esperé media hora.','I waited half an hour.']],tu:[['¿Cuánto esperaste?','How long did you wait?']],el:[['Esperó fuera del restaurante.','He waited outside the restaurant.']],nos:[['Esperamos más de una hora.','We waited more than an hour.']],vos:[['¿Esperasteis mucho?','Did you all wait long?']],ell:[['Esperaron pacientemente.','They waited patiently.']]},
+    fu:{yo:[['Voy a esperar aquí.','I\'m going to wait here.']],tu:[['¿Vas a esperar mucho tiempo?','Are you going to wait a long time?']],el:[['Va a esperar fuera.','He\'s going to wait outside.']],nos:[['Vamos a esperar un poco más.','We\'re going to wait a bit longer.']],vos:[['¿Vais a esperar o entráis?','Are you going to wait or go in?']],ell:[['Van a esperar hasta las ocho.','They\'re going to wait until eight.']]}
+  },
+  gastar:{
+    pr:{yo:[['Gasto demasiado en restaurantes.','I spend too much in restaurants.'],['Gasto poco en ropa.','I spend little on clothes.']],tu:[['¿Gastas mucho cuando viajas?','Do you spend a lot when you travel?']],el:[['Gasta todo su dinero en ropa.','He spends all his money on clothes.']],nos:[['Gastamos demasiado en vacaciones.','We spend too much on holidays.']],vos:[['¿Gastáis mucho en salir?','Do you all spend a lot going out?']],ell:[['Gastan mucho en tecnología.','They spend a lot on technology.']]},
+    pa:{yo:[['Gasté mucho dinero ayer.','I spent a lot of money yesterday.'],['Gasté más de lo que pensaba.','I spent more than I thought.']],tu:[['¿Cuánto gastaste?','How much did you spend?']],el:[['Gastó todo en una noche.','He spent everything in one night.']],nos:[['Gastamos demasiado en la cena.','We spent too much on dinner.']],vos:[['¿Cuánto gastasteis?','How much did you all spend?']],ell:[['Gastaron una fortuna.','They spent a fortune.']]},
+    fu:{yo:[['Voy a gastar menos este mes.','I\'m going to spend less this month.']],tu:[['¿Vas a gastar mucho esta noche?','Are you going to spend a lot tonight?']],el:[['Va a gastar todo el presupuesto.','He\'s going to spend the whole budget.']],nos:[['Vamos a gastar menos en cenas.','We\'re going to spend less on dinners.']],vos:[['¿Vais a gastar mucho en el viaje?','Are you going to spend a lot on the trip?']],ell:[['Van a gastar todo el dinero.','They\'re going to spend all the money.']]}
+  },
+  ayudar:{
+    pr:{yo:[['Te ayudo con eso.','I\'ll help you with that.'],['Ayudo en el restaurante los fines de semana.','I help at the restaurant at weekends.']],tu:[['¿Me ayudas?','Will you help me?'],['¿Ayudas a tu familia?','Do you help your family?']],el:[['Ella ayuda siempre a los demás.','She always helps others.']],nos:[['Nos ayudamos mutuamente.','We help each other.']],vos:[['¿Ayudáis en casa?','Do you all help at home?']],ell:[['Ayudan a los turistas con el mapa.','They help tourists with the map.']]},
+    pa:{yo:[['Ayudé a encontrar la solución.','I helped find the solution.'],['Me ayudaste mucho.','You helped me a lot.']],tu:[['¿Ayudaste a tu amigo?','Did you help your friend?']],el:[['Me ayudó mucho.','He helped me a lot.']],nos:[['Nos ayudaron con el equipaje.','They helped us with the luggage.']],vos:[['¿Ayudasteis a organizarlo?','Did you all help organise it?']],ell:[['Ayudaron mucho durante la mudanza.','They helped a lot during the move.']]},
+    fu:{yo:[['Voy a ayudar a María.','I\'m going to help María.']],tu:[['¿Vas a ayudar con la fiesta?','Are you going to help with the party?']],el:[['Va a ayudar con la mudanza.','He\'s going to help with the move.']],nos:[['Vamos a ayudar tanto como podamos.','We\'re going to help as much as we can.']],vos:[['¿Vais a ayudar a preparar la cena?','Are you going to help prepare dinner?']],ell:[['Van a ayudar mañana.','They\'re going to help tomorrow.']]}
+  },
+  necesitar:{
+    pr:{yo:[['Necesito ir al banco.','I need to go to the bank.'],['Necesito un café urgente.','I urgently need a coffee.']],tu:[['¿Necesitas algo?','Do you need anything?'],['¿Necesitas ayuda?','Do you need help?']],el:[['Necesita más tiempo.','He needs more time.']],nos:[['Necesitamos hacer una reserva.','We need to make a reservation.']],vos:[['¿Necesitáis algo más?','Do you all need anything else?']],ell:[['Necesitan un intérprete.','They need an interpreter.']]},
+    pa:{yo:[['Necesité ayuda para encontrarlo.','I needed help to find it.'],['Necesitamos una reserva.','We needed a reservation.']],tu:[['¿Necesitaste algo?','Did you need anything?']],el:[['Necesitó más información.','He needed more information.']],nos:[['Necesitamos más tiempo del previsto.','We needed more time than expected.']],vos:[['¿Necesitasteis ayuda?','Did you all need help?']],ell:[['Necesitaron un taxi de vuelta.','They needed a taxi back.']]},
+    fu:{yo:[['Voy a necesitar más dinero.','I\'m going to need more money.']],tu:[['¿Vas a necesitar el coche?','Are you going to need the car?']],el:[['Va a necesitar tu ayuda.','He\'s going to need your help.']],nos:[['Vamos a necesitar más sillas.','We\'re going to need more chairs.']],vos:[['¿Vais a necesitar algo más?','Are you going to need anything else?']],ell:[['Van a necesitar un guía.','They\'re going to need a guide.']]}
+  },
+  quedar:{
+    pr:{yo:[['¿Quedamos a las ocho?','Shall we meet at eight?'],['Quedo con mis amigos los viernes.','I meet my friends on Fridays.']],tu:[['¿Con quién quedas esta noche?','Who are you meeting tonight?']],el:[['Queda con ella en el parque.','He\'s meeting her in the park.']],nos:[['¿Dónde quedamos?','Where shall we meet?']],vos:[['¿A qué hora quedáis?','What time are you all meeting?']],ell:[['Quedan en el bar de siempre.','They\'re meeting at their usual bar.']]},
+    pa:{yo:[['Quedé con ella en el parque.','I met her in the park.'],['Quedé para comer.','I met for lunch.']],tu:[['¿Con quién quedaste?','Who did you meet up with?']],el:[['Quedó con sus amigos en el bar.','He met his friends at the bar.']],nos:[['Quedamos en el restaurante.','We met at the restaurant.']],vos:[['¿Quedasteis todos?','Did you all meet up?']],ell:[['Quedaron tarde y perdieron el tren.','They met late and missed the train.']]},
+    fu:{yo:[['Voy a quedar con mis amigos.','I\'m going to meet my friends.']],tu:[['¿Vas a quedar con ella?','Are you going to meet her?']],el:[['Va a quedar con el equipo.','He\'s going to meet the team.']],nos:[['Vamos a quedar en el centro.','We\'re going to meet in the centre.']],vos:[['¿Vais a quedar este finde?','Are you all meeting this weekend?']],ell:[['Van a quedar para cenar.','They\'re going to meet for dinner.']]}
+  },
+  probar:{
+    pr:{yo:[['¿Puedo probar el vino?','Can I try the wine?'],['Siempre pruebo algo nuevo.','I always try something new.']],tu:[['¿Pruebas todo en el menú?','Do you try everything on the menu?']],el:[['Prueba todo antes de decidir.','He tries everything before deciding.']],nos:[['Probamos varios platos.','We try several dishes.']],vos:[['¿Probáis platos locales?','Do you all try local dishes?']],ell:[['Prueban todos los vinos de la carta.','They try all the wines on the list.']]},
+    pa:{yo:[['Probé el queso — estaba delicioso.','I tried the cheese — it was delicious.'],['Probé el pulpo por primera vez.','I tried octopus for the first time.']],tu:[['¿Probaste la paella?','Did you try the paella?']],el:[['Probó el jamón ibérico.','He tried the Iberian ham.']],nos:[['Probamos varios tapas.','We tried several tapas.']],vos:[['¿Probasteis el vino local?','Did you all try the local wine?']],ell:[['Probaron todos los postres.','They tried all the desserts.']]},
+    fu:{yo:[['Voy a probar algo nuevo.','I\'m going to try something new.']],tu:[['¿Vas a probar el plato del día?','Are you going to try the dish of the day?']],el:[['Va a probar la tortilla española.','He\'s going to try the Spanish omelette.']],nos:[['Vamos a probar el menú de degustación.','We\'re going to try the tasting menu.']],vos:[['¿Vais a probar el marisco?','Are you going to try the seafood?']],ell:[['Van a probar el cóctel de la casa.','They\'re going to try the house cocktail.']]}
+  },
+  encontrar:{
+    pr:{yo:[['No encuentro las llaves.','I can\'t find the keys.'],['Encuentro el menú un poco difícil.','I find the menu a bit difficult.']],tu:[['¿Encuentras todo bien?','Is everything OK for you?']],el:[['Siempre encuentra aparcamiento.','He always finds parking.']],nos:[['No encontramos la calle.','We can\'t find the street.']],vos:[['¿Encontráis todo lo que buscáis?','Do you all find everything you\'re looking for?']],ell:[['Encuentran siempre buenas ofertas.','They always find good deals.']]},
+    pa:{yo:[['Encontré una mesa libre.','I found a free table.'],['Encontré las llaves por fin.','I finally found the keys.']],tu:[['¿Encontraste el restaurante fácilmente?','Did you find the restaurant easily?']],el:[['Encontró trabajo en Barcelona.','He found work in Barcelona.']],nos:[['Encontramos una mesa en la terraza.','We found a table on the terrace.']],vos:[['¿Encontrasteis hotel?','Did you all find a hotel?']],ell:[['Encontraron un bar muy bueno.','They found a really good bar.']]},
+    fu:{yo:[['Voy a encontrar la solución.','I\'m going to find the solution.']],tu:[['¿Vas a encontrar el camino?','Are you going to find the way?']],el:[['Va a encontrar trabajo fácilmente.','He\'s going to find work easily.']],nos:[['Vamos a encontrar una solución juntos.','We\'re going to find a solution together.']],vos:[['¿Vais a encontrar hotel?','Are you going to find a hotel?']],ell:[['Van a encontrar algo mejor.','They\'re going to find something better.']]}
+  },
+  comer:{
+    pr:{yo:[['Como en el restaurante a mediodía.','I eat at the restaurant at midday.'],['Como muy poco por la mañana.','I eat very little in the morning.']],tu:[['¿Comes bien?','Do you eat well?'],['¿Qué comes normalmente?','What do you normally eat?']],el:[['Ella come en casa siempre.','She always eats at home.']],nos:[['Comemos juntos todos los domingos.','We eat together every Sunday.']],vos:[['¿Coméis fuera a menudo?','Do you all eat out often?']],ell:[['Comen tapas en el bar.','They eat tapas at the bar.']]},
+    pa:{yo:[['Comí demasiado en la cena.','I ate too much at dinner.'],['Comimos pizza ayer.','We ate pizza yesterday.']],tu:[['¿Comiste bien anoche?','Did you eat well last night?']],el:[['Comió en un restaurante con estrella Michelin.','He ate at a Michelin-starred restaurant.']],nos:[['Comimos en la terraza.','We ate on the terrace.']],vos:[['¿Dónde comisteis?','Where did you all eat?']],ell:[['Comieron sin parar.','They ate non-stop.']]},
+    fu:{yo:[['Voy a comer algo pronto.','I\'m going to eat something soon.']],tu:[['¿Vas a comer aquí o fuera?','Are you going to eat here or out?']],el:[['Va a comer en el nuevo restaurante.','He\'s going to eat at the new restaurant.']],nos:[['Vamos a comer en la playa.','We\'re going to eat at the beach.']],vos:[['¿Vais a comer juntos?','Are you all going to eat together?']],ell:[['Van a comer tarde hoy.','They\'re going to eat late today.']]}
+  },
+  beber:{
+    pr:{yo:[['Bebo mucha agua.','I drink a lot of water.'],['No bebo alcohol.','I don\'t drink alcohol.']],tu:[['¿Qué bebes?','What are you drinking?'],['¿Bebes café?','Do you drink coffee?']],el:[['Bebe un vaso de agua antes de dormir.','He drinks a glass of water before sleeping.']],nos:[['Bebemos agua con las comidas.','We drink water with meals.']],vos:[['¿Qué bebéis?','What are you all drinking?']],ell:[['Beben cerveza fría en verano.','They drink cold beer in summer.']]},
+    pa:{yo:[['Bebí demasiado anoche.','I drank too much last night.'],['Bebimos vino con la cena.','We drank wine with dinner.']],tu:[['¿Qué bebiste?','What did you drink?']],el:[['Bebió tres cafés esta mañana.','He drank three coffees this morning.']],nos:[['Bebimos sangría en la terraza.','We drank sangria on the terrace.']],vos:[['¿Bebisteis bien?','Did you all have good drinks?']],ell:[['Bebieron hasta tarde.','They drank until late.']]},
+    fu:{yo:[['Voy a beber agua.','I\'m going to drink water.']],tu:[['¿Vas a beber algo?','Are you going to have a drink?']],el:[['Va a beber un té.','He\'s going to have a tea.']],nos:[['Vamos a beber champán para celebrarlo.','We\'re going to drink champagne to celebrate.']],vos:[['¿Vais a beber algo más?','Are you all going to have anything else?']],ell:[['Van a beber vino en la cena.','They\'re going to drink wine at dinner.']]}
+  },
+  leer:{
+    pr:{yo:[['Leo el periódico cada mañana.','I read the newspaper every morning.'],['Leo mucho en verano.','I read a lot in summer.']],tu:[['¿Lees en español?','Do you read in Spanish?']],el:[['Lee un libro por semana.','She reads a book a week.']],nos:[['Leemos el menú con cuidado.','We read the menu carefully.']],vos:[['¿Leéis en español?','Do you all read in Spanish?']],ell:[['Leen noticias en español.','They read news in Spanish.']]},
+    pa:{yo:[['Leí un libro muy bueno.','I read a very good book.'],['Leí el artículo esta mañana.','I read the article this morning.']],tu:[['¿Leíste el menú?','Did you read the menu?']],el:[['Leyó la carta con atención.','He read the letter carefully.']],nos:[['Leímos sobre el restaurante antes de ir.','We read about the restaurant before going.']],vos:[['¿Leísteis las instrucciones?','Did you all read the instructions?']],ell:[['Leyeron las críticas online.','They read the reviews online.']]},
+    fu:{yo:[['Voy a leer esta noche.','I\'m going to read tonight.']],tu:[['¿Vas a leer algo en el viaje?','Are you going to read something on the journey?']],el:[['Va a leer el contrato con calma.','He\'s going to read the contract carefully.']],nos:[['Vamos a leer las instrucciones primero.','We\'re going to read the instructions first.']],vos:[['¿Vais a leer el libro?','Are you going to read the book?']],ell:[['Van a leer las críticas antes de decidir.','They\'re going to read the reviews before deciding.']]}
+  },
+  aprender:{
+    pr:{yo:[['Aprendo español cada día.','I learn Spanish every day.'],['Aprendo vocabulario nuevo con tarjetas.','I learn new vocabulary with flashcards.']],tu:[['¿Aprendes rápido?','Do you learn quickly?'],['¿Qué aprendes ahora?','What are you learning now?']],el:[['Aprende un idioma nuevo cada año.','She learns a new language every year.']],nos:[['Aprendemos juntos.','We learn together.']],vos:[['¿Aprendéis en clase o solos?','Do you all learn in class or alone?']],ell:[['Aprenden español para el viaje.','They\'re learning Spanish for the trip.']]},
+    pa:{yo:[['Aprendí muchas palabras nuevas.','I learned a lot of new words.'],['Aprendimos mucho en clase.','We learned a lot in class.']],tu:[['¿Cuánto aprendiste?','How much did you learn?']],el:[['Aprendió a cocinar en España.','He learned to cook in Spain.']],nos:[['Aprendimos sobre la cultura española.','We learned about Spanish culture.']],vos:[['¿Aprendisteis mucho?','Did you all learn a lot?']],ell:[['Aprendieron muy rápido.','They learned very quickly.']]},
+    fu:{yo:[['Voy a aprender más vocabulario.','I\'m going to learn more vocabulary.']],tu:[['¿Vas a aprender a cocinar?','Are you going to learn to cook?']],el:[['Va a aprender a bailar flamenco.','He\'s going to learn to dance flamenco.']],nos:[['Vamos a aprender juntos.','We\'re going to learn together.']],vos:[['¿Vais a aprender el idioma?','Are you going to learn the language?']],ell:[['Van a aprender mucho en el viaje.','They\'re going to learn a lot on the trip.']]}
+  },
+  vivir:{
+    pr:{yo:[['Vivo en Londres.','I live in London.'],['Vivo cerca del metro.','I live near the metro.']],tu:[['¿Dónde vives?','Where do you live?'],['¿Vives solo?','Do you live alone?']],el:[['Vive en el centro de Madrid.','She lives in the centre of Madrid.']],nos:[['Vivimos en el mismo barrio.','We live in the same neighbourhood.']],vos:[['¿Vivís en la ciudad?','Do you all live in the city?']],ell:[['Viven justo enfrente del parque.','They live right opposite the park.']]},
+    pa:{yo:[['Viví en España dos años.','I lived in Spain for two years.'],['Viví sin coche durante un año.','I lived without a car for a year.']],tu:[['¿Viviste en el extranjero?','Did you live abroad?']],el:[['Vivió en Barcelona antes de mudarse.','She lived in Barcelona before moving.']],nos:[['Vivimos en el centro cuando éramos jóvenes.','We lived in the centre when we were young.']],vos:[['¿Vivisteis en España?','Did you all live in Spain?']],ell:[['Vivieron en varios países.','They lived in several countries.']]},
+    fu:{yo:[['Voy a vivir en el centro.','I\'m going to live in the city centre.']],tu:[['¿Vas a vivir en España?','Are you going to live in Spain?']],el:[['Va a vivir en Sevilla el año que viene.','She\'s going to live in Seville next year.']],nos:[['Vamos a vivir juntos.','We\'re going to live together.']],vos:[['¿Vais a vivir en el extranjero?','Are you going to live abroad?']],ell:[['Van a vivir cerca de la playa.','They\'re going to live near the beach.']]}
+  },
+  ser:{
+    pr:{yo:[['Soy de Inglaterra.','I am from England.'],['Soy contable de profesión.','I\'m an accountant by profession.']],tu:[['¿Eres de aquí?','Are you from here?'],['¿Eres vegetariano?','Are you vegetarian?']],el:[['Es muy simpático.','He\'s very friendly.'],['Es de Barcelona.','She\'s from Barcelona.']],nos:[['Somos un equipo muy bueno.','We\'re a very good team.']],vos:[['¿Sois de la misma ciudad?','Are you all from the same city?']],ell:[['Son muy amables con los turistas.','They\'re very kind to tourists.']]},
+    pa:{yo:[['Fui el primero en llegar.','I was the first to arrive.'],['Fue una noche fantástica.','It was a fantastic night.']],tu:[['¿Fuiste estudiante aquí?','Were you a student here?']],el:[['Fue una idea suya.','It was her idea.']],nos:[['Fuimos los primeros en llegar.','We were the first to arrive.']],vos:[['¿Fuisteis al concierto?','Were you all at the concert?']],ell:[['Fueron muy generosos.','They were very generous.']]},
+    fu:{yo:[['Va a ser muy bueno.','It\'s going to be very good.']],tu:[['¿Vas a ser puntual?','Are you going to be on time?']],el:[['Va a ser el mejor del equipo.','He\'s going to be the best on the team.']],nos:[['Vamos a ser más cuidadosos.','We\'re going to be more careful.']],vos:[['¿Vais a ser muchos?','Are there going to be many of you?']],ell:[['Van a ser los próximos en llegar.','They\'re going to be the next to arrive.']]}
+  },
+  estar:{
+    pr:{yo:[['Estoy muy bien, gracias.','I am very well, thank you.'],['Estoy cansado hoy.','I\'m tired today.']],tu:[['¿Cómo estás?','How are you?'],['¿Estás libre esta tarde?','Are you free this afternoon?']],el:[['Está en casa hoy.','He\'s at home today.'],['Está delicioso.','It\'s delicious.']],nos:[['Estamos de vacaciones.','We\'re on holiday.']],vos:[['¿Estáis listos para pedir?','Are you all ready to order?']],ell:[['Están sentados en la terraza.','They\'re sitting on the terrace.']]},
+    pa:{yo:[['Estuve en Madrid el verano pasado.','I was in Madrid last summer.'],['Estuve esperando una hora.','I was waiting for an hour.']],tu:[['¿Estuviste enfermo?','Were you ill?']],el:[['Estuvo en el hospital.','He was in the hospital.']],nos:[['Estuvimos en Barcelona todo el fin de semana.','We were in Barcelona all weekend.']],vos:[['¿Estuvisteis en la fiesta?','Were you all at the party?']],ell:[['Estuvieron aquí hasta las dos.','They were here until two.']]},
+    fu:{yo:[['Voy a estar en casa esta tarde.','I\'m going to be at home this afternoon.']],tu:[['¿Vas a estar disponible mañana?','Are you going to be available tomorrow?']],el:[['Va a estar en la reunión.','He\'s going to be at the meeting.']],nos:[['Vamos a estar allí a las ocho.','We\'re going to be there at eight.']],vos:[['¿Vais a estar en casa?','Are you going to be at home?']],ell:[['Van a estar aquí toda la semana.','They\'re going to be here all week.']]}
+  },
+  ir:{
+    pr:{yo:[['Voy al restaurante.','I\'m going to the restaurant.'],['Voy al trabajo a pie.','I walk to work.']],tu:[['¿Adónde vas?','Where are you going?'],['¿Vas a menudo a España?','Do you go to Spain often?']],el:[['Va al mercado cada sábado.','He goes to the market every Saturday.']],nos:[['Vamos juntos al aeropuerto.','We\'re going to the airport together.']],vos:[['¿Vais a la playa este fin de semana?','Are you all going to the beach this weekend?']],ell:[['Van al centro todos los sábados.','They go to the centre every Saturday.']]},
+    pa:{yo:[['Fui al cine ayer.','I went to the cinema yesterday.'],['Fui a Madrid el mes pasado.','I went to Madrid last month.']],tu:[['¿Fuiste a la fiesta?','Did you go to the party?']],el:[['Fue al médico esta mañana.','She went to the doctor this morning.']],nos:[['Fuimos a la playa.','We went to the beach.']],vos:[['¿Fuisteis al concierto?','Did you all go to the concert?']],ell:[['Fueron al mercado muy temprano.','They went to the market very early.']]},
+    fu:{yo:[['Voy a ir a la playa mañana.','I\'m going to go to the beach tomorrow.']],tu:[['¿Vas a ir a España este año?','Are you going to go to Spain this year?']],el:[['Va a ir al festival de verano.','He\'s going to go to the summer festival.']],nos:[['Vamos a ir juntos.','We\'re going to go together.']],vos:[['¿Vais a ir a la boda?','Are you all going to go to the wedding?']],ell:[['Van a ir a Sevilla en tren.','They\'re going to go to Seville by train.']]}
+  },
+  tener:{
+    pr:{yo:[['Tengo que ir al banco.','I have to go to the bank.'],['Tengo hambre.','I\'m hungry.']],tu:[['¿Tienes tiempo?','Do you have time?'],['¿Tienes una reserva?','Do you have a reservation?']],el:[['Tiene mucho talento.','She has a lot of talent.'],['Tiene treinta años.','He\'s thirty years old.']],nos:[['Tenemos mesa reservada.','We have a table reserved.']],vos:[['¿Tenéis hambre?','Are you all hungry?']],ell:[['Tienen mucha experiencia.','They have a lot of experience.']]},
+    pa:{yo:[['Tuve mucho trabajo ayer.','I had a lot of work yesterday.'],['Tuve que cancelar la reserva.','I had to cancel the reservation.']],tu:[['¿Tuviste problemas?','Did you have problems?']],el:[['Tuvo que irse antes.','He had to leave early.']],nos:[['Tuvimos una reunión muy larga.','We had a very long meeting.']],vos:[['¿Tuvisteis tiempo de verlo todo?','Did you all have time to see everything?']],ell:[['Tuvieron que esperar mucho.','They had to wait a long time.']]},
+    fu:{yo:[['Voy a tener una reunión.','I\'m going to have a meeting.']],tu:[['¿Vas a tener tiempo?','Are you going to have time?']],el:[['Va a tener un bebé.','She\'s going to have a baby.']],nos:[['Vamos a tener que madrugar.','We\'re going to have to get up early.']],vos:[['¿Vais a tener suficiente?','Are you going to have enough?']],ell:[['Van a tener que esperar.','They\'re going to have to wait.']]}
+  },
+  hacer:{
+    pr:{yo:[['¿Qué haces hoy?','What are you doing today?'],['Hago ejercicio cada mañana.','I exercise every morning.']],tu:[['¿Qué haces esta noche?','What are you doing tonight?']],el:[['Hace muy buen trabajo.','He does very good work.'],['Hace calor hoy.','It\'s hot today.']],nos:[['Hacemos lo que podemos.','We do what we can.']],vos:[['¿Qué hacéis este fin de semana?','What are you all doing this weekend?']],ell:[['Hacen una fiesta cada año.','They have a party every year.']]},
+    pa:{yo:[['Hice una reserva para dos.','I made a reservation for two.'],['Hice todo lo posible.','I did everything possible.']],tu:[['¿Qué hiciste ayer?','What did you do yesterday?']],el:[['Hizo una pregunta muy buena.','She asked a very good question.']],nos:[['Hicimos una excursión por la ciudad.','We went on a city tour.']],vos:[['¿Qué hicisteis el fin de semana?','What did you all do at the weekend?']],ell:[['Hicieron todo en un día.','They did everything in one day.']]},
+    fu:{yo:[['Voy a hacer una pizza esta noche.','I\'m going to make a pizza tonight.']],tu:[['¿Qué vas a hacer mañana?','What are you going to do tomorrow?']],el:[['Va a hacer una fiesta sorpresa.','He\'s going to have a surprise party.']],nos:[['Vamos a hacer una excursión.','We\'re going to go on a trip.']],vos:[['¿Qué vais a hacer en Navidad?','What are you all going to do at Christmas?']],ell:[['Van a hacer lo mejor que puedan.','They\'re going to do the best they can.']]}
+  },
+  querer:{
+    pr:{yo:[['Quiero un café, por favor.','I\'d like a coffee, please.'],['Quiero aprender más vocabulario.','I want to learn more vocabulary.']],tu:[['¿Qué quieres?','What do you want?'],['¿Quieres venir con nosotros?','Do you want to come with us?']],el:[['Quiere probar la cocina local.','He wants to try the local food.']],nos:[['Queremos una mesa en la terraza.','We\'d like a table on the terrace.']],vos:[['¿Qué queréis de postre?','What do you all want for dessert?']],ell:[['Quieren repetir el viaje.','They want to do the trip again.']]},
+    pa:{yo:[['Quise ir pero no pude.','I wanted to go but couldn\'t.']],tu:[['¿Quisiste decir eso?','Did you mean to say that?']],el:[['Quiso reservar pero no había mesa.','He wanted to book but there was no table.']],nos:[['Quisimos quedarnos más tiempo.','We wanted to stay longer.']],vos:[['¿Quisisteis ir también?','Did you all want to go too?']],ell:[['Quisieron repetir pero estaba lleno.','They wanted to go back but it was full.']]},
+    fu:{yo:[['¿Qué vas a querer comer?','What are you going to want to eat?']],tu:[['¿Qué vas a querer de postre?','What are you going to want for dessert?']],el:[['Va a querer el menú del día.','He\'s going to want the set menu.']],nos:[['Vamos a querer más información.','We\'re going to want more information.']],vos:[['¿Qué vais a querer beber?','What are you all going to want to drink?']],ell:[['Van a querer repetir.','They\'re going to want to come back.']]}
+  },
+  poder:{
+    pr:{yo:[['¿Puedo probar el vino?','Can I try the wine?'],['No puedo comer marisco.','I can\'t eat seafood.']],tu:[['¿Puedes venir esta tarde?','Can you come this afternoon?'],['¿Puedes repetir más despacio?','Can you repeat more slowly?']],el:[['Puede hablar cinco idiomas.','She can speak five languages.']],nos:[['Podemos quedar más tarde.','We can meet later.']],vos:[['¿Podéis ayudar?','Can you all help?']],ell:[['Pueden llegar a las ocho.','They can arrive at eight.']]},
+    pa:{yo:[['No pude ir a la fiesta.','I couldn\'t go to the party.'],['No pude encontrar el restaurante.','I couldn\'t find the restaurant.']],tu:[['¿Pudiste conseguir mesa?','Were you able to get a table?']],el:[['No pudo venir al final.','He couldn\'t come in the end.']],nos:[['Pudimos conseguir entradas.','We managed to get tickets.']],vos:[['¿Pudisteis entrar?','Were you able to get in?']],ell:[['No pudieron terminar a tiempo.','They couldn\'t finish in time.']]},
+    fu:{yo:[['¿Vas a poder venir?','Are you going to be able to come?']],tu:[['¿Vas a poder ayudar?','Are you going to be able to help?']],el:[['Va a poder terminarlo hoy.','He\'s going to be able to finish it today.']],nos:[['Vamos a poder llegar a tiempo.','We\'re going to be able to arrive on time.']],vos:[['¿Vais a poder venir todos?','Are you all going to be able to come?']],ell:[['Van a poder reservar.','They\'re going to be able to book.']]}
+  },
+  volver:{
+    pr:{yo:[['Vuelvo a casa a las siete.','I return home at seven.'],['Vuelvo a España cada año.','I go back to Spain every year.']],tu:[['¿A qué hora vuelves?','What time do you get back?']],el:[['Vuelve tarde del trabajo.','She gets back late from work.']],nos:[['Volvemos el domingo.','We come back on Sunday.']],vos:[['¿Cuándo volvéis?','When are you all coming back?']],ell:[['Vuelven mañana por la mañana.','They return tomorrow morning.']]},
+    pa:{yo:[['Volví del banco hace una hora.','I came back from the bank an hour ago.'],['Volví muy tarde anoche.','I came back very late last night.']],tu:[['¿A qué hora volviste?','What time did you get back?']],el:[['Volvió de Madrid ayer.','He came back from Madrid yesterday.']],nos:[['Volvimos a medianoche.','We got back at midnight.']],vos:[['¿Cuándo volvisteis?','When did you all get back?']],ell:[['Volvieron con muchos regalos.','They came back with lots of gifts.']]},
+    fu:{yo:[['Voy a volver pronto.','I\'m going to return soon.']],tu:[['¿Vas a volver a España?','Are you going to go back to Spain?']],el:[['Va a volver en tren.','He\'s going to come back by train.']],nos:[['Vamos a volver el año que viene.','We\'re going to come back next year.']],vos:[['¿Vais a volver pronto?','Are you all going to come back soon?']],ell:[['Van a volver en agosto.','They\'re going to come back in August.']]}
+  },
+  ver:{
+    pr:{yo:[['Veo a María todos los días.','I see María every day.'],['Veo la tele por las noches.','I watch TV in the evenings.']],tu:[['¿Ves mucho la tele?','Do you watch TV a lot?'],['¿Ves a tus amigos a menudo?','Do you see your friends often?']],el:[['Ve todas las películas españolas.','He watches all Spanish films.']],nos:[['Nos vemos en el bar.','We see each other at the bar.']],vos:[['¿Veis el partido esta noche?','Are you all watching the match tonight?']],ell:[['Ven a sus abuelos cada domingo.','They see their grandparents every Sunday.']]},
+    pa:{yo:[['Vi una película anoche.','I saw a film last night.'],['Vi a Juan en el mercado.','I saw Juan at the market.']],tu:[['¿Viste la película?','Did you see the film?']],el:[['Vio el partido en el bar.','He watched the match at the bar.']],nos:[['Vimos un espectáculo de flamenco.','We saw a flamenco show.']],vos:[['¿Visteis el partido?','Did you all watch the match?']],ell:[['Vieron el amanecer desde la terraza.','They watched the sunrise from the terrace.']]},
+    fu:{yo:[['Voy a ver una película esta noche.','I\'m going to watch a film tonight.']],tu:[['¿Vas a ver el partido?','Are you going to watch the match?']],el:[['Va a ver a su familia el fin de semana.','He\'s going to see his family at the weekend.']],nos:[['Vamos a ver cómo va.','We\'re going to see how it goes.']],vos:[['¿Vais a ver el espectáculo?','Are you all going to see the show?']],ell:[['Van a ver los monumentos mañana.','They\'re going to see the monuments tomorrow.']]}
+  },
+  salir:{
+    pr:{yo:[['Salgo a las ocho.','I leave at eight.'],['Salgo a correr por las mañanas.','I go running in the mornings.']],tu:[['¿A qué hora sales?','What time do you leave?'],['¿Sales esta noche?','Are you going out tonight?']],el:[['Sale a las ocho en punto.','She leaves at eight o\'clock.']],nos:[['Salimos juntos de la oficina.','We leave the office together.']],vos:[['¿A qué hora salís?','What time are you all leaving?']],ell:[['Salen cada viernes por la noche.','They go out every Friday night.']]},
+    pa:{yo:[['Salimos al restaurante ayer.','We went out to a restaurant yesterday.'],['Salí tarde del trabajo.','I left work late.']],tu:[['¿A qué hora saliste?','What time did you leave?']],el:[['Salió sin decir nada.','He left without saying anything.']],nos:[['Salimos a las once de la noche.','We went out at eleven at night.']],vos:[['¿Cuándo salisteis?','When did you all leave?']],ell:[['Salieron antes de la lluvia.','They left before the rain.']]},
+    fu:{yo:[['Voy a salir esta noche.','I\'m going to go out tonight.']],tu:[['¿Vas a salir este fin de semana?','Are you going to go out this weekend?']],el:[['Va a salir a correr mañana.','He\'s going to go for a run tomorrow.']],nos:[['Vamos a salir a cenar.','We\'re going to go out for dinner.']],vos:[['¿Vais a salir juntos?','Are you all going to go out together?']],ell:[['Van a salir en barco.','They\'re going to go out by boat.']]}
+  },
+  pedir:{
+    pr:{yo:[['Pido el pollo, por favor.','I\'ll have the chicken, please.'],['Pido siempre lo mismo.','I always order the same thing.']],tu:[['¿Qué pides?','What are you ordering?'],['¿Pides postre siempre?','Do you always have dessert?']],el:[['Pide el menú del día.','She orders the set menu.']],nos:[['Pedimos para compartir.','We order to share.']],vos:[['¿Ya pedís?','Are you all ready to order?']],ell:[['Piden la especialidad de la casa.','They order the house speciality.']]},
+    pa:{yo:[['Pedí la cuenta.','I asked for the bill.'],['Pedí el plato del día.','I ordered the dish of the day.']],tu:[['¿Qué pediste?','What did you order?']],el:[['Pidió el vino de la casa.','He ordered the house wine.']],nos:[['Pedimos demasiado.','We ordered too much.']],vos:[['¿Pedisteis postre?','Did you all order dessert?']],ell:[['Pidieron una botella de cava.','They ordered a bottle of cava.']]},
+    fu:{yo:[['Voy a pedir una reserva.','I\'m going to ask for a reservation.']],tu:[['¿Qué vas a pedir?','What are you going to order?']],el:[['Va a pedir el marisco.','She\'s going to order the seafood.']],nos:[['Vamos a pedir para compartir.','We\'re going to order to share.']],vos:[['¿Vais a pedir postre?','Are you going to order dessert?']],ell:[['Van a pedir la botella más cara.','They\'re going to order the most expensive bottle.']]}
+  },
+  perder:{
+    pr:{yo:[['Pierdo las llaves siempre.','I always lose my keys.'],['Pierdo el tiempo con las redes sociales.','I waste time on social media.']],tu:[['¿Pierdes cosas a menudo?','Do you lose things often?']],el:[['Siempre pierde el móvil.','He always loses his phone.']],nos:[['Perdemos el tiempo con esto.','We\'re wasting time on this.']],vos:[['¿Perdéis el tren a menudo?','Do you often miss the train?']],ell:[['Pierden siempre el primer autobús.','They always miss the first bus.']]},
+    pa:{yo:[['Perdí mi teléfono ayer.','I lost my phone yesterday.'],['Perdí la llave del hotel.','I lost the hotel key.']],tu:[['¿Perdiste algo?','Did you lose anything?']],el:[['Perdió el pasaporte.','She lost her passport.']],nos:[['Perdimos el último tren.','We missed the last train.']],vos:[['¿Perdisteis el vuelo?','Did you all miss the flight?']],ell:[['Perdieron las entradas.','They lost the tickets.']]},
+    fu:{yo:[['Voy a perder el tren.','I\'m going to miss the train.']],tu:[['¿Vas a perder la paciencia?','Are you going to lose your patience?']],el:[['Va a perder el trabajo si no llega.','He\'s going to lose his job if he doesn\'t arrive.']],nos:[['Vamos a perder la reserva.','We\'re going to lose the reservation.']],vos:[['¿Vais a perder el avión?','Are you going to miss the plane?']],ell:[['Van a perder si no se dan prisa.','They\'re going to lose if they don\'t hurry.']]}
+  },
+  jugar:{
+    pr:{yo:[['Juego al fútbol los sábados.','I play football on Saturdays.'],['Juego al ajedrez con mi padre.','I play chess with my father.']],tu:[['¿A qué juegas?','What do you play?']],el:[['Juega en un equipo local.','He plays in a local team.']],nos:[['Jugamos al tenis los domingos.','We play tennis on Sundays.']],vos:[['¿Jugáis en equipo?','Do you all play in a team?']],ell:[['Juegan al baloncesto muy bien.','They play basketball very well.']]},
+    pa:{yo:[['Jugamos al tenis ayer.','We played tennis yesterday.'],['Jugué al golf por primera vez.','I played golf for the first time.']],tu:[['¿Jugaste ayer?','Did you play yesterday?']],el:[['Jugó muy bien en el partido.','He played very well in the match.']],nos:[['Jugamos juntos durante años.','We played together for years.']],vos:[['¿Jugasteis ayer?','Did you all play yesterday?']],ell:[['Jugaron la final y ganaron.','They played the final and won.']]},
+    fu:{yo:[['Voy a jugar con mis amigos.','I\'m going to play with my friends.']],tu:[['¿Vas a jugar este fin de semana?','Are you going to play this weekend?']],el:[['Va a jugar en el partido de mañana.','He\'s going to play in tomorrow\'s match.']],nos:[['Vamos a jugar un partido rápido.','We\'re going to play a quick game.']],vos:[['¿Vais a jugar mañana?','Are you all going to play tomorrow?']],ell:[['Van a jugar la semifinal.','They\'re going to play the semi-final.']]}
+  }
 };
 
 const verbThemes=[
@@ -961,9 +1172,41 @@ const CEFR_MAP={
   'devolver':'B1','ocurrir':'B1','preferir':'B1','perder':'B1','doler':'B1',
   'explorar':'B1','gastar':'B1','besar':'B1','vender':'B1','recibir':'B1',
   'creer':'B1','comprender':'B1','olvidar':'B1',
+  // B1 new
+  'el ambiente':'B1','el barrio':'B1','la frontera':'B1','el extranjero':'B1',
+  'la reunión':'B1','el placer':'B1','el resultado':'B1','el cambio':'B1',
+  'el nivel':'B1','la oportunidad':'B1','el objetivo':'B1','la diferencia':'B1',
+  'mejorar':'B1','conseguir':'B1','lograr':'B1','parecer':'B1','depender':'B1',
+  'preocupar':'B1','recordar':'B1','discutir':'B1','dudar':'B1',
+  'aunque':'B1','sin embargo':'B1','a pesar de':'B1','de hecho':'B1',
+  'en cuanto a':'B1','a partir de':'B1',
+  'Me alegra que estés aquí':'B1','Espero que lleguen pronto':'B1',
+  'Es importante que practiques cada día':'B1',
+  // B2
+  'el matiz':'B2','el planteamiento':'B2','la incertidumbre':'B2','el bienestar':'B2',
+  'el trasfondo':'B2','la convocatoria':'B2',
+  'caber':'B2','suponer':'B2','surgir':'B2','plantear':'B2',
+  'llevar a cabo':'B2','dar por sentado':'B2','tener en cuenta':'B2',
+  'a grandes rasgos':'B2','en términos de':'B2',
+  'Si tuviera más tiempo, estudiaría más':'B2',
+  'Ojalá pudiera quedarme más':'B2',
+  'Me sorprende que no lo sepas':'B2',
+  // C1
+  'la paradoja':'C1','el arraigo':'C1','el desafío':'C1','el vínculo':'C1',
+  'la ambigüedad':'C1','el entramado':'C1','la trayectoria':'C1','el equilibrio':'C1',
+  'cuestionar':'C1','matizar':'C1','conllevar':'C1','desempeñar':'C1','abordar':'C1',
+  'no cabe duda de que':'C1','en la medida en que':'C1','resulta que':'C1','a raíz de':'C1',
+  'Aunque me lo explicaran cien veces, no lo entendería':'C1',
+  'Por mucho que te esfuerces, sin práctica no avanzas':'C1',
+  'Lo que me parece fascinante es la fluidez del idioma':'C1',
 };
 function cefrOf(card){
   if(CEFR_MAP[card.es])return CEFR_MAP[card.es];
+  // Use note field as hint if present
+  if(card.note){
+    const m=card.note.match(/^(A1|A2|B1|B2|C1|C2)/);
+    if(m)return m[1];
+  }
   if(card.cat==='Sentences')return card.es.split(' ').length>7?'B1':'A2';
   return'A2';
 }
@@ -1013,10 +1256,13 @@ function showToast(msg){
   setTimeout(()=>{t.style.opacity='0';},4500);
 }
 
-// Example sentence for vocab cards (verbs → VEX; others → null)
+// Pick a random variant from an array of [es,en] pairs
+function pickVariant(arr){if(!arr||!arr.length)return null;return arr[Math.floor(Math.random()*arr.length)];}
+// Example sentence for vocab cards — uses yo-form present tense
 function exampleForCard(card){
   if(card.cat==='Verbs'&&VEX[card.es]){
-    const ex=VEX[card.es].pr;return{es:ex[0],en:ex[1]};}
+    const v=pickVariant(VEX[card.es].pr?.yo);
+    if(v)return{es:v[0],en:v[1]};}
   return null;
 }
 
@@ -1067,7 +1313,7 @@ function applyFilters(){
 }
 function setCEFRFilter(level){
   fcCEFRFilter=level;
-  ['all','A1','A2','B1'].forEach(l=>{
+  ['all','A1','A2','B1','B2','C1'].forEach(l=>{
     const el=document.getElementById('cefr-'+l);
     if(el)el.classList.toggle('on',l===level);
   });
@@ -1075,14 +1321,14 @@ function setCEFRFilter(level){
   const rec=document.getElementById('iplus1-rec');
   if(rec){
     if(level!=='all'){
-      const nxt={'A1':'A2','A2':'B1','B1':'B2'}[level];
+      const nxt={'A1':'A2','A2':'B1','B1':'B2','B2':'C1','C1':'C2'}[level];
       if(nxt){
         const cur=document.getElementById('iplus1-cur');
         const nxtEl=document.getElementById('iplus1-next');
         if(cur)cur.textContent=level;
         if(nxtEl)nxtEl.textContent=nxt;
         rec.style.display='';
-      }
+      }else{rec.style.display='none';} // C1 reached C2, hide
     }else{rec.style.display='none';}
   }
 }
@@ -1297,13 +1543,28 @@ function renderVerbGrid(){
       const conj=document.createElement('div');conj.className='bconj';
       if(curTense==='future'){const irf=irF[i*2+side];conj.innerHTML=`<span style="color:var(--primary)">${irf} a</span> <span class="bend">${curVerb}</span>`;}
       else{const idx=i===0?(side===0?0:3):i===1?(side===0?1:4):(side===0?2:5);conj.textContent=forms[idx];}
+      // Click handler — show this person's example sentence
+      const personKey=['yo','tu','el','nos','vos','ell'][i*2+side];
+      cell.style.cursor='pointer';
+      cell.onclick=(()=>{const pk=personKey;return()=>showVerbEx(curVerb,curTense,pk,side===0?pronouns[i].sg:pronouns[i].pl);})();
       cell.appendChild(pr);cell.appendChild(conj);grid.appendChild(cell);
     });
   });
+  // Show yo-form sentence by default
+  showVerbEx(curVerb,curTense,'yo',pronouns[0].sg);
+}
+function showVerbEx(verb,tense,personKey,pronLabel){
+  const tKey=tense==='present'?'pr':tense==='past'?'pa':'fu';
+  const exData=VEX[verb];
   const exEl=document.getElementById('vexamples');
-  const exData=VEX[curVerb];const tKey=curTense==='present'?'pr':curTense==='past'?'pa':'fu';
-  if(exData&&exData[tKey]){const[es,en]=exData[tKey];exEl.innerHTML=`<div style="background:var(--surface);border-radius:var(--r-sm);padding:14px 18px;border-left:4px solid var(--amber);box-shadow:var(--shadow);margin-top:4px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700;margin-bottom:6px">Example sentence</div><div style="font-size:17px;font-weight:700;color:var(--primary)">${es}</div><div style="font-size:13px;color:var(--muted);margin-top:4px;font-style:italic">${en}</div></div>`;}
-  else exEl.innerHTML='';
+  if(!exData||!exData[tKey]||!exData[tKey][personKey]){exEl.innerHTML='';return;}
+  const v=pickVariant(exData[tKey][personKey]);
+  if(!v){exEl.innerHTML='';return;}
+  exEl.innerHTML=`<div style="background:var(--surface);border-radius:var(--r-sm);padding:14px 18px;border-left:4px solid var(--amber);box-shadow:var(--shadow);margin-top:4px;cursor:pointer" onclick="showVerbEx('${verb}','${tense}','${personKey}','${pronLabel.replace(/'/g,'\\\'')}')" title="Click to show another variant">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700;margin-bottom:6px">${pronLabel} — example <span style="opacity:.5;font-weight:400">(tap cell to change person, tap here to reshuffle)</span></div>
+    <div style="font-size:17px;font-weight:700;color:var(--primary)">${v[0]}</div>
+    <div style="font-size:13px;color:var(--muted);margin-top:4px;font-style:italic">${v[1]}</div>
+  </div>`;
 }
 
 /* ═══════════════════ MUSIC LOGIC ═══════════════════ */
@@ -1605,6 +1866,8 @@ function showTab(name,btn){
 
 /* ═══════════════════ INIT ═══════════════════ */
 window.addEventListener('DOMContentLoaded',()=>{
+  // Shuffle vocab in-place so every session has a different order
+  for(let i=vocab.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[vocab[i],vocab[j]]=[vocab[j],vocab[i]];}
   // Retention features
   initStreak();
   updateSRSBanner();
