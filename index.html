@@ -653,6 +653,52 @@ const vocab=[
   {es:'No estoy ocupado',en:'I am not busy',cat:'Sentences'},
   {es:'Voy a preparar la cena pronto',en:'I\'m going to make dinner soon',cat:'Sentences'},
 
+  // ── Daily Chat — partner & close friends ───────────────────────────────────
+  // Check-ins
+  {es:'¿Qué haces hoy?',en:'What are you up to today?',cat:'Daily Chat',note:'A2'},
+  {es:'¿Cómo fue tu día?',en:'How was your day?',cat:'Daily Chat',note:'A2'},
+  {es:'¿Cómo te ha ido?',en:'How has it been going?',cat:'Daily Chat',note:'A2'},
+  {es:'¿Qué tal todo?',en:'How\'s everything?',cat:'Daily Chat',note:'A2'},
+  {es:'Cuéntame',en:'Tell me / Go on',cat:'Daily Chat',note:'A2'},
+  {es:'¿Cómo te encuentras?',en:'How are you feeling?',cat:'Daily Chat',note:'A2'},
+  {es:'¿Qué tienes para hoy?',en:'What have you got on today?',cat:'Daily Chat',note:'A2'},
+  {es:'¿Qué planes tienes?',en:'What are your plans?',cat:'Daily Chat',note:'A2'},
+  // Making plans
+  {es:'¿Quedamos luego?',en:'Shall we meet up later?',cat:'Daily Chat',note:'A2'},
+  {es:'Te llamo luego',en:'I\'ll call you later',cat:'Daily Chat',note:'A2'},
+  {es:'¿Estás libre esta noche?',en:'Are you free tonight?',cat:'Daily Chat',note:'A2'},
+  {es:'Tengo ganas de verte',en:'I\'m looking forward to seeing you',cat:'Daily Chat',note:'B1'},
+  {es:'¿Vemos algo juntos?',en:'Shall we watch something together?',cat:'Daily Chat',note:'A2'},
+  {es:'Paso a buscarte',en:'I\'ll come and pick you up',cat:'Daily Chat',note:'B1'},
+  {es:'¿A qué hora quedamos?',en:'What time shall we meet?',cat:'Daily Chat',note:'A2'},
+  {es:'Avísame cuando llegues',en:'Let me know when you get there',cat:'Daily Chat',note:'B1'},
+  // Affection
+  {es:'Te echo de menos',en:'I miss you',cat:'Daily Chat',note:'A2'},
+  {es:'Te quiero',en:'I love you',cat:'Daily Chat',note:'A1'},
+  {es:'Te quiero mucho',en:'I love you a lot',cat:'Daily Chat',note:'A1'},
+  {es:'Estoy pensando en ti',en:'I\'m thinking of you',cat:'Daily Chat',note:'A2'},
+  {es:'Me alegra mucho verte',en:'I\'m really glad to see you',cat:'Daily Chat',note:'A2'},
+  {es:'Eres lo mejor',en:'You\'re the best',cat:'Daily Chat',note:'A2'},
+  // Goodnights & goodbyes
+  {es:'Que tengas buena noche',en:'Have a good night',cat:'Daily Chat',note:'A2'},
+  {es:'Que descanses',en:'Sleep well / Rest well',cat:'Daily Chat',note:'A2'},
+  {es:'Hasta luego',en:'See you later',cat:'Daily Chat',note:'A1'},
+  {es:'Hasta pronto',en:'See you soon',cat:'Daily Chat',note:'A1'},
+  {es:'Cuídate',en:'Take care',cat:'Daily Chat',note:'A2'},
+  {es:'Un abrazo',en:'A hug (informal sign-off)',cat:'Daily Chat',note:'A2'},
+  {es:'Nos vemos',en:'See you / We\'ll see each other',cat:'Daily Chat',note:'A2'},
+  {es:'Hasta mañana',en:'See you tomorrow / Until tomorrow',cat:'Daily Chat',note:'A1'},
+  // Support & empathy
+  {es:'¿Estás bien?',en:'Are you okay?',cat:'Daily Chat',note:'A1'},
+  {es:'Aquí estoy',en:'I\'m here (for you)',cat:'Daily Chat',note:'A2'},
+  {es:'Ánimo',en:'Cheer up / You\'ve got this',cat:'Daily Chat',note:'A2'},
+  {es:'Lo siento',en:'I\'m sorry',cat:'Daily Chat',note:'A1'},
+  {es:'Cuéntame qué pasó',en:'Tell me what happened',cat:'Daily Chat',note:'A2'},
+  {es:'¿Necesitas algo?',en:'Do you need anything?',cat:'Daily Chat',note:'A2'},
+  {es:'No te preocupes',en:'Don\'t worry',cat:'Daily Chat',note:'A2'},
+  {es:'Todo va a salir bien',en:'Everything\'s going to be fine',cat:'Daily Chat',note:'B1'},
+  {es:'Estoy aquí para lo que necesites',en:'I\'m here for whatever you need',cat:'Daily Chat',note:'B1'},
+
   // ── B1 Vocabulary ──────────────────────────────────────────────────────────
   {es:'el ambiente',en:'the atmosphere / vibe',cat:'Places',note:'B1'},
   {es:'el barrio',en:'the neighbourhood',cat:'Places',note:'B1'},
@@ -1180,6 +1226,20 @@ const CEFR_MAP={
   'preocupar':'B1','recordar':'B1','discutir':'B1','dudar':'B1',
   'aunque':'B1','sin embargo':'B1','a pesar de':'B1','de hecho':'B1',
   'en cuanto a':'B1','a partir de':'B1',
+  // Daily Chat
+  'Te quiero':'A1','Te quiero mucho':'A1','Hasta luego':'A1','Hasta pronto':'A1',
+  'Hasta mañana':'A1','¿Estás bien?':'A1','Lo siento':'A1',
+  'Te echo de menos':'A2','¿Cómo fue tu día?':'A2','¿Qué haces hoy?':'A2',
+  '¿Cómo te ha ido?':'A2','¿Qué tal todo?':'A2','Cuéntame':'A2','¿Cómo te encuentras?':'A2',
+  '¿Qué tienes para hoy?':'A2','¿Qué planes tienes?':'A2','¿Quedamos luego?':'A2',
+  'Te llamo luego':'A2','¿Estás libre esta noche?':'A2','¿Vemos algo juntos?':'A2',
+  '¿A qué hora quedamos?':'A2','Estoy pensando en ti':'A2','Me alegra mucho verte':'A2',
+  'Eres lo mejor':'A2','Que tengas buena noche':'A2','Que descanses':'A2',
+  'Cuídate':'A2','Un abrazo':'A2','Nos vemos':'A2','Aquí estoy':'A2','Ánimo':'A2',
+  'Cuéntame qué pasó':'A2','¿Necesitas algo?':'A2','No te preocupes':'A2',
+  'Tengo ganas de verte':'B1','Paso a buscarte':'B1','Avísame cuando llegues':'B1',
+  'Todo va a salir bien':'B1','Estoy aquí para lo que necesites':'B1',
+  // B1 sentences
   'Me alegra que estés aquí':'B1','Espero que lleguen pronto':'B1',
   'Es importante que practiques cada día':'B1',
   // B2
