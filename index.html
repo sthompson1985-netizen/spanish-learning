@@ -292,6 +292,38 @@ nav::-webkit-scrollbar{display:none;}
 .vq-foot{display:flex;justify-content:space-between;align-items:center;}
 .vq-close-btn{background:none;border:1.5px solid var(--border);border-radius:var(--r-sm);padding:7px 18px;font-family:inherit;cursor:pointer;color:var(--muted);font-size:13px;}
 .vq-close-btn:hover{border-color:var(--red);color:var(--red);}
+/* GRAMMAR ACCORDION */
+.gram-nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
+.gram-nav-pill{background:var(--surface);border:1.5px solid var(--border);border-radius:99px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);font-family:inherit;transition:all .15s;}
+.gram-nav-pill:hover,.gram-nav-pill.on{background:var(--primary);color:#fff;border-color:var(--primary);}
+.gacc-hdr{cursor:pointer;display:flex;justify-content:space-between;align-items:center;width:100%;background:none;border:none;text-align:left;font-family:inherit;margin:-18px -20px;padding:18px 20px;border-radius:var(--r);transition:background .15s;}
+.gacc-hdr:hover{background:var(--surface2);}
+.gacc-hdr h3{margin:0;font-size:14px;color:var(--primary);font-weight:700;}
+.gacc-arrow{font-size:13px;color:var(--muted);transition:transform .2s;flex-shrink:0;margin-left:8px;}
+.gacc-body{padding-top:14px;display:none;}
+.gacc-body.open{display:block;}
+.gsec.gopen .gacc-arrow{transform:rotate(180deg);}
+.gram-cat-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;color:var(--muted);margin:18px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--border);}
+.gram-cat-lbl:first-child{margin-top:0;}
+.func-tbl{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0;}
+.func-tbl th{background:var(--primary-lt);color:var(--primary);padding:6px 10px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;}
+.func-tbl td{padding:6px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.func-tbl td:first-child{color:var(--primary);font-weight:700;white-space:nowrap;}
+.func-tbl td:nth-child(2){color:var(--muted);font-style:italic;}
+.func-tbl td:last-child{color:var(--ink);}
+.por-para-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0;}
+@media(max-width:520px){.por-para-grid{grid-template-columns:1fr;}}
+.pp-box{border-radius:var(--r-sm);padding:12px 14px;}
+.pp-box.por{background:#FFF7ED;border:1.5px solid #FED7AA;}
+.pp-box.para{background:#EDE9FE;border:1.5px solid #C4B5FD;}
+.pp-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+.pp-box.por .pp-title{color:#C2410C;}
+.pp-box.para .pp-title{color:var(--primary);}
+.pp-item{font-size:12px;margin-bottom:5px;line-height:1.5;}
+.pp-item strong{font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
+/* VERB SEARCH */
+.verb-search{width:100%;padding:9px 12px 9px 36px;border:1.5px solid var(--border);border-radius:var(--r-sm);font-family:inherit;font-size:14px;background:var(--surface);color:var(--ink);outline:none;transition:border-color .15s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B6785' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:10px center;}
+.verb-search:focus{border-color:var(--primary);}
 </style>
 </head>
 <body>
@@ -434,6 +466,9 @@ nav::-webkit-scrollbar{display:none;}
   <div class="sec-title">Verb Tables</div>
   <p class="sub">Filter by theme → pick verb → switch tense freely.</p>
   <div class="theme-pills" id="theme-pills"></div>
+  <div style="position:relative;margin-bottom:10px;">
+    <input class="verb-search" id="verb-search" type="text" placeholder="Search verbs by name or meaning…" oninput="filterVerbs()">
+  </div>
   <div class="verb-row">
     <select class="verb-sel" id="vsel" onchange="onVerbChange()"></select>
     <div class="toggle-row">
@@ -452,59 +487,245 @@ nav::-webkit-scrollbar{display:none;}
 <!-- ═══ GRAMMAR ═══ -->
 <div id="tab-grammar" class="tab">
   <div class="sec-title">Grammar Reference</div>
-  <div class="gsec"><h3>★ Nouns — Gender & Articles</h3>
-    <div class="rule">Masculine → <strong>el</strong> (sing) / <strong>los</strong> (pl) &nbsp;|&nbsp; Indefinite: <strong>un</strong></div>
-    <div class="rule">Feminine → <strong>la</strong> (sing) / <strong>las</strong> (pl) &nbsp;|&nbsp; Indefinite: <strong>una</strong></div>
-    <div class="rule">Most feminine nouns end in <strong>-a</strong>. The rest are usually masculine.</div>
-    <div style="margin-top:8px">
-      <div class="exline"><span class="exes">El restaurante / La casa</span><span class="exen">The restaurant / The house</span></div>
-      <div class="exline"><span class="exes">Un hotel / Una mesa</span><span class="exen">A hotel / A table</span></div>
+  <p class="sub">Tap any section to expand it.</p>
+  <div class="gram-nav">
+    <button class="gram-nav-pill on" onclick="scrollGram('gram-foundations')">Foundations</button>
+    <button class="gram-nav-pill" onclick="scrollGram('gram-verbs')">Verbs</button>
+    <button class="gram-nav-pill" onclick="scrollGram('gram-connectors')">Connectors</button>
+    <button class="gram-nav-pill" onclick="scrollGram('gram-demo')">This / That / Here</button>
+    <button class="gram-nav-pill" onclick="scrollGram('gram-porpara')">Por vs Para</button>
+    <button class="gram-nav-pill" onclick="scrollGram('gram-prep')">Prepositions</button>
+    <button class="gram-nav-pill" onclick="scrollGram('gram-time')">Time</button>
+  </div>
+
+  <!-- ── FOUNDATIONS ── -->
+  <div class="gram-cat-lbl" id="gram-foundations">FOUNDATIONS</div>
+
+  <div class="gsec">
+    <button class="gacc-hdr" onclick="toggleGram(this)"><h3>★ Nouns — Gender &amp; Articles</h3><span class="gacc-arrow">▼</span></button>
+    <div class="gacc-body open">
+      <div class="rule">Masculine → <strong>el</strong> (sing) / <strong>los</strong> (pl) &nbsp;|&nbsp; Indefinite: <strong>un</strong></div>
+      <div class="rule">Feminine → <strong>la</strong> (sing) / <strong>las</strong> (pl) &nbsp;|&nbsp; Indefinite: <strong>una</strong></div>
+      <div class="rule">Most feminine nouns end in <strong>-a</strong>. The rest are usually masculine. Exceptions exist — memorise them.</div>
+      <div style="margin-top:8px">
+        <div class="exline"><span class="exes">El restaurante / La casa</span><span class="exen">The restaurant / The house</span></div>
+        <div class="exline"><span class="exes">Un hotel / Una mesa</span><span class="exen">A hotel / A table</span></div>
+        <div class="exline"><span class="exes">Los amigos / Las amigas</span><span class="exen">Male friends / Female friends</span></div>
+      </div>
     </div>
   </div>
-  <div class="gsec"><h3>★ Adjective Agreement</h3>
-    <div class="rule">Masculine end in <strong>-o</strong>. Feminine → change to <strong>-a</strong>. Ends in <strong>-e</strong> → no change.</div>
-    <div class="rule">Plural: add <strong>-s</strong> to adjective too.</div>
-    <div style="margin-top:6px">
-      <div class="exline"><span class="exes">El pollo está delicioso</span><span class="exen">The chicken is delicious (masc)</span></div>
-      <div class="exline"><span class="exes">La pizza está deliciosa</span><span class="exen">The pizza is delicious (fem)</span></div>
-      <div class="exline"><span class="exes">Las pizzas son deliciosas</span><span class="exen">Plural fem</span></div>
+
+  <div class="gsec">
+    <button class="gacc-hdr" onclick="toggleGram(this)"><h3>★ Adjective Agreement</h3><span class="gacc-arrow">▼</span></button>
+    <div class="gacc-body">
+      <div class="rule">Masculine end in <strong>-o</strong>. Feminine → change to <strong>-a</strong>. Ends in <strong>-e</strong> or consonant → no change.</div>
+      <div class="rule">Plural: add <strong>-s</strong> (or <strong>-es</strong> after a consonant) to adjective too.</div>
+      <div style="margin-top:6px">
+        <div class="exline"><span class="exes">El pollo está delicioso</span><span class="exen">The chicken is delicious (masc)</span></div>
+        <div class="exline"><span class="exes">La pizza está deliciosa</span><span class="exen">The pizza is delicious (fem)</span></div>
+        <div class="exline"><span class="exes">Las pizzas son deliciosas</span><span class="exen">Plural fem</span></div>
+        <div class="exline"><span class="exes">Un hombre inteligente / Una mujer inteligente</span><span class="exen">-e endings don't change</span></div>
+      </div>
     </div>
   </div>
-  <div class="gsec"><h3>★ Contractions — al & del</h3>
-    <div class="rule">Only applies to <strong>el</strong>, never la/los/las.</div>
-    <div class="cbox"><div class="cpart">a</div><div class="carrow">+</div><div class="cpart">el</div><div class="carrow">=</div><div class="cpart res">al</div></div>
-    <div class="exline" style="margin:4px 0 10px"><span class="exes">Voy al restaurante</span><span class="exen">I'm going to the restaurant</span></div>
-    <div class="cbox"><div class="cpart">de</div><div class="carrow">+</div><div class="cpart">el</div><div class="carrow">=</div><div class="cpart res">del</div></div>
-    <div class="exline" style="margin-top:4px"><span class="exes">Vengo del banco</span><span class="exen">I'm coming from the bank</span></div>
+
+  <div class="gsec">
+    <button class="gacc-hdr" onclick="toggleGram(this)"><h3>★ Contractions — al &amp; del</h3><span class="gacc-arrow">▼</span></button>
+    <div class="gacc-body">
+      <div class="rule">Spanish contracts <strong>a + el → al</strong> and <strong>de + el → del</strong>. Never applies to la, los, las.</div>
+      <div class="cbox"><div class="cpart">a</div><div class="carrow">+</div><div class="cpart">el</div><div class="carrow">=</div><div class="cpart res">al</div></div>
+      <div class="exline" style="margin:4px 0 10px"><span class="exes">Voy al restaurante</span><span class="exen">I'm going to the restaurant</span></div>
+      <div class="cbox"><div class="cpart">de</div><div class="carrow">+</div><div class="cpart">el</div><div class="carrow">=</div><div class="cpart res">del</div></div>
+      <div class="exline" style="margin-top:4px"><span class="exes">Vengo del banco</span><span class="exen">I'm coming from the bank</span></div>
+    </div>
   </div>
-  <div class="gsec"><h3>★ Ser vs Estar</h3>
-    <div class="rule"><strong>Ser</strong> — permanent: nationality, identity, profession</div>
-    <div class="rule"><strong>Estar</strong> — temporary: mood, location, current state</div>
-    <div class="exline"><span class="exes">Soy inglés</span><span class="exen">I am English (ser)</span></div>
-    <div class="exline"><span class="exes">Estoy cansado</span><span class="exen">I am tired (estar)</span></div>
+
+  <!-- ── VERBS ── -->
+  <div class="gram-cat-lbl" id="gram-verbs">VERBS</div>
+
+  <div class="gsec">
+    <button class="gacc-hdr" onclick="toggleGram(this)"><h3>★ Ser vs Estar</h3><span class="gacc-arrow">▼</span></button>
+    <div class="gacc-body">
+      <div class="rule" style="margin-bottom:6px"><strong>SER</strong> — permanent identity: nationality, profession, character, time, material, origin</div>
+      <div class="rule" style="margin-bottom:12px"><strong>ESTAR</strong> — temporary states: mood, location, current condition, progressive tenses</div>
+      <table class="func-tbl">
+        <tr><th>Ser</th><th>Example</th><th>Estar</th><th>Example</th></tr>
+        <tr><td>Identity</td><td>Soy inglés</td><td>Mood</td><td>Estoy cansado</td></tr>
+        <tr><td>Profession</td><td>Soy médico</td><td>Location</td><td>Estoy en Madrid</td></tr>
+        <tr><td>Time</td><td>Son las dos</td><td>State</td><td>Está delicioso</td></tr>
+        <tr><td>Origin</td><td>Es de España</td><td>Progressive</td><td>Estoy comiendo</td></tr>
+      </table>
+      <div class="rule" style="margin-top:8px">⚠ Same adjective, different meaning: <span style="color:var(--primary)">Es aburrido</span> (He's boring) vs <span style="color:var(--primary)">Está aburrido</span> (He's bored right now)</div>
+    </div>
   </div>
-  <div class="gsec"><h3>★ Stem-Changing Verbs</h3>
-    <div class="rule">Stem changes in ALL forms except nosotros/vosotros.</div>
-    <div class="exline"><span class="exes">o → ue</span><span class="exen">poder, volver, probar, doler, encontrar</span></div>
-    <div class="exline"><span class="exes">e → ie</span><span class="exen">querer, preferir, perder, tener</span></div>
-    <div class="exline"><span class="exes">e → i</span><span class="exen">pedir &nbsp;|&nbsp; u → ue: jugar (only this verb!)</span></div>
+
+  <div class="gsec">
+    <button class="gacc-hdr" onclick="toggleGram(this)"><h3>★ Stem-Changing Verbs</h3><span class="gacc-arrow">▼</span></button>
+    <div class="gacc-body">
+      <div class="rule">The vowel in the stem changes in ALL forms <strong>except nosotros &amp; vosotros</strong>. This is called the "boot" or "shoe" pattern.</div>
+      <table class="func-tbl" style="margin-top:8px">
+        <tr><th>Change</th><th>Verbs</th><th>Example</th></tr>
+        <tr><td>o → ue</td><td>poder, volver, probar, doler, encontrar, recordar</td><td>puedo, vuelvo, pruebo</td></tr>
+        <tr><td>e → ie</td><td>querer, preferir, perder, tener, empezar</td><td>quiero, prefiero, pierdo</td></tr>
+        <tr><td>e → i</td><td>pedir, seguir, conseguir</td><td>pido, sigo</td></tr>
+        <tr><td>u → ue</td><td>jugar (only this verb!)</td><td>juego</td></tr>
+      </table>
+    </div>
   </div>
-  <div class="gsec"><h3>★ Personal "a"</h3>
-    <div class="rule">When a verb happens to a specific person, put <strong>a</strong> after the verb.</div>
-    <div class="exline"><span class="exes">Yo veo a María</span><span class="exen">I see María</span></div>
-    <div class="exline"><span class="exes">Voy a ayudar a María</span><span class="exen">I'm going to help María</span></div>
+
+  <div class="gsec">
+    <button class="gacc-hdr" onclick="toggleGram(this)"><h3>★ Personal "a"</h3><span class="gacc-arrow">▼</span></button>
+    <div class="gacc-body">
+      <div class="rule">When the direct object of a verb is a <strong>specific person</strong> (or pet), put <strong>a</strong> directly after the verb. There is no equivalent in English.</div>
+      <div class="exline" style="margin-top:8px"><span class="exes">Yo veo a María</span><span class="exen">I see María</span></div>
+      <div class="exline"><span class="exes">Llamo a mis amigos</span><span class="exen">I call my friends</span></div>
+      <div class="exline"><span class="exes">Voy a ayudar a tu madre</span><span class="exen">I'm going to help your mum</span></div>
+      <div class="rule" style="margin-top:8px">⚠ Don't use it with tener: "Tengo un amigo" (I have a friend) — not "tengo a un amigo".</div>
+    </div>
   </div>
-  <div class="gsec"><h3>★ Telling the Time</h3>
-    <div class="rule" style="margin-bottom:8px"><strong>Son las...</strong> for all hours except 1 o'clock → <strong>Es la una</strong></div>
-    <table class="ttbl">
-      <tr><td>¿Qué hora es?</td><td>What time is it?</td></tr>
-      <tr><td>Es la una</td><td>1 o'clock</td></tr>
-      <tr><td>Son las dos</td><td>2 o'clock</td></tr>
-      <tr><td>Son las cinco y media</td><td>5:30</td></tr>
-      <tr><td>Son las nueve menos diez</td><td>8:50</td></tr>
-      <tr><td>El mediodía / La medianoche</td><td>Noon / Midnight</td></tr>
-      <tr><td>De la mañana / tarde / noche</td><td>Morning / afternoon / night</td></tr>
-    </table>
+
+  <!-- ── CONNECTORS & FUNCTION WORDS ── -->
+  <div class="gram-cat-lbl" id="gram-connectors">CONNECTORS &amp; FUNCTION WORDS</div>
+
+  <div class="gsec">
+    <button class="gacc-hdr" onclick="toggleGram(this)"><h3>★ Conjunctions — joining sentences</h3><span class="gacc-arrow">▼</span></button>
+    <div class="gacc-body">
+      <table class="func-tbl">
+        <tr><th>Word</th><th>Means</th><th>Example</th></tr>
+        <tr><td>y / e*</td><td>and</td><td>café y leche &nbsp;|&nbsp; padre <em>e</em> hijo (*before i/hi)</td></tr>
+        <tr><td>o / u*</td><td>or</td><td>té o café &nbsp;|&nbsp; siete <em>u</em> ocho (*before o/ho)</td></tr>
+        <tr><td>pero</td><td>but (contrast)</td><td>quiero ir, pero estoy cansado</td></tr>
+        <tr><td>sino</td><td>but rather (after negative, replaces)</td><td>no es azul, sino verde</td></tr>
+        <tr><td>sino que</td><td>but rather (+ verb clause)</td><td>no descansó, sino que trabajó más</td></tr>
+        <tr><td>porque</td><td>because</td><td>no fui porque estaba enfermo</td></tr>
+        <tr><td>que</td><td>that / which</td><td>creo que es verdad &nbsp;|&nbsp; la casa que compré</td></tr>
+        <tr><td>aunque</td><td>although / even though</td><td>aunque llueve, salimos</td></tr>
+        <tr><td>si</td><td>if</td><td>si puedes, ven</td></tr>
+        <tr><td>cuando</td><td>when</td><td>cuando llegues, llámame</td></tr>
+      </table>
+      <div class="rule" style="margin-top:8px">⚠ <strong>porque</strong> (one word, no accent) = because. <strong>¿por qué?</strong> (two words, accent) = why? <strong>el porqué</strong> = the reason.</div>
+    </div>
+  </div>
+
+  <div class="gsec" id="gram-demo">
+    <button class="gacc-hdr" onclick="toggleGram(this)"><h3>★ Demonstratives — this / that / those</h3><span class="gacc-arrow">▼</span></button>
+    <div class="gacc-body">
+      <div class="rule" style="margin-bottom:8px">Demonstratives agree in <strong>gender and number</strong> with the noun they describe.</div>
+      <table class="func-tbl">
+        <tr><th>Distance</th><th>Masc sing</th><th>Fem sing</th><th>Masc pl</th><th>Fem pl</th><th>Neuter*</th></tr>
+        <tr><td>This (near me)</td><td>este</td><td>esta</td><td>estos</td><td>estas</td><td>esto</td></tr>
+        <tr><td>That (near you)</td><td>ese</td><td>esa</td><td>esos</td><td>esas</td><td>eso</td></tr>
+        <tr><td>That (far away)</td><td>aquel</td><td>aquella</td><td>aquellos</td><td>aquellas</td><td>aquello</td></tr>
+      </table>
+      <div class="rule" style="margin-top:8px">*Neuter forms (esto, eso, aquello) are used when the noun is unknown or abstract: <span style="color:var(--primary)">¿Qué es esto?</span> (What is this?), <span style="color:var(--primary)">Eso es verdad</span> (That's true).</div>
+      <div style="margin-top:10px">
+        <div class="exline"><span class="exes">Este restaurante es muy bueno</span><span class="exen">This restaurant is very good (masc)</span></div>
+        <div class="exline"><span class="exes">Esa mesa está libre</span><span class="exen">That table is free (fem)</span></div>
+        <div class="exline"><span class="exes">Aquellos edificios son muy antiguos</span><span class="exen">Those buildings over there are very old</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gsec">
+    <button class="gacc-hdr" onclick="toggleGram(this)"><h3>★ Location words — here / there / over there</h3><span class="gacc-arrow">▼</span></button>
+    <div class="gacc-body">
+      <table class="func-tbl">
+        <tr><th>Word</th><th>Means</th><th>When to use</th></tr>
+        <tr><td>aquí / acá</td><td>here</td><td>near the speaker (acá more common in Latin America)</td></tr>
+        <tr><td>ahí</td><td>there</td><td>near the person you're talking to</td></tr>
+        <tr><td>allí / allá</td><td>over there</td><td>far from both speaker and listener</td></tr>
+      </table>
+      <div class="rule" style="margin-top:10px">More location words:</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 20px;margin-top:6px;font-size:13px">
+        <div class="exline"><span class="exes">arriba</span><span class="exen">up / above</span></div>
+        <div class="exline"><span class="exes">abajo</span><span class="exen">down / below</span></div>
+        <div class="exline"><span class="exes">dentro</span><span class="exen">inside</span></div>
+        <div class="exline"><span class="exes">fuera</span><span class="exen">outside</span></div>
+        <div class="exline"><span class="exes">cerca</span><span class="exen">near</span></div>
+        <div class="exline"><span class="exes">lejos</span><span class="exen">far</span></div>
+        <div class="exline"><span class="exes">delante</span><span class="exen">in front</span></div>
+        <div class="exline"><span class="exes">detrás</span><span class="exen">behind</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── POR vs PARA ── -->
+  <div class="gram-cat-lbl" id="gram-porpara">POR vs PARA</div>
+
+  <div class="gsec">
+    <button class="gacc-hdr" onclick="toggleGram(this)"><h3>★ Por vs Para — the big one</h3><span class="gacc-arrow">▼</span></button>
+    <div class="gacc-body">
+      <div class="rule" style="margin-bottom:10px">Both can translate as "for" in English, but they are not interchangeable. Think: <strong>POR = cause / exchange / means / duration</strong>. <strong>PARA = purpose / destination / deadline / recipient</strong>.</div>
+      <div class="por-para-grid">
+        <div class="pp-box por">
+          <div class="pp-title">🔴 POR</div>
+          <div class="pp-item"><strong>Cause / reason:</strong> por eso (for that reason), por ti (because of you)</div>
+          <div class="pp-item"><strong>Exchange:</strong> te doy €10 por eso</div>
+          <div class="pp-item"><strong>Duration:</strong> viví allí por dos años</div>
+          <div class="pp-item"><strong>Means / method:</strong> por teléfono, por WhatsApp</div>
+          <div class="pp-item"><strong>On behalf of:</strong> habló por todos</div>
+          <div class="pp-item"><strong>Movement through:</strong> pasamos por el parque</div>
+        </div>
+        <div class="pp-box para">
+          <div class="pp-title">🟣 PARA</div>
+          <div class="pp-item"><strong>Purpose / goal:</strong> estudio para aprender</div>
+          <div class="pp-item"><strong>Destination:</strong> el tren para Madrid</div>
+          <div class="pp-item"><strong>Deadline:</strong> necesito esto para el lunes</div>
+          <div class="pp-item"><strong>Recipient:</strong> es para ti</div>
+          <div class="pp-item"><strong>Opinion / comparison:</strong> para mí, es difícil</div>
+          <div class="pp-item"><strong>Surprising for:</strong> habla bien para ser principiante</div>
+        </div>
+      </div>
+      <div style="margin-top:10px">
+        <div class="exline"><span class="exes">Llamo por teléfono</span><span class="exen">I call by phone (means → por)</span></div>
+        <div class="exline"><span class="exes">Llamo para reservar</span><span class="exen">I'm calling to book (purpose → para)</span></div>
+        <div class="exline"><span class="exes">Gracias por todo</span><span class="exen">Thanks for everything (exchange → por)</span></div>
+        <div class="exline"><span class="exes">Este regalo es para ti</span><span class="exen">This gift is for you (recipient → para)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PREPOSITIONS ── -->
+  <div class="gram-cat-lbl" id="gram-prep">KEY PREPOSITIONS</div>
+
+  <div class="gsec">
+    <button class="gacc-hdr" onclick="toggleGram(this)"><h3>★ Prepositions at a glance</h3><span class="gacc-arrow">▼</span></button>
+    <div class="gacc-body">
+      <table class="func-tbl">
+        <tr><th>Preposition</th><th>Core meaning</th><th>Example</th></tr>
+        <tr><td>a</td><td>to, at</td><td>Voy a Madrid &nbsp;|&nbsp; a las ocho &nbsp;|&nbsp; a + el = <strong>al</strong></td></tr>
+        <tr><td>de</td><td>of, from, about</td><td>de España &nbsp;|&nbsp; hablar de trabajo &nbsp;|&nbsp; de + el = <strong>del</strong></td></tr>
+        <tr><td>en</td><td>in, on, at</td><td>en casa &nbsp;|&nbsp; en el trabajo &nbsp;|&nbsp; en la mesa</td></tr>
+        <tr><td>con</td><td>with</td><td>café con leche &nbsp;|&nbsp; con mis amigos &nbsp;|&nbsp; conmigo / contigo</td></tr>
+        <tr><td>sin</td><td>without</td><td>sin azúcar &nbsp;|&nbsp; sin ti &nbsp;|&nbsp; sin problema</td></tr>
+        <tr><td>sobre</td><td>on top of, about</td><td>sobre la mesa &nbsp;|&nbsp; hablar sobre eso</td></tr>
+        <tr><td>entre</td><td>between, among</td><td>entre tú y yo &nbsp;|&nbsp; entre semana</td></tr>
+        <tr><td>hasta</td><td>until, up to</td><td>hasta las diez &nbsp;|&nbsp; hasta mañana</td></tr>
+        <tr><td>desde</td><td>from, since</td><td>desde Madrid &nbsp;|&nbsp; desde las ocho</td></tr>
+        <tr><td>hacia</td><td>towards</td><td>vamos hacia el centro</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TIME ── -->
+  <div class="gram-cat-lbl" id="gram-time">TIME</div>
+
+  <div class="gsec">
+    <button class="gacc-hdr" onclick="toggleGram(this)"><h3>★ Telling the Time</h3><span class="gacc-arrow">▼</span></button>
+    <div class="gacc-body">
+      <div class="rule" style="margin-bottom:8px"><strong>Son las...</strong> for all hours except 1 o'clock → <strong>Es la una</strong> (singular because it's one)</div>
+      <table class="ttbl">
+        <tr><td>¿Qué hora es?</td><td>What time is it?</td></tr>
+        <tr><td>Es la una</td><td>1 o'clock</td></tr>
+        <tr><td>Son las dos</td><td>2 o'clock</td></tr>
+        <tr><td>Son las cinco y media</td><td>5:30</td></tr>
+        <tr><td>Son las nueve menos diez</td><td>8:50</td></tr>
+        <tr><td>Son las tres y cuarto</td><td>3:15</td></tr>
+        <tr><td>El mediodía / La medianoche</td><td>Noon / Midnight</td></tr>
+        <tr><td>De la mañana / tarde / noche</td><td>AM / afternoon / PM</td></tr>
+        <tr><td>A eso de las ocho</td><td>At around eight</td></tr>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -1096,6 +1317,20 @@ const MUSIC=[
       {q:'"¿Cómo puedo...?" means...',opts:['Where can I...?','When can I...?','How can I...?','Who can I...?'],ans:2},
       {q:'What does "olvidar" mean?',opts:['to remember','to love','to forget','to find'],ans:2},
      ]},
+    {title:'Licántropo',feat:'',theme:'Transformation, feral love, intense emotion',
+     phrases:[
+      {es:'Me vuelvo loca',en:'I go crazy',bd:['me vuelvo = I become (reflexive, volver)','loca = crazy (fem)']},
+      {es:'Como una bestia',en:'Like a beast',bd:['como = like / as','una = a (fem)','bestia = beast']},
+      {es:'La luna me llama',en:'The moon calls to me',bd:['la luna = the moon','me = me / to me','llama = calls (llamar)']},
+     ],
+     vocab:['licántropo (werewolf / lycanthrope)','luna (moon)','bestia (beast)','transformar (to transform)','volverse loco/a (to go crazy)'],
+     lessonTitle:'"Como" — like / as (comparisons)',
+     lesson:'"Como" (without accent) has two uses: 1) <strong>Comparison</strong> — "como una bestia" (like a beast), "canta como un ángel" (sings like an angel), "eres como el sol" (you\'re like the sun). 2) <strong>Since / given that</strong> — "Como no tenía dinero, no fui" (Since I had no money, I didn\'t go). Note: "cómo" WITH accent = how: "¿Cómo estás?" In Licántropo the comparisons are vivid and animalistic — a very Spanish way to express intense feelings.',
+     quiz:[
+      {q:'What does "luna" mean?',opts:['sun','star','moon','night'],ans:2},
+      {q:'"Como una bestia" means...',opts:['I am a beast','Like a beast','Because of the beast','She is fierce'],ans:1},
+      {q:'"Me vuelvo loca" means...',opts:['I turn around','I go crazy','I return home','I become tired'],ans:1},
+     ]},
     {title:'Aunque no exista la arcadia',feat:'(album closing track)',theme:'Acceptance, present joy',
      phrases:[
       {es:'Aunque no exista la arcadia',en:'Even though Arcadia doesn\'t exist',bd:['aunque = although / even though','no exista = doesn\'t exist (subjunctive)','arcadia = paradise']},
@@ -1168,6 +1403,54 @@ const MUSIC=[
       {q:'What does "-ito/-ita" at the end of a word mean?',opts:['bigger','plural','little / affectionate','very much'],ans:2},
       {q:'"Poquito" means...',opts:['a lot','a tiny bit','always','never'],ans:1},
       {q:'"Te quiero mucho" means...',opts:['I miss you a lot','I love/like you a lot','I need you a lot','I see you a lot'],ans:1},
+     ]},
+   ]},
+  ,{id:'lali',name:'Lali Espósito',album:'Disciplina & más',year:'2022',color:'#EC4899',emoji:'💃',
+   songs:[
+    {title:'Sola',feat:'',theme:'Independence, freedom after heartbreak',
+     phrases:[
+      {es:'Quiero estar sola',en:'I want to be alone',bd:['quiero = I want (querer)','estar = to be (temporary state)','sola = alone (fem)']},
+      {es:'Sin ti soy libre',en:'Without you I am free',bd:['sin = without','ti = you (after preposition)','soy = I am (ser)','libre = free']},
+      {es:'No me necesitas',en:'You don\'t need me',bd:['no = not','me = me (object)','necesitas = you need (necesitar)']},
+     ],
+     vocab:['sola (alone, fem)','sin (without)','libre (free)','necesitar (to need)','ti (you — after preposition)'],
+     lessonTitle:'"Quiero + infinitive" — I want to...',
+     lesson:'"Quiero" (from querer) + infinitive = "I want to ___". It is one of the most natural structures in Spanish: "Quiero estar sola" = I want to be alone, "Quiero aprender" = I want to learn, "Quiero salir" = I want to go out. Note that "estar sola" (not ser sola) is correct because being alone is a temporary state, not a permanent identity. Also: sin + pronoun: sin mí (without me), sin ti (without you), sin él (without him).',
+     quiz:[
+      {q:'What does "sola" mean?',opts:['happy','sad','alone (fem)','together'],ans:2},
+      {q:'"Sin ti" means...',opts:['with you','for you','without you','near you'],ans:2},
+      {q:'"Quiero estar sola" means...',opts:['I am alone','I want to be alone','I was alone','She wants to be alone'],ans:1},
+     ]},
+    {title:'2 son 3',feat:'',theme:'Love triangle — numbers in relationships',
+     phrases:[
+      {es:'Dos somos tú y yo',en:'Two is you and me',bd:['dos = two','somos = we are (ser — 1st pl)','tú = you','y = and','yo = I']},
+      {es:'Tres si él está',en:'Three if he\'s there',bd:['tres = three','si = if','él = he','está = he is (estar)']},
+      {es:'Esto ya no es lo mismo',en:'This isn\'t the same any more',bd:['esto = this','ya no = no longer','es = is (ser)','lo mismo = the same']},
+     ],
+     vocab:['dos (two)','tres (three)','somos (we are)','ya no (no longer)','lo mismo (the same)','si (if)'],
+     lessonTitle:'Numbers + ser — counting what matters',
+     lesson:'In Spanish, ser is used to define identity and quantity: "Somos dos" = There are two of us. "Son tres" = There are three. The song uses this grammatically: "dos somos tú y yo" — ser + number + person. Compare: "Son las dos" (It\'s two o\'clock) vs "Somos dos" (We are two people). Also: "ya no" (no longer) = a powerful phrase for change — "ya no te quiero" = I don\'t love you any more.',
+     quiz:[
+      {q:'What does "somos" mean?',opts:['they are','you are','we are','I am'],ans:2},
+      {q:'"Ya no" means...',opts:['already','now','not yet','no longer'],ans:3},
+      {q:'"Si" without an accent means...',opts:['yes','if','whether','since'],ans:1},
+     ]},
+   ]},
+  {id:'aitana',name:'Aitana',album:'alpha',year:'2024',color:'#F59E0B',emoji:'⭐',
+   songs:[
+    {title:'Segundo intento',feat:'',theme:'Second chances, forgiveness in love',
+     phrases:[
+      {es:'Dame un segundo intento',en:'Give me a second chance',bd:['dame = give me (dar imperative + me)','un = a / one','segundo = second','intento = attempt / try']},
+      {es:'Sé que fallé',en:'I know I let you down',bd:['sé = I know (saber, yo-form irregular)','que = that','fallé = I failed (fallar, past)']},
+      {es:'Lo quiero intentar de nuevo',en:'I want to try it again',bd:['lo = it','quiero = I want','intentar = to try','de nuevo = again / anew']},
+     ],
+     vocab:['intentar (to try)','fallar (to fail / let down)','de nuevo (again)','segundo (second)','perdonar (to forgive)','dame (give me)'],
+     lessonTitle:'"Dame" — imperative of dar + me',
+     lesson:'"Dame" = Give me — combining the imperative (command) of dar with the pronoun "me". In Spanish, pronouns attach to the end of imperatives: Dame (give me), Dime (tell me — decir), Ayúdame (help me), Llámame (call me), Bésame (kiss me). The pattern is verb-imperative + me. This is different from negative commands where the pronoun goes before: "No me llames" (Don\'t call me). "Segundo intento" literally means "second attempt" — it\'s asking for one more try.',
+     quiz:[
+      {q:'What does "dame" mean?',opts:['tell me','give me','show me','help me'],ans:1},
+      {q:'"De nuevo" means...',opts:['brand new','again / anew','once more only','recently'],ans:1},
+      {q:'"Sé que fallé" means...',opts:['I know I failed','I feel I failed','I think I failed','I know you failed'],ans:0},
      ]},
    ]},
 ];
@@ -1318,11 +1601,67 @@ function showToast(msg){
 
 // Pick a random variant from an array of [es,en] pairs
 function pickVariant(arr){if(!arr||!arr.length)return null;return arr[Math.floor(Math.random()*arr.length)];}
-// Example sentence for vocab cards — uses yo-form present tense
+
+// Example sentences for nouns, places, and general vocab
+const NOUNEX={
+  'queso':{es:'Prueba el queso manchego.',en:'Try the manchego cheese.'},
+  'pollo':{es:'El pollo está muy rico hoy.',en:'The chicken is really good today.'},
+  'pan':{es:'Compro el pan en la panadería.',en:'I buy bread at the bakery.'},
+  'arroz':{es:'Comemos arroz con verduras.',en:'We eat rice with vegetables.'},
+  'ensalada':{es:'Pido la ensalada mixta.',en:'I\'ll order the mixed salad.'},
+  'fruta':{es:'Como fruta todas las mañanas.',en:'I eat fruit every morning.'},
+  'leche':{es:'Un café con leche, por favor.',en:'A coffee with milk, please.'},
+  'café':{es:'Tomo un café todas las mañanas.',en:'I have a coffee every morning.'},
+  'té':{es:'¿Quieres un té con limón?',en:'Do you want a tea with lemon?'},
+  'zumo / jugo':{es:'Un zumo de naranja, por favor.',en:'An orange juice, please.'},
+  'pescado':{es:'El pescado del día está muy bueno.',en:'The fish of the day is very good.'},
+  'carne':{es:'Prefiero la carne bien hecha.',en:'I prefer my meat well done.'},
+  'huevo':{es:'Dos huevos fritos, por favor.',en:'Two fried eggs, please.'},
+  'vino':{es:'Una botella de vino tinto, por favor.',en:'A bottle of red wine, please.'},
+  'agua':{es:'¿Me traes agua, por favor?',en:'Could you bring me some water?'},
+  'cerveza':{es:'Una cerveza fría, por favor.',en:'A cold beer, please.'},
+  'el restaurante':{es:'Vamos al restaurante esta noche.',en:'We\'re going to the restaurant tonight.'},
+  'el hotel':{es:'El hotel está cerca del centro.',en:'The hotel is near the city centre.'},
+  'la casa':{es:'Estoy en casa todo el día.',en:'I\'m at home all day.'},
+  'la ciudad':{es:'Me encanta esta ciudad.',en:'I love this city.'},
+  'el mercado':{es:'Compro fruta fresca en el mercado.',en:'I buy fresh fruit at the market.'},
+  'el parque':{es:'Damos un paseo por el parque.',en:'We take a walk through the park.'},
+  'el cine':{es:'¿Vamos al cine esta noche?',en:'Shall we go to the cinema tonight?'},
+  'el banco':{es:'Tengo que ir al banco mañana.',en:'I have to go to the bank tomorrow.'},
+  'la playa':{es:'Me encanta ir a la playa en verano.',en:'I love going to the beach in summer.'},
+  'el trabajo':{es:'Llego al trabajo a las nueve.',en:'I arrive at work at nine.'},
+  'el aeropuerto':{es:'El taxi al aeropuerto tarda media hora.',en:'The taxi to the airport takes half an hour.'},
+  'la tienda':{es:'Hay una tienda muy buena cerca de aquí.',en:'There\'s a really good shop near here.'},
+  'la farmacia':{es:'¿Dónde está la farmacia más cercana?',en:'Where is the nearest pharmacy?'},
+  'la calle':{es:'El restaurante está en esta calle.',en:'The restaurant is on this street.'},
+  'el supermercado':{es:'Voy al supermercado los sábados.',en:'I go to the supermarket on Saturdays.'},
+  'el barrio':{es:'Este barrio tiene mucho ambiente.',en:'This neighbourhood has great atmosphere.'},
+  'la panadería':{es:'La baguette de esta panadería es increíble.',en:'The baguette from this bakery is incredible.'},
+  'siempre':{es:'Siempre como en casa los domingos.',en:'I always eat at home on Sundays.'},
+  'también':{es:'Yo también quiero un café.',en:'I\'d like a coffee too.'},
+  'ahora':{es:'¿Podemos comer ahora?',en:'Can we eat now?'},
+  'hoy':{es:'Hoy voy al mercado.',en:'Today I\'m going to the market.'},
+  'mañana':{es:'Mañana vengo a las diez.',en:'I\'ll come tomorrow at ten.'},
+  'grande':{es:'Una cerveza grande, por favor.',en:'A large beer, please.'},
+  'pequeño / pequeña':{es:'¿Tienen mesas más pequeñas?',en:'Do you have smaller tables?'},
+  'muy':{es:'El café está muy rico.',en:'The coffee is very good.'},
+  'todo':{es:'Todo está muy bueno aquí.',en:'Everything is very good here.'},
+  'quiero':{es:'Quiero una mesa para dos.',en:'I\'d like a table for two.'},
+  'simpático':{es:'El camarero es muy simpático.',en:'The waiter is really friendly.'},
+  'precioso / preciosa':{es:'¡Qué vista tan preciosa!',en:'What a beautiful view!'},
+  'aunque':{es:'Voy a salir aunque llueve.',en:'I\'m going out even though it\'s raining.'},
+};
+
+// Example sentence for vocab cards
 function exampleForCard(card){
+  // Sentences and Daily Chat ARE example sentences — no need to add one
+  if(['Sentences','Daily Chat'].includes(card.cat)) return null;
+  // Verbs: use VEX yo-form present tense
   if(card.cat==='Verbs'&&VEX[card.es]){
     const v=pickVariant(VEX[card.es].pr?.yo);
     if(v)return{es:v[0],en:v[1]};}
+  // Nouns, places, general: use NOUNEX lookup
+  if(NOUNEX[card.es])return NOUNEX[card.es];
   return null;
 }
 
@@ -1568,13 +1907,36 @@ function buildThemePills(){
   });
 }
 function populateVerbSel(){
-  const sel=document.getElementById('vsel');const prev=curVerb;sel.innerHTML='';
-  Object.entries(VD).filter(([k,v])=>curTheme==='all'||v.themes.includes(curTheme)).forEach(([name,v])=>{
-    const o=document.createElement('option');o.value=name;o.textContent=`${name}  —  ${v.meaning}`;if(name===prev)o.selected=true;sel.appendChild(o);
-  });
-  if(!sel.value&&sel.options.length)sel.selectedIndex=0;curVerb=sel.value;renderVerbGrid();
+  const s=document.getElementById('verb-search');if(s)s.value='';
+  filterVerbs();
 }
 function onVerbChange(){curVerb=document.getElementById('vsel').value;renderVerbGrid();}
+function filterVerbs(){
+  const q=(document.getElementById('verb-search')?.value||'').toLowerCase().trim();
+  const sel=document.getElementById('vsel');const prev=curVerb;sel.innerHTML='';
+  Object.entries(VD).filter(([k,v])=>{
+    const mT=curTheme==='all'||v.themes.includes(curTheme);
+    const mQ=!q||k.includes(q)||v.meaning.toLowerCase().includes(q);
+    return mT&&mQ;
+  }).forEach(([name,v])=>{
+    const o=document.createElement('option');o.value=name;o.textContent=`${name}  —  ${v.meaning}`;
+    if(name===prev)o.selected=true;sel.appendChild(o);
+  });
+  if(sel.options.length===0){const o=document.createElement('option');o.textContent='No verbs found';sel.appendChild(o);}
+  if(!sel.value&&sel.options.length)sel.selectedIndex=0;
+  curVerb=sel.value;if(curVerb)renderVerbGrid();
+}
+function toggleGram(btn){
+  const sec=btn.closest('.gsec');
+  const body=sec.querySelector('.gacc-body');
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  sec.classList.toggle('gopen',!isOpen);
+}
+function scrollGram(id){
+  const el=document.getElementById(id);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
 function setVerbTense(t){
   curTense=t;
   ['pr','pa','fu'].forEach((x,i)=>document.getElementById(['tt-pr','tt-pa','tt-fu'][i]).classList.toggle('on',['present','past','future'][i]===t));
